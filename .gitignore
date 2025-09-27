@@ -1,0 +1,37 @@
+/.metadata/
+
+# Directorios antiguos
+copia_java/
+ejercicio2eva/
+primertrimestre/
+proyecto_final/
+segundotrimestre/
+seguntrimest_herencia/
+seguntrimest_poo/
+tercertrimestre_interfaz/
+
+
+# Archivos de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos de compilación
+bin/
+build/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Archivos de backup o temporales
+*.tmp
+*.bak
+*.swp
+*.txt
+
+# Archivos específicos de Java
+*.class
