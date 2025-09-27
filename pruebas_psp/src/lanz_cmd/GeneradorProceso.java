@@ -36,6 +36,7 @@ public class GeneradorProceso {
 			Process proceso = pb.start();
 			String linea;
 
+			
 			try {
 				
 				BufferedReader br = new BufferedReader /*salida del hijo*/(new InputStreamReader(proceso.getInputStream()/*entrada del padre*/));

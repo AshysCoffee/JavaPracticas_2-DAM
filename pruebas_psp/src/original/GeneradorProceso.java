@@ -9,7 +9,7 @@ public class GeneradorProceso {
 	//try-catch :P	
 	try {
 		@SuppressWarnings("unused")
-		Process proceso = pb.start();
+		Process proceso = pb.start(); //Creamos proceso y le pones el creador de procesos
 	} catch(Exception e) {
 		e.printStackTrace();
 	}
