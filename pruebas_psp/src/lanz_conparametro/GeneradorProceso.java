@@ -9,16 +9,23 @@ public class GeneradorProceso {
 	public void ejercutar (String rutaDirectorio, String nombreEjecutable) {
 		
 		List <String> nombreArgumentos = new ArrayList<>();
-		nombreArgumentos.add(nombreEjecutable);
+		nombreArgumentos.add(nombreEjecutable); //añadimos argumentos
 		
-		@SuppressWarnings("unused")
-		File directorio = new File (rutaDirectorio);
+		File directorio = new File (rutaDirectorio); //lo volvemos file para establecerlo como directorio
 		
 		ProcessBuilder pb = new ProcessBuilder();	//ProcessBuilder es la clase que se necesita para iniciar el proceso
 		
-		pb.command(nombreEjecutable);
+		pb.directory(directorio); //establecemos la ruta
 		
-		pb.directory();
+		pb.command(nombreEjecutable); //ponemos el comando 
+		
+		try {
+			@SuppressWarnings("unused")
+			Process proceso = pb.start();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
