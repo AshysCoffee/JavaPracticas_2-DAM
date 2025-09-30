@@ -2,9 +2,12 @@ package ejercicios_lect_escrit;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Ejercicios_Lectura {
 
@@ -41,6 +44,25 @@ public class Ejercicios_Lectura {
 			}
 		}
 		*/
+		
+		
+		//OTRA FORMA SEGUN LA PROFE
+		
+		/*try (FileReader fichero = new FileReader ("bye.txt")){
+			
+			int caracter=0;
+			
+			while ((caracter=fichero.read())!=-1) {
+				if (caracter!=32) {
+					System.out.print((char)caracter);
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		
 //------------------------------------------------------------------------------------------------------------------------		
 		
@@ -84,25 +106,68 @@ public class Ejercicios_Lectura {
 			
 			}*/
 		
+	
+		//intento frustrado xd
 		
-/*2.Crea un programa que según lo que hemos visto hoy lea un fichero y saque por pantalla el número de caracteres que tiene el fichero y el número de vocales.
-3.	Dado el fichero restaurantes muestra el fichero de la siguiente forma campo:valor
-4.	Escribe un programa que marque las veces que se repite cada palabra del fichero frutas.txt
-5.	Crea un fichero que sea capaz de ordenar alfabéticamente las palabras que aparecen el fichero planetas.txt
-		 */
+		/*String texto = "Texto a pasar la expresión regular";
+		texto=texto.toLowerCase();
+		Pattern patron = Pattern.compile("[aeiou]"); patron que se pone en el que caso que usemos algo fijo
+		Matcher match = patron.matcher(texto); la clase que se pone para eso????? <-- esto lo dieron en js yo no :3
 		
+		while (match.find()){
+			
+			int aes=0, ies=0, es=0, oes=0, ues=0;
+
+			String letra = match.group();
+			System.out.println(letra);
+			
+			if (letra=="a") {aes++;}
+			
+			if (letra=="e") {ies++;}
+			
+			if (letra=="i") {es++;}
+			
+			if (letra=="o") {oes++;}
+			
+			if (letra=="u") {ues++;}
+		}
+		*/
+		
+				//OTRA FORMA SEGUN LA PROFE
+		
+		/*int vocales=0;
+		int total=0;
+		
+		Pattern patron = Pattern.compile("[aeiouAEIOU]"); 
+		
+		try (BufferedReader buffer_r = new BufferedReader(new FileReader("bye.txt"))){
+			String linea;
+			
+			while ((linea=buffer_r.readLine())!=null){
+				total+=linea.length();
+				Matcher match = patron.matcher(linea);
+				if(match.find()) {
+					vocales++;
+				}
+			}
+			System.out.println("\nVocales: "+vocales+"\nCaracteres: "+total);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		
 //------------------------------------------------------------------------------------------------------------------------		
 		
 		
-		/*File f = new File ("D:\\Docs_Interesantes\\Restaurants.csv");
+		File f = new File ("F:\\Docs_Interesantes\\Restaurants.csv");
 		
 		
 		if (f.exists()) { 
 			try {
-
-				FileReader lector = new FileReader (f);
-				BufferedReader buffer_r = new BufferedReader(lector);
+				
+				BufferedReader buffer_r = new BufferedReader(new FileReader (f));
 				String linea;
 				String [] palabras_separadas = null;
 				
@@ -141,11 +206,11 @@ public class Ejercicios_Lectura {
 			}
 		}
 
-		*/
+		
 	
 //------------------------------------------------------------------------------------------------------------------------		
 		
-		File f = new File ("D:\\Docs_Interesantes\\frutas.txt");
+		/*File f = new File ("D:\\Docs_Interesantes\\frutas.txt");
 		
 		
 		try {
@@ -194,7 +259,7 @@ public class Ejercicios_Lectura {
 			
 		} catch (IOException e) {
 			e.getMessage();
-		}
+		}*/
 		
 	
 		
