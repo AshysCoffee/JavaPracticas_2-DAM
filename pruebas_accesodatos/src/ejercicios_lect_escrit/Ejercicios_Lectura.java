@@ -176,13 +176,13 @@ public class Ejercicios_Lectura {
 				String [] ciudad = new String [21];
 				String [] estado = new String [21];
 				String [] cod_postal = new String [21];
-
-
+				
 				int contador = 0;
-
+				
+				
 				while ((linea=buffer_r.readLine())!=null){
-					palabras_separadas=linea.split(",");
-
+						palabras_separadas=linea.split(",");
+					
 					if (palabras_separadas.length == 5) { // seguridad por si alguna línea viene incompleta
 						restaurantes[contador]= palabras_separadas[0];
 						direccion[contador]= palabras_separadas[1];
@@ -191,12 +191,12 @@ public class Ejercicios_Lectura {
 						cod_postal[contador]= palabras_separadas[4];
 						contador++;
 					}
+				
 				}
-
 
 				buffer_r.close();
 				
-				  for (int i = 1; i < contador; i++) {
+				 for (int i = 1; i < contador; i++) {
 			            System.out.println("Restaurante: " + restaurantes[i] +"\nDirección: " + direccion[i] +"\nCiudad: " + ciudad[i] +
 			                               "\nEstado: " + estado[i] +"\nCP: " + cod_postal[i]+"\n\n");
 			        }

@@ -8,7 +8,7 @@ public class Pruebas_Caracteres_Escribir {
 
 	public static void main(String[] args) {
 
-		BufferedWriter fichero = null;
+		/*BufferedWriter fichero = null;
 		try {
 			fichero = new BufferedWriter(new FileWriter("Fichero_Ejercicio2.txt"));
 			String cad = "Escribe un fichero de caracteres desde tu programa java"; //primera línea
@@ -35,7 +35,7 @@ public class Pruebas_Caracteres_Escribir {
 				}
 			}
 
-		}
+		}*/
 		
 	}
 }
