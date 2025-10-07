@@ -46,10 +46,6 @@ public class HilosCooperando1 {
 			ArrayHilos [i] = hilonuevo;
 		}
 
-		for (Thread h : ArrayHilos) {
-			h.start();
-		}
-
 		try {
 			for (Thread h : ArrayHilos) {
 				h.join();
