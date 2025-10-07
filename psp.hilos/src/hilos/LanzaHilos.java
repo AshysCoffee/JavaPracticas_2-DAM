@@ -17,7 +17,7 @@ public class LanzaHilos {
 		h1.start();
 		h2.start();
 
-		System.out.println("Hilo Principal terminado");
+		System.out.println("Hilo principal terminado");
 	}
 
 }

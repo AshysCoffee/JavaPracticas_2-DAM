@@ -18,7 +18,7 @@ public class RandomFile {
 		File fichero = new File ("datos.dat");
 		RandomAccessFile raf = new RandomAccessFile (fichero,"rw"); //documentar este constructor
 			
-			/*raf.writeInt(0); //4 bytes btw se empieza a contar desde 0 osea 0-3
+			raf.writeInt(0); //4 bytes btw se empieza a contar desde 0 osea 0-3
 			raf.writeInt(1); //4 btyes 4-7
 			raf.writeInt(2);
 
@@ -27,7 +27,7 @@ public class RandomFile {
 			System.out.println(raf.readInt()); //dado que antes puse el raf.seek me lee el numero que este en el byte numero 4
 			
 			raf.seek(0);
-			while (raf.getFilePointer()<raf.length()) { //osea el seek es poner en posicion el lector, raf.readInt devuelve los 4 btye de cada numeor, cuando
+			/*while (raf.getFilePointer()<raf.length()) { //osea el seek es poner en posicion el lector, raf.readInt devuelve los 4 btye de cada numeor, cuando
 				// que el numeor es menor al maximo, lee de nuevo otros 4 bytes y asi hasta que llega a la longitud maxizma +-lo que entendi
 				System.out.println(raf.readInt());
 			}*/
