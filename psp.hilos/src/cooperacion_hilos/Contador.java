@@ -8,6 +8,10 @@ public class Contador {
 		return contador;
 	}
 
+	
+	// exclusion mutua
+	// intercalarse o sobreponer entre ellos mismo
+	
 	public int incrementar() {
 		this.contador++;
 		return contador;
