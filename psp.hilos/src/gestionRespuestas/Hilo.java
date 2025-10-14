@@ -2,7 +2,7 @@ package gestionRespuestas;
 
 public class Hilo extends ResultadosEncuestas implements Runnable {
 
-	private int numHilos, vueltas, miCuenta = 0;
+	private int numHilos, vueltas = 0;
 	private final ResultadosEncuestas cont; //nadie lo puede cambiar
 
 	
