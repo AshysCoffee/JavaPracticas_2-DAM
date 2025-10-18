@@ -10,6 +10,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JToggleButton;
+import java.awt.Color;
+import javax.swing.Box;
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
 
 public class Window1 {
 
@@ -47,6 +51,7 @@ public class Window1 {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(204, 255, 255));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -74,14 +79,24 @@ public class Window1 {
 		frame.getContentPane().add(rdbtnNewRadioButton_1);
 		
 		JButton btnNewButton = new JButton("Next");
+		btnNewButton.setFocusPainted(false);
+		btnNewButton.setRolloverEnabled(false);
+		btnNewButton.setRequestFocusEnabled(false);
+		btnNewButton.setVerifyInputWhenFocusTarget(false);
+		btnNewButton.setMinimumSize(new Dimension(1, 1));
+		btnNewButton.setFocusable(false);
 		btnNewButton.setToolTipText("");
-		btnNewButton.setBounds(311, 213, 89, 23);
+		btnNewButton.setBounds(309, 213, 89, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		pwdContrasea = new JPasswordField();
 		pwdContrasea.setName("");
 		pwdContrasea.setBounds(78, 214, 129, 20);
 		frame.getContentPane().add(pwdContrasea);
+		
+		JToggleButton tglbtnNewToggleButton = new JToggleButton("Botoncito tipo\\n interrumptor");
+		tglbtnNewToggleButton.setBounds(279, 52, 145, 23);
+		frame.getContentPane().add(tglbtnNewToggleButton);
 		
 
 
