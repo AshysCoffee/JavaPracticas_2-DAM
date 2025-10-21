@@ -36,6 +36,7 @@ Thumbs.db
 *.bin
 *.ser
 *.dat
+*.xml
 
 # Archivos específicos de Java
 *.class
