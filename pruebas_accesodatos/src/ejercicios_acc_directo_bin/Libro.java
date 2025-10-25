@@ -1,4 +1,4 @@
-package ejercicios_acc_directo;
+package ejercicios_acc_directo_bin;
 
 public class Libro{
 	

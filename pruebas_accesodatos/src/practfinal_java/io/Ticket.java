@@ -49,15 +49,25 @@ public class Ticket {
 	public void setTotal(float total) {
 		this.total = total;
 	}
+	
+
+	public ArrayList<LineaTicket> getLista_prod() {
+		return lista_prod;
+	}
+
+	public void setLista_prod(ArrayList<LineaTicket> lista_prod) {
+		this.lista_prod = lista_prod;
+	}
+	
+	
+	
 
 	@Override
 	public String toString() {
-		/*return "Codigo del Ticket:" + cod_ticket + "\nCódigo Empleado:" + cod_empleado + "\nEmpleado: "
-				+ nombre_empleado + "\nTotal=" + total;*/
 		
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
 				+"\nEmpleado que ha atendido: "+cod_empleado+"\nNombre del empleado: "+nombre_empleado+
-				"CodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+lista_prod;		
+				"CodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+lista_prod.toString();		
 	}
 	
 	

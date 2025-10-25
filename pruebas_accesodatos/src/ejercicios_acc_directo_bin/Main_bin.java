@@ -1,4 +1,4 @@
-package ejercicios_acc_directo;
+package ejercicios_acc_directo_bin;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Main_bin {
 
 	public static void main(String[] args) {
 	

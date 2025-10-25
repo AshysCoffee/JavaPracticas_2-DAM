@@ -1,4 +1,4 @@
-package ejercicios_acc_directo;
+package ejercicios_acc_directo_bin;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ Los ID son contiguos para ayudar a la gestión.
 
  * */
 
-public class Producto {
+public class Producto_bin {
 
 	public static void main(String[] args) {
 

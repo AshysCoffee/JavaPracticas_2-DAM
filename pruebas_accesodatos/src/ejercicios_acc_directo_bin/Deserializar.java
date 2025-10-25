@@ -1,4 +1,4 @@
-package ejercicios_acc_directo;
+package ejercicios_acc_directo_bin;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

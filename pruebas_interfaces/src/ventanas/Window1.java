@@ -4,22 +4,17 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JToggleButton;
 import java.awt.Color;
-import javax.swing.Box;
-import javax.swing.SwingConstants;
 import java.awt.Dimension;
 
 public class Window1 {
 
 	private JFrame frame;
-	private JTextField textField_1;
-	private JTextField textField;
 	private JTextField textField_2;
 	private JPasswordField pwdContrasea;
 

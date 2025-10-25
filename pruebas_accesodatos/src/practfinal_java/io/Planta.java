@@ -7,14 +7,14 @@ public class Planta {
 	private float precio;
 
 
-	Planta(String nombre, String foto, String descripcion, int codigo, int cantidad, float precio) {
+	Planta(int codigo, String nombre, String foto, String descripcion) {
 		super();
 		this.nombre = nombre;
 		this.foto = foto;
 		this.descripcion = descripcion;
 		this.codigo = codigo;
-		this.cantidad = cantidad;
-		this.precio = precio;
+		this.cantidad = 0;
+		this.precio = 0;
 	}
 
 
@@ -81,7 +81,7 @@ public class Planta {
 	@Override
 	public String toString() {
 		return "Planta " + nombre + "\nFoto: " + foto + "\nDescripcion: " + descripcion + "\nCodigo: " + codigo
-				+ "\nCantidad: " + cantidad + "\nPrecio=" + precio ;
+				+ "\nCantidad: " + cantidad + "\nPrecio:" + precio +"\n\n";
 	}
 	
 	

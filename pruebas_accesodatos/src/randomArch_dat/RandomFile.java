@@ -1,4 +1,4 @@
-package randomArch;
+package randomArch_dat;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,8 @@ public class RandomFile {
 		try {
 			
 		File fichero = new File ("datos.dat");
-		RandomAccessFile raf = new RandomAccessFile (fichero,"rw"); //documentar este constructor
+		RandomAccessFile raf = new RandomAccessFile (fichero,"rw"); 
+		/*Creamos un fichero con el nombre que se puede leer y opcionalmente se puede leer, se pone los permisos para especificar*/
 			
 			raf.writeInt(0); //4 bytes btw se empieza a contar desde 0 osea 0-3
 			raf.writeInt(1); //4 btyes 4-7
