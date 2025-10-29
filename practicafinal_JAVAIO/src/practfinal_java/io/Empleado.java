@@ -1,13 +1,17 @@
 package practfinal_java.io;
 
-public class Empleado {
+import java.io.Serializable;
 
-	private String id_empleado, nombre, cargo;
+@SuppressWarnings("serial")
+public class Empleado implements Serializable{
 
-	public Empleado(String id_empleado, String nombre, String cargo) {
+	private String id_empleado, nombre, contraseña, cargo;
+
+	public Empleado(String id_empleado, String nombre, String contraseña, String cargo) {
 		super();
 		this.id_empleado = id_empleado;
 		this.nombre = nombre;
+		this.contraseña = contraseña;
 		this.cargo = cargo;
 	}
 
@@ -37,7 +41,15 @@ public class Empleado {
 
 	@Override
 	public String toString() {
-		return "Empleado [id_empleado=" + id_empleado + ", nombre=" + nombre + ", cargo=" + cargo + "]";
+		return "Empleado\nID = " + id_empleado + "\nNombre=" + nombre + "\nContraseña="+contraseña+"\nCargo=" + cargo + "]";
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
 	}
 	
 	
