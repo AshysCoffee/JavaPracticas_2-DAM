@@ -80,7 +80,7 @@ public class Planta {
 
 
 	public void setPrecio(float precio) throws Exception {
-		if (precio <= 0) throw new Exception ("Stock no puede ser negativo.");
+		if (precio <= 0) throw new Exception ("El precio no puede ser negativo.");
         this.precio = precio;
 }
 	

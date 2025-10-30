@@ -24,12 +24,13 @@ public class Conexion {
 			ResultSet resultado = sentencia.executeQuery(consulta);
 			
 			//3.2 Crear un PreparedStatement
-			consulta = "Select * from usuario where idUsuario = ?";
-			PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta);
+			//consulta = "Select * from usuario where idUsuario = ?;";
+			consulta = "UPDATE usuario set nombre = ? where idUsuario = ?";
+			PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta);// al estar preparado, el execute es sin nada	
 			int numero = 1;
-			sentencia_preparada.setInt(1, numero);
-			sentencia_preparada.setString(2, "Leo");
-			
+			sentencia_preparada.setInt(2, numero);
+			sentencia_preparada.setString(1, "Leo"); //da igual el orden pero cada interrogante tiene su numero ref :P
+		
 			sentencia_preparada.executeQuery();
 			
 			//4. Mostrar los resultados
@@ -42,6 +43,8 @@ public class Conexion {
 				System.out.println("Usuario : "+idUsuario+", Nombre: " +nombre+ ", Fecha de nacimiento: "+fecha+", Genero: "+genero);
 				
 			}
+			
+
 					
 		}catch(Exception e) {
 			e.printStackTrace();

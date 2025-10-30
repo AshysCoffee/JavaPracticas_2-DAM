@@ -1,6 +1,7 @@
 package practfinal_java.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -47,7 +48,15 @@ public class GestorPlantas {
 
 					try {
 
+						File f = new File ("plantas.dat");
 
+						if (!f.exists()){
+							try {
+								f.createNewFile();
+							}catch (IOException e) {
+								e.printStackTrace();
+							}
+						}	
 						
 						
 						
