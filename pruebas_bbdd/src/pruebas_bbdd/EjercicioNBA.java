@@ -14,7 +14,7 @@ public class EjercicioNBA {
 		
 		String url = "jdbc:mysql://localhost:3306/nba";
 		String usuario = "root";
-		String password = "Soyunestegosaurio27.";
+		String password = "cfgs";
 		
 		
 		Scanner sc = new Scanner (System.in);
