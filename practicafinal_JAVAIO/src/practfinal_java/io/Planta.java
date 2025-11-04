@@ -11,8 +11,8 @@ public class Planta {
 		
 		if (codigo < 1) throw new DatosInvalidosException("ID no puede estar vacío.");
 	    if (nombre == null || nombre.isEmpty()) throw new DatosInvalidosException("Nombre obligatorio.");
-	    if (foto == null || foto.isEmpty()) throw new DatosInvalidosException("Nombre obligatorio.");
-	    if (descripcion == null || descripcion.isEmpty()) throw new DatosInvalidosException("Nombre obligatorio.");
+	    if (foto == null || foto.isEmpty()) throw new DatosInvalidosException("Foto obligatoria.");
+	    if (descripcion == null || descripcion.isEmpty()) throw new DatosInvalidosException("Descripción obligatoria.");
 
 		this.nombre = nombre;
 		this.foto = foto;
@@ -20,6 +20,23 @@ public class Planta {
 		this.codigo = codigo;
 		this.stock = 0;
 		this.precio = 0;
+	}
+	
+	Planta(int codigo, String nombre, String foto, String descripcion, int stock, float precio) throws DatosInvalidosException {
+
+		if (codigo < 1) throw new DatosInvalidosException("ID no puede estar vacío.");
+		if (nombre == null || nombre.isEmpty()) throw new DatosInvalidosException("Nombre obligatorio.");
+		if (foto == null || foto.isEmpty()) throw new DatosInvalidosException("Foto obligatoria.");
+		if (descripcion == null || descripcion.isEmpty()) throw new DatosInvalidosException("Descripción obligatoria.");
+		if (stock < 1) throw new DatosInvalidosException("El stock no puede ser nulo");
+		if (precio < 0) throw new DatosInvalidosException("El precio debe ser mayor a 0");
+
+		this.nombre = nombre;
+		this.foto = foto;
+		this.descripcion = descripcion;
+		this.codigo = codigo;
+		this.stock = stock;
+		this.precio = precio;
 	}
 
 
@@ -68,9 +85,10 @@ public class Planta {
 	}
 
 
-	public void setStock(int stock) throws Exception {
-		 if (stock <= 0) throw new Exception ("Stock no puede ser negativo.");
-	        this.stock = stock;
+	public void setStock(int stock) throws DatosInvalidosException {
+		 if (stock <= 0) throw new DatosInvalidosException ("Stock no puede ser negativo.");
+	        
+		 this.stock = stock;
 	}
 
 
@@ -79,10 +97,11 @@ public class Planta {
 	}
 
 
-	public void setPrecio(float precio) throws Exception {
-		if (precio <= 0) throw new Exception ("El precio no puede ser negativo.");
-        this.precio = precio;
-}
+	public void setPrecio(float precio) throws DatosInvalidosException {
+		if (precio < 0) throw new DatosInvalidosException ("El precio no puede ser negativo.");
+			this.precio = precio;
+        
+	}
 	
 
 
@@ -105,7 +124,7 @@ public class Planta {
 		return true;
 	}
 	
-	public void dardeBaja(int id) throws Exception {
+	public void darDeBaja(int id) throws DatosInvalidosException {
 		if (id==this.codigo) {
 			setPrecio(0);
 			setStock(0);

@@ -1,21 +1,22 @@
 package practfinal_java.io;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Ticket {
+public class Ticket implements Serializable{
 
 	private int cod_ticket, cod_empleado;
 	private String nombre_empleado;
-	private float total;
+	private double total;
 	ArrayList <LineaTicket> lista_prod;
 	
-	public Ticket(int cod_ticket, int cod_empleado, String nombre_empleado, float total) {
+	public Ticket(int cod_ticket, int cod_empleado, String nombre_empleado, double total) {
 		super();
 		this.cod_ticket = cod_ticket;
 		this.cod_empleado = cod_empleado;
 		this.nombre_empleado = nombre_empleado;
 		this.total = total;
-		lista_prod = null;
+		lista_prod = new ArrayList <>();
 	}
 
 	public int getCod_ticket() {
@@ -42,11 +43,11 @@ public class Ticket {
 		this.nombre_empleado = nombre_empleado;
 	}
 
-	public float getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(float total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 	

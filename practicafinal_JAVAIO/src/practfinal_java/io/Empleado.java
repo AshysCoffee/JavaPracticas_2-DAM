@@ -5,9 +5,10 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Empleado implements Serializable{
 
-	private String id_empleado, nombre, contraseña, cargo;
+	private String nombre, contraseña, cargo;
+	private int id_empleado;
 
-	public Empleado(String id_empleado, String nombre, String contraseña, String cargo) {
+	public Empleado(int id_empleado, String nombre, String contraseña, String cargo) {
 		super();
 		this.id_empleado = id_empleado;
 		this.nombre = nombre;
@@ -15,11 +16,11 @@ public class Empleado implements Serializable{
 		this.cargo = cargo;
 	}
 
-	public String getId_empleado() {
+	public int getId_empleado() {
 		return id_empleado;
 	}
 
-	public void setId_empleado(String id_empleado) {
+	public void setId_empleado(int id_empleado) {
 		this.id_empleado = id_empleado;
 	}
 
@@ -39,11 +40,6 @@ public class Empleado implements Serializable{
 		this.cargo = cargo;
 	}
 
-	@Override
-	public String toString() {
-		return "Empleado\nID = " + id_empleado + "\nNombre=" + nombre + "\nContraseña="+contraseña+"\nCargo=" + cargo + "]";
-	}
-
 	public String getContraseña() {
 		return contraseña;
 	}
@@ -51,6 +47,13 @@ public class Empleado implements Serializable{
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
 	}
+	
+	@Override
+	public String toString() {
+		return "Empleado\nID = " + id_empleado + "\nNombre=" + nombre + "\nContraseña="+contraseña+"\nCargo=" + cargo + "]";
+	}
+
+	
 	
 	
 	

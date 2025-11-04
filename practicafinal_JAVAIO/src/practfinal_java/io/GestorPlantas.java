@@ -2,7 +2,9 @@ package practfinal_java.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +19,9 @@ public class GestorPlantas {
 	public static void main(String[] args) {
 
 		ArrayList<Planta> Plantas = new ArrayList<>();
-
+		
+		Random r = new Random();
+		
 		try {
 
 			File ficheroXML = new File("plantas.xml");
@@ -57,17 +61,28 @@ public class GestorPlantas {
 								e.printStackTrace();
 							}
 						}	
-						
-						
-						
-						
+
+						try (RandomAccessFile raf = new RandomAccessFile("plantas.dat", "rw")) {
+							for(int j=1;j<21;j++) {
+
+								raf.writeInt(j);
+
+								float precio= ((r.nextFloat(1, 500) * 100f) / 100f);
+								raf.writeFloat(precio);
+
+								int stock= r.nextInt(1, 500);
+								raf.writeInt(stock);
+							}
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
 					}catch (Exception e){
 
 					}
 
 					Plantas.add(planta_p);
-
-
 
 				}
 
