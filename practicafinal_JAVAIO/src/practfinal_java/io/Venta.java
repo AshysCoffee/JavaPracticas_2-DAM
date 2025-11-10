@@ -19,11 +19,14 @@ public class Venta implements Serializable{
 	private String nombre_empleado;
 	private double total;
 	private LocalDate fecha;
+	private GestorPlantas gestor;
 	ArrayList <LineaTicket> lista_prod;
 	ArrayList <Planta> cesta;
 	
-	public Venta(int cod_empleado, String nombre_empleado) {
+	
+	public Venta(int cod_empleado, String nombre_empleado, GestorPlantas gestor) {
 		super();
+		this.gestor = gestor;
 		this.cod_ticket = 0;
 		this.cod_empleado = cod_empleado;
 		this.nombre_empleado = nombre_empleado;
@@ -69,13 +72,6 @@ public class Venta implements Serializable{
 		this.lista_prod = lista_prod;
 	}
 	
-	public LocalDate getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
 
 	public ArrayList<Planta> getCesta() {
 		return cesta;
@@ -84,11 +80,21 @@ public class Venta implements Serializable{
 	public void setCesta(ArrayList<Planta> cesta) {
 		this.cesta = cesta;
 	}
-	
-	
+
+
+	public GestorPlantas getGestor() {
+		return gestor;
+	}
+
+	public void setGestor(GestorPlantas gestor) {
+		this.gestor = gestor;
+	}
+
+
+
 /////////////////// METODOS	DE VENTA 
 	
-	
+
 /////METODOS DE INICIALIZACION
 	
 	public void inicializarUltimoTicket() {
@@ -119,7 +125,7 @@ public class Venta implements Serializable{
 	    }
 	    ultimoTicket = max;
 	} //PROBARLO++ ---- LEE EL ULTIMO NUMERO GUARDADO
-
+	
 	
 	public int generarNuevoTicket() {
 		
@@ -133,6 +139,9 @@ public class Venta implements Serializable{
 	    
 	    return ultimoTicket;
 	} //PROBARLO++ --- INCREMENTA EL NUMERO, SE PONE AL GENERAR UNA NUEVA VENTA
+	
+	
+	
 
 	
 /////METODOS DE ESPECIFICOS
@@ -144,7 +153,8 @@ public class Venta implements Serializable{
 		}
 		return s;
 	} //SOLO SIRVE PARA EL TOSTRING NATURAL
-
+	
+	
 	public double calcularTotal() {
 
 		for (Planta p: cesta) {
@@ -169,33 +179,32 @@ public class Venta implements Serializable{
 	
 /////METODOS DE ARRAYLISTS	
 	
-	public void agregarProducto (Planta p, int cantidad) {
-		
-		if (p == null || cantidad <= 0 || p.getStock()<1) {
-	        System.out.println("Error: planta nula o cantidad inválida");
-	        return;
-	    }
-		
-		if (p.getStock()<cantidad) {
-	        System.out.println("Error: no hay stock suficiente");
-	        return;
-	    }
-		
-		cesta.add(p);
-		agregarLinea(new LineaTicket (cantidad,p));
-		
-		try {
-			p.setStock(p.getStock()-cantidad);
-			
-			
-		} catch (DatosInvalidosException e) {
-			e.printStackTrace();
-		}
-		
-		
-
-	} //PROBARLO++
 	
+	
+//	public void agregarProducto (int id, int cantidad) {
+//		
+//		if (p == null || cantidad <= 0 || p.getStock()<1) {
+//	        System.out.println("Error: planta nula o cantidad inválida");
+//	        return;
+//	    }
+//		
+//		if (p.getStock()<cantidad) {
+//	        System.out.println("Error: no hay stock suficiente");
+//	        return;
+//	    }
+//		
+//		cesta.add(p);
+//		agregarLinea(new LineaTicket (cantidad,p));
+//		
+//		try {
+//			p.setStock(p.getStock()-cantidad);
+//			
+//		} catch (DatosInvalidosException e) {
+//			e.printStackTrace();
+//		}
+//	} //PROBARLO++
+	
+		
 	public void eliminarProducto(int codigoPlanta) {
 	   
 		LineaTicket lineaAEliminar = null;
@@ -254,7 +263,12 @@ public class Venta implements Serializable{
 	    } catch (IOException e) {
 	        System.out.println("Error al guardar ticket: " + e.getMessage());
 	    }
+		
+		
+		
 	} //PROBARLO++
+
+	
 
 	public void leerTicket () {
 
@@ -277,12 +291,10 @@ public class Venta implements Serializable{
 
 		} catch (IOException e) {
 			e.getMessage();
-		}
+	}
+		
+	}	
 
-	} //PROBARLO++
-
-	
-	@Override
 	public String toString() {
 		
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"

@@ -149,30 +149,32 @@ public class GestorEmpleados {
 ////////////VALIDACIONES DE CREDENCIALES	
 	
 	public Empleado validarLogin(int id, String contraseña, GestorPlantas gp) {
-		
-		
-		for (Empleado e : empleadosAltas) {
-			if (e.getId_empleado() == id && e.getContraseña().equals(contraseña)) {
-				// Devuelve el empleado si las credenciales son correctas
 
-				switch (e.getCargo()) {
-				case VENDEDOR:
-					new MenuVendedor(e).mostrarMenu();
-					break;
-				case ENCARGADO:
-					new MenuGestor(e, this, gp).mostrarMenu();
-					break;
-
+		for (int i=0; i<4; i++) {	
+			for (Empleado e : empleadosAltas) {
+				if (e.getId_empleado() == id && e.getContraseña().equals(contraseña)) {
+					// Devuelve el empleado si las credenciales son correctas
+					System.out.println("He iniciado sesion correctamente");
+					switch (e.getCargo()) {
+					case VENDEDOR:
+						new MenuVendedor(e).mostrarMenu();
+						break;
+					case ENCARGADO:
+						new MenuGestor(e, this, gp).mostrarMenu();
+						break;
+					}
+					return e;
+				}else{
+					System.out.println("Datos erroneos, por favor intentelo de nuevo.");
 				}
 
-				return e;
-			}
-
+			}	
 		}
+		System.out.println("Contacte con soporte para resetear el usuario");
 		return null; // Si no se encuentra coincidencia
 	} //TERMINADO --
 
-	
+
 
 /////////////OPCIONES PARA EL GESTOR	
 
