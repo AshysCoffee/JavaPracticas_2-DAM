@@ -5,49 +5,50 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class LineaTicket implements Serializable{
 	
-	private int codigoProducto, unidades, precio_unidad;
+	private int cantidad;
+	private Planta planta;
 	
-	public LineaTicket(int codigoProducto, int unidades, int precio_unidad) {
+	public LineaTicket(int cantidad, Planta planta) {
 		super();
-		this.codigoProducto = codigoProducto;
-		this.unidades = unidades;
-		this.precio_unidad = precio_unidad;
+		this.cantidad = cantidad;
+		this.planta = planta;
 	}
 
 	
-	public int getCodigoProducto() {
-		return codigoProducto;
-	}
-
-	public void setCodigoProducto(int codigoProducto) {
-		this.codigoProducto = codigoProducto;
-	}
-
-	public int getUnidades() {
-		return unidades;
-	}
-
-	public void setUnidades(int unidades) {
-		this.unidades = unidades;
-	}
-
-	public int getPrecio_Unidad() {
-		return precio_unidad;
-	}
-
-	public void setPrecio_Unidad(int precio_unidad) {
-		this.precio_unidad = precio_unidad;
-	}
 	
-	 public float calcularSubtotal() {
-	        return unidades * precio_unidad ;
-	    }
-	 
+	
+	public int getCantidad() {
+		return cantidad;
+	}
+
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+
+
+
+	public Planta getPlanta() {
+		return planta;
+	}
+
+
+	public void setPlanta(Planta planta) {
+		this.planta = planta;
+	}
+
+
+
+
+	public float calcularSubtotal() {
+	    return cantidad * planta.getPrecio() ;
+	}
 	
 	
 	@Override
 	public String toString() {
-		return codigoProducto + "\t" + unidades + "\t"+ precio_unidad+"\n";
+		return planta.getCodigo() + "\t" + cantidad + "\t"+ planta.getPrecio()+"\n";
 	}
 	
 	

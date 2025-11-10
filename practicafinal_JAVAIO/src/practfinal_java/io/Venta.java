@@ -1,8 +1,12 @@
 package practfinal_java.io;
 
 import java.io.Serializable;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.time.*;
@@ -31,10 +35,6 @@ public class Venta implements Serializable{
 
 	public int getCod_ticket() {
 		return cod_ticket;
-	}
-
-	public void setCod_ticket(int cod_ticket) {
-		this.cod_ticket = cod_ticket;
 	}
 
 	public int getCod_empleado() {
@@ -88,6 +88,9 @@ public class Venta implements Serializable{
 	
 /////////////////// METODOS	DE VENTA 
 	
+	
+/////METODOS DE INICIALIZACION
+	
 	public void inicializarUltimoTicket() {
 	    
 		File carpetaTickets = new File("TICKETS");
@@ -101,26 +104,38 @@ public class Venta implements Serializable{
 	    File[] tickets = carpetaTickets.listFiles(); //listamos todos los archivos
 	    int max = 0; 
 	    if (tickets != null) {
-	        for (File t : tickets) { //recorremos el array y los volvemos todos normales
+	        for (File t : tickets) { //recorremos el array y los volvemos todos string
 	            String nombre = t.getName().replace(".txt", "");
 	            try {
 	                int num = Integer.parseInt(nombre); //Los volvemos numeros normales
-	                if (num > max) max = num;
+	                if (num > max) max = num; //si el num es mayor que max, max se asigna ese valor
 	            } catch (NumberFormatException e) {
 	                // Ignorar archivos que no sean tickets
 	            }
 	        }
+	        
+//	        Este se ejecuta normalmente al inicio del programa,
+//	        y su trabajo es leer el último número de ticket generado desde un archivo
 	    }
-	    cod_ticket = max;
-	}
+	    ultimoTicket = max;
+	} //PROBARLO++ ---- LEE EL ULTIMO NUMERO GUARDADO
 
 	
-//	public int generarNuevoTicket() {
-//	    cod_ticket++; // siguiente número
-//	    this.numeroTicket = ultimoTicket; // asignarlo a la venta
-//	    generarTicketArchivo(); // guarda en carpeta TICKETS
-//	    return numeroTicket;
-//	}
+	public int generarNuevoTicket() {
+		
+		//Este es el que usas cuando se hace una nueva venta.
+		
+	    ultimoTicket++; // siguiente número
+	    
+	    this.cod_ticket = ultimoTicket; // asignarlo a la venta
+	    
+	    generarTicket(); // guarda en carpeta TICKETS
+	    
+	    return ultimoTicket;
+	} //PROBARLO++ --- INCREMENTA EL NUMERO, SE PONE AL GENERAR UNA NUEVA VENTA
+
+	
+/////METODOS DE ESPECIFICOS
 
 	public String leerLineas() {
 		String s = "";
@@ -128,25 +143,144 @@ public class Venta implements Serializable{
 			s += (l.toString());
 		}
 		return s;
-	} //Ver si me sirve de algo este metodo xd
-	
+	} //SOLO SIRVE PARA EL TOSTRING NATURAL
+
+	public double calcularTotal() {
+
+		for (Planta p: cesta) {
+			total += p.getPrecio();
+		}
+		return total;
+	} //PROBARLO++
+
+
+/////METODOS DE LINEAS	
 	
 	public void agregarLinea(LineaTicket linea) {
-        lista_prod.add(linea);
-        this.total += linea.calcularSubtotal();
-    }
+		lista_prod.add(linea);
+		this.total += linea.calcularSubtotal();
+	} //PROBARLO++
+
+	public void eliminarLinea(LineaTicket linea) {
+		lista_prod.remove(linea);
+		this.total -= linea.calcularSubtotal();
+	} //PROBARLO++
+
+	
+/////METODOS DE ARRAYLISTS	
+	
+	public void agregarProducto (Planta p, int cantidad) {
+		
+		if (p == null || cantidad <= 0 || p.getStock()<1) {
+	        System.out.println("Error: planta nula o cantidad inválida");
+	        return;
+	    }
+		
+		if (p.getStock()<cantidad) {
+	        System.out.println("Error: no hay stock suficiente");
+	        return;
+	    }
+		
+		cesta.add(p);
+		agregarLinea(new LineaTicket (cantidad,p));
+		
+		try {
+			p.setStock(p.getStock()-cantidad);
+			
+			
+		} catch (DatosInvalidosException e) {
+			e.printStackTrace();
+		}
+		
+		
+
+	} //PROBARLO++
+	
+	public void eliminarProducto(int codigoPlanta) {
+	   
+		LineaTicket lineaAEliminar = null;
+
+	    for (LineaTicket l : lista_prod) {
+	        if (l.getPlanta().getCodigo() == codigoPlanta) {
+	            lineaAEliminar = l;
+	            break;
+	        }
+	    }
+
+	    if (lineaAEliminar != null) {
+	    	
+	    	cesta.removeIf(p -> p.getCodigo() == codigoPlanta);  //Eliminamos todas las unidades que encontremos
+	    	
+	    	eliminarLinea(lineaAEliminar);// Quita la línea y resta el subtotal del total
+	    	
+	    	System.out.println("Producto con código " + codigoPlanta + " eliminado del ticket.");
+	    } else {
+	    	System.out.println("No se encontró el producto con código " + codigoPlanta + " en el ticket.");
+	    }
+	} //PROBARLO++
+
 	
 	
-//	public void agregarProducto (Producto p) {
-//		cesta.add(p);
-//	}
-	
+/////METODOS DE LECTURA Y ESCRITURA	
 	
 	public void generarTicket () {
-		
-	}
-	
-	
+
+		try {
+
+			File carpeta = new File("TICKETS");
+	        if (!carpeta.exists()) {
+	            carpeta.mkdirs();
+	        }
+
+			File f = new File ("TICKETS/"+cod_ticket+".txt");
+
+			try (BufferedWriter buffer_w = new BufferedWriter(new FileWriter(f))) {
+
+	            buffer_w.write("===== TICKET DE VENTA Nº " + cod_ticket + " =====\n");
+	            buffer_w.write("Fecha: " + java.time.LocalDate.now() + "\n\n");
+
+	            // Escribimos cada línea de producto
+	            for (LineaTicket l : lista_prod) {
+	                buffer_w.write(l.toString() + "\n");
+	            }
+
+	            buffer_w.write("\n------------------------------------\n");
+	            buffer_w.write("TOTAL: " + total + " €\n");
+	            buffer_w.write("====================================\n");
+
+	            System.out.println("Ticket " + cod_ticket + " guardado correctamente en /TICKETS");
+
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Error al guardar ticket: " + e.getMessage());
+	    }
+	} //PROBARLO++
+
+	public void leerTicket () {
+
+		try {
+
+			File carpeta = new File("TICKETS");
+	        if (!carpeta.exists()) {
+	            carpeta.mkdirs();
+	        }
+			
+	        File f = new File ("TICKETS/"+cod_ticket+".txt");
+			
+			BufferedReader buffer_r = new BufferedReader(new FileReader (f));
+			String linea;
+
+			while ((linea=buffer_r.readLine())!=null){
+				System.out.println(linea);
+			}
+			buffer_r.close();
+
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+	} //PROBARLO++
+
 	
 	@Override
 	public String toString() {
@@ -154,7 +288,7 @@ public class Venta implements Serializable{
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
 				+"\nEmpleado que ha atendido: "+cod_empleado+"\nNombre del empleado: "+nombre_empleado+"\n"
 						+ "Fecha: "+fecha+"\n"+
-				"CodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas();		
+				"CodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas()+"\nTotal: "+total;		
 	}
 	
 	

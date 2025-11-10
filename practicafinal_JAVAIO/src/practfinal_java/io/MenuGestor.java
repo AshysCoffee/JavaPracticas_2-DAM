@@ -91,7 +91,7 @@ public class MenuGestor {
 				System.out.println("Por favor introduzca los siguientes datos:\n");
 				System.out.println("ID del producto:");
 				int id = sc.nextInt();
-				sc.clear();
+				sc.nextLine();
 
 				System.out.println("Nombre de la planta:");
 				String nombre = sc.next();
@@ -104,19 +104,27 @@ public class MenuGestor {
 
 				System.out.println("Stock:");
 				int stock = sc.nextInt();
-				sc.clear();
+				sc.nextLine();
 
 				System.out.println("Precio:");
                 float precio = sc.nextFloat();
-                sc.clear();
+                sc.nextLine();
 
-                gestor_p.darDeAltaPlanta(id, nombre, foto, descripcion, stock, precio);
+                try {
+					gestor_p.dardeAltaPlanta(id, nombre, foto, descripcion, stock, precio);
+				} catch (DatosInvalidosException e) {
+					e.printStackTrace();
+				}
 
 				break;
 				
 			case 2:
-
-                gestor_p.
+				
+				System.out.println("Introduzca el ID del producto que quiere dar de baja:");
+				int id_baja = sc.nextInt();
+				sc.nextLine();
+				
+                gestor_p.darDeBajaPlanta(id_baja);
 
 
 				break;
