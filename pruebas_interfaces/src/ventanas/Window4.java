@@ -20,7 +20,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JLayeredPane;
 import java.awt.Toolkit;
-import javax.swing.SpringLayout;
 
 public class Window4 {
 

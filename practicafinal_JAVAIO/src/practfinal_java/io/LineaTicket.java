@@ -2,6 +2,7 @@ package practfinal_java.io;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class LineaTicket implements Serializable{
 	
 	private int codigoProducto, unidades, precio_unidad;
@@ -34,14 +35,14 @@ public class LineaTicket implements Serializable{
 		return precio_unidad;
 	}
 
-	public void setPrecio_Precio(int precio_unidad) {
+	public void setPrecio_Unidad(int precio_unidad) {
 		this.precio_unidad = precio_unidad;
 	}
 	
 	 public float calcularSubtotal() {
 	        return unidades * precio_unidad ;
 	    }
-
+	 
 	
 	
 	@Override
