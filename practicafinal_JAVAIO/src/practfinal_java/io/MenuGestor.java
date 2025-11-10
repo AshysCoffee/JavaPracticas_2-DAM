@@ -88,12 +88,36 @@ public class MenuGestor {
 			
 			case 1:
 				
-				System.out.println("Por favor introduzca los siguientes datos:");
+				System.out.println("Por favor introduzca los siguientes datos:\n");
+				System.out.println("ID del producto:");
+				int id = sc.nextInt();
+				sc.clear();
 
+				System.out.println("Nombre de la planta:");
+				String nombre = sc.next();
 				
+				System.out.println("Foto de la planta:");
+				String foto = sc.next();
+
+				System.out.println("Descripción de la planta:");
+				String descripcion = sc.next();
+
+				System.out.println("Stock:");
+				int stock = sc.nextInt();
+				sc.clear();
+
+				System.out.println("Precio:");
+                float precio = sc.nextFloat();
+                sc.clear();
+
+                gestor_p.darDeAltaPlanta(id, nombre, foto, descripcion, stock, precio);
+
 				break;
 				
 			case 2:
+
+                gestor_p.
+
 
 				break;
 				
