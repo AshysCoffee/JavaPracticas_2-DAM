@@ -24,12 +24,9 @@ public class Venta implements Serializable{
 	ArrayList <LineaTicket> lista_prod;
 	ArrayList <Planta> cesta;
 	
-	public Venta(int cod_empleado, String nombre_empleado, GestorPlantas gestor) {
+	public Venta() {
 		super();
-		this.gestor = gestor;
 		this.cod_ticket = 0;
-		this.cod_empleado = cod_empleado;
-		this.nombre_empleado = nombre_empleado;
 		this.fecha = LocalDate.now();
 		this.total = 0;
 		lista_prod = new ArrayList <>();
@@ -188,24 +185,7 @@ public class Venta implements Serializable{
 		this.total -= linea.calcularSubtotal();
 	} //PROBARLO++
 
-	
-	public LineaTicket devolucionLinea (int id) {
-		
-		LineaTicket linea = buscarLinea(id);
-		
-		if (lista_prod.contains(linea)) {
-		
-		String s = "-"+String.valueOf(linea.getCantidad());
-		int devolucion = Integer.parseInt(s);
-		linea.setCantidad(devolucion);
-		return linea;
-		
-		}
-		
-		System.out.println("No se pudo encontrar la linea deseada para realizar la devolución");
-		return null;
-		
-	} //Pone negativa la cantidad + PROBARLO
+
 	
 /////METODOS DE ARRAYLISTS	
 	
@@ -231,6 +211,7 @@ public class Venta implements Serializable{
 			p.setStock(p.getStock()-cantidad);
 			gestor.actualizarStockDat(id, p.getStock());
 
+			
 		} catch (DatosInvalidosException | IOException e) {
 			e.printStackTrace();
 		}
@@ -251,7 +232,6 @@ public class Venta implements Serializable{
 	    if (lineaAEliminar != null) {
 	    	
 	    	cesta.removeIf(p -> p.getCodigo() == id);  //Eliminamos todas las unidades que encontremos
-	    	
 	    	eliminarLinea(lineaAEliminar);// Quita la línea y resta el subtotal del total
 	    	
 	    	System.out.println("Producto con codigo " + id + " eliminado del ticket.");
@@ -326,52 +306,44 @@ public class Venta implements Serializable{
 
 	}	
 
-//	public void buscarTicket (int venta) { //USAR JAVA NIO XD NO SE TOY CANSADA :(
-//		
-//		File directorio = new File("TICKETS");
-//		String[] nombresArchivos = directorio.list();
-//		
-//		for (String archivo : nombresArchivos) {
-//	        if (nombreAb)
-//	}
-	
-	public void generarTicketDevolucion (int ticket,int id) {
+	public void buscarTicketPorNumero(int numTicket) {
+	    try {
+	        // 1.️ Carpeta donde están los tickets
+	        File carpeta = new File("TICKETS");
+	        if (!carpeta.exists()) {
+	            System.out.println("La carpeta TICKETS no existe todavía.");
+	            return;
+	        }
 
-		try {
+	        // 2️. Archivo del ticket que queremos buscar
+	        File archivoTicket = new File(carpeta, numTicket + ".txt");
 
-			File carpeta = new File("DEVOLUCIONES");
-			if (!carpeta.exists()) {
-				carpeta.mkdirs();
-			}
+	        if (!archivoTicket.exists()) {
+	            System.out.println("No se encontró el ticket Nº " + numTicket);
+	            return;
+	        }
 
-			File f = new File ("DEVOLUCIONES/"+ticket+".txt");
+	        // 3️. Leer el contenido línea a línea
+	        System.out.println("\nMostrando contenido del ticket Nº " + numTicket + ":\n");
 
-			try (BufferedWriter buffer_w = new BufferedWriter(new FileWriter(f))) {
+	        try (BufferedReader lector = new BufferedReader(new FileReader(archivoTicket))) {
+	            String linea;
+	            while ((linea = lector.readLine()) != null) {
+	                System.out.println(linea);
+	            }
+	        }
 
-				buffer_w.write("===== TICKET DE VENTA Nº " + cod_ticket + " =====\n");
-				buffer_w.write("Fecha: " + java.time.LocalDate.now() + "\n\n");
+	        System.out.println("\nTicket leído correctamente.\n");
+	        return;
 
-				// Escribimos cada línea de producto
-				for (LineaTicket l : lista_prod) {
-					buffer_w.write(l.toString() + "\n");
-				}
-
-				buffer_w.write("\n------------------------------------\n");
-				buffer_w.write("TOTAL: " + total + " €\n");
-				buffer_w.write("====================================\n");
-
-				System.out.println("Ticket " + cod_ticket + " guardado correctamente en /TICKETS");
-
-				System.out.println("------------DEVOLUCION------------");
-
-				System.out.println(devolucionLinea(id));
-
-			}
-		} catch (IOException e) {
-			System.out.println("Error al guardar ticket: " + e.getMessage());
-		}
-
+	    } catch (IOException e) {
+	        System.out.println("Error al leer el ticket: " + e.getMessage());
+	    }
+	    
+	    
+	    
 	}
+
 	
 	
 	public String toString() {

@@ -9,7 +9,7 @@ public class Planta {
 
 	public Planta(int codigo, String nombre, String foto, String descripcion) throws DatosInvalidosException {
 		
-		if (codigo <=20) throw new DatosInvalidosException("Ese ID no es disponible.");
+		if (codigo <=0) throw new DatosInvalidosException("Ese ID no es disponible.");
 	    if (nombre == null || nombre.trim().isEmpty()) throw new DatosInvalidosException("Nombre obligatorio.");
 	    if (foto == null || foto.isEmpty()) throw new DatosInvalidosException("Foto obligatoria.");
 	    if (descripcion == null || descripcion.isEmpty()) throw new DatosInvalidosException("Descripción obligatoria.");

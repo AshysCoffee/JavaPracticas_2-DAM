@@ -12,33 +12,22 @@ public class LineaTicket implements Serializable{
 		super();
 		this.cantidad = cantidad;
 		this.planta = planta;
-	}
-
-	
-	
+	}	
 	
 	public int getCantidad() {
 		return cantidad;
 	}
-
-
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
 
 
-
-
 	public Planta getPlanta() {
 		return planta;
 	}
-
-
 	public void setPlanta(Planta planta) {
 		this.planta = planta;
 	}
-
-
 
 
 	public float calcularSubtotal() {

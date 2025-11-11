@@ -87,18 +87,20 @@ public class GestorPlantas {
 	///////////// METODOS DEL .XML
 
 	public ArrayList<Planta> cargarPlantasAlta(){
-
-		plantasAlta.clear();
+		
+		ArrayList<Planta> listaTemporal = new ArrayList<>();
 		
 		try {
 
-			File ficheroXML = new File("PLANTAS/plantas.xml");
+			File ficheroXML = new File("F:\\java-workspace_ashley\\practicafinal_JAVAIO\\PLANTAS\\plantas.xml");
+			
 
 			if (!ficheroXML.exists()) {
 				System.out.println("El archivo no existe");
-				return plantasAlta;  // Devolver lista vacía si no existe
+				return listaTemporal;  // Devolver lista vacía si no existe
 
 			}
+			
 			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docB = dbf.newDocumentBuilder();
@@ -122,7 +124,7 @@ public class GestorPlantas {
 							planta.getElementsByTagName("descripcion").item(0).getTextContent());
 
 
-					plantasAlta.add(planta_p);
+					listaTemporal.add(planta_p);
 
 				}
 
@@ -131,11 +133,14 @@ public class GestorPlantas {
 
 		} catch (Exception e) {
 
-			e.getMessage();
+			e.printStackTrace();
 
 		}
-		return plantasAlta;
-
+	    this.plantasAlta = listaTemporal; // actualiza el atributo
+	    System.out.println("Plantas cargadas -> " + this.plantasAlta.size());
+	    return this.plantasAlta;
+	
+		
 	} //TERMINADO --
 
 	
@@ -369,7 +374,7 @@ public class GestorPlantas {
 
 
 	public void cargarPlantaDat() {
-
+		
 		int posicion=0;
 
 		try (RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r")) {
@@ -385,43 +390,47 @@ public class GestorPlantas {
 				// Avanzar la posición según los bytes leídos (4 + 4 + 4 = 12 bytes)
 				posicion += 12;
 			} 
+			System.out.println("Se ha podido cargar el archivo plantas.dat");
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	} //PROBARLO ++
 
+	
+	public String leerPlantaDatPorCodigo(int codigo) throws DatosInvalidosException {
 
-	public String leerPlantaDatPorCodigo(int codigo) throws DatosInvalidosException{
-		
-		try (RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r")){
+		try {
 
-		final int TAM_REGISTRO = 12;
-		long posicion = (codigo - 1) * TAM_REGISTRO;
+			plantasAlta = cargarPlantasAlta(); // Esto debe llenarte la lista
+			crearPlantasDat();
 
-		if (posicion < 0 || posicion >= raf.length()) {
-			raf.close();
-			throw new DatosInvalidosException("Código inválido: " + codigo);
-		}
+			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r");
+			final int TAM_REGISTRO = 12;
+			long size = raf.length();
+			long posicion = 0;
 
-		raf.seek(posicion);
+			while (posicion < size) {
+				raf.seek(posicion);
+				int codigoLeido = raf.readInt();
+				float precio = raf.readFloat();
+				int stock = raf.readInt();
 
-		raf.readInt(); //Saltamos el codigo porque ya lo tenemos
-		float precio = raf.readFloat();
-		int stock = raf.readInt();
+				if (codigoLeido == codigo) {
+					return "Código: " + codigoLeido + " | Precio: " + precio + " | Stock: " + stock;
+				}
 
-		String s = ("Código: "+codigo + ", Precio: " + precio + ",Stock: " + stock);
-		
-		return s;
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("No se pudo leer el archivo.");
-		}
-		
-		return null;
-		
-	} //PROBARLO ++
+				posicion += TAM_REGISTRO;
+			}
+
+			  throw new DatosInvalidosException("Código inválido: " + codigo);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return "Error leyendo archivo";
+	    }
+
+	}
+
 	
 	
 	public void actualizarStockDat(int codigo, int nuevoStock) throws IOException {
@@ -619,38 +628,27 @@ public class GestorPlantas {
 
 
 	public String mostrarPlantas() {
-		StringBuilder sb = new StringBuilder();
+	    StringBuilder sb = new StringBuilder();
 
-		for (Planta p : plantasAlta) {
-			try {
-				sb.append(p.toString()).append("\n");
-				String datosExtra = leerPlantaDatPorCodigo(p.getCodigo());
+	    // Recorremos solo el ArrayList plantasAlta que ya está cargado
+	    for (Planta p : plantasAlta) {
+	        sb.append("Nombre: ").append(p.getNombre()).append("\n");
+	        sb.append("Código: ").append(p.getCodigo()).append("\n");
+	        sb.append("Foto: ").append(p.getFoto()).append("\n");
+	        sb.append("Descripción: ").append(p.getDescripcion()).append("\n");
 
-				if (datosExtra != null) {
-					sb.append(datosExtra).append("\n");
-				} else {
-					sb.append("No se encontraron datos adicionales para esta planta.\n");
-				}
-				try {
-					String s = "";
-					for (Planta p_leer : cargarPlantasAlta()) {
-						s+=p_leer.toString();
-						s+=leerPlantaDatPorCodigo(p_leer.getCodigo())+"\n";
+	        try {
+	            // Agregamos precio y stock desde el archivo .dat
+	            sb.append(leerPlantaDatPorCodigo(p.getCodigo())).append("\n");
+	        } catch (DatosInvalidosException e) {
+	            sb.append("Error al leer datos del archivo .dat para código ").append(p.getCodigo()).append("\n");
+	        }
 
-						sb.append("-----------------------------\n");
+	        sb.append("-----------------------------\n");
+	    }
 
-					}
-				} catch (DatosInvalidosException e) {
-					System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
-				}
-
-			} catch (DatosInvalidosException e) {
-				System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
-			}
-			
-		} 
-		return sb.toString();
-	}//PROBARLO ++
+	    return sb.toString();
+	}
 
 }
 

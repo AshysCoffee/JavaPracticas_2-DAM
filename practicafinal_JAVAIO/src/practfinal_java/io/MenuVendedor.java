@@ -1,5 +1,6 @@
 package practfinal_java.io;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuVendedor {
@@ -83,21 +84,55 @@ public class MenuVendedor {
 			opcion = sc.nextInt();
 
 			
-			
-			
 			switch (opcion) {
 
 			case 1:
-				System.out.println(gestor_p.mostrarPlantas());
+				
+				System.out.println(gestor_p.mostrarPlantas()); 
 				break;
 
 			case 2:
 
+				
+				
+				
 				break;
 
 			case 3:
+				
+			    System.out.print("Introduce el número del ticket a buscar: ");
+			    int num = sc.nextInt();
 
-				break;
+			    GestorTickets gt = new GestorTickets();
+			    String contenido = gt.buscarTicketPorNumero(num);
+
+			    if (contenido == null) {
+			    	System.out.println("Ticket no encontrado");
+			    }
+			    System.out.println(contenido);
+
+			    System.out.print("Introduce el ID de la planta a devolver: ");
+			    int id = sc.nextInt();
+
+			    System.out.print("Introduce la cantidad a devolver: ");
+			    int cantidad = sc.nextInt();
+
+			    Planta p = gestor_p.buscarPlantaEnAlta(id);
+
+			    if (p != null) {
+			        ArrayList<String> lineasDevolucion = new ArrayList<>();
+			        lineasDevolucion.add(p.getNombre() + " x" + cantidad + " -> -" + p.getPrecio() * cantidad + "€");
+
+			        // Añadimos al archivo existente:
+			        gt.agregarDevolucionATicket(num, lineasDevolucion);
+
+			        // Actualizamos el stock (si quieres reflejarlo en el sistema):
+			        p.setStock(p.getStock() + cantidad);
+
+			    } else {
+			        System.out.println("Planta no encontrada.");
+			    }
+			    break;
 
 
 			default:
