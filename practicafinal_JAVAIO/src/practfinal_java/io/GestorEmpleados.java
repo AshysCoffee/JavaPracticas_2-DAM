@@ -158,7 +158,7 @@ public class GestorEmpleados {
 					switch (e.getCargo()) {
 					case VENDEDOR:
 						try {
-							new MenuVendedor(e).mostrarMenu();
+							new MenuVendedor(gp).mostrarMenu();
 						} catch (DatosInvalidosException e1) {
 
 							e1.printStackTrace();
@@ -204,6 +204,7 @@ public class GestorEmpleados {
 		System.out.println("No se encontró el empleado en activos.");
 	} //PROBARLO ++
 
+	
 	public void guardarEmpleadoEnAlta() {
 
 		if (empleadosAltas.isEmpty()) {
@@ -212,7 +213,7 @@ public class GestorEmpleados {
 	    }
 		
 		
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("empleados.dat"))) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("empleado.dat"))) {
 
 			for (Empleado e : empleadosAltas) {
 				oos.writeObject(e);

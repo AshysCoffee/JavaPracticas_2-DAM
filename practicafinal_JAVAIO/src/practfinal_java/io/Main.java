@@ -1,5 +1,7 @@
 package practfinal_java.io;
 
+import java.io.IOException;
+
 public class Main {
 	
 //	Empleado e = gestor.validarLogin(id, pwd);
@@ -17,6 +19,34 @@ public class Main {
 //	    System.out.println("Credenciales incorrectas");
 //	}
 
+	
+	public static void main(String[] args) {
+			try {
+				
+			ControlErrores ce = new ControlErrores();
+			
+			ce.verificarYCrearDirectorios();
+			ce.verificarArchivosObligatorios();
+				
+			GestorPlantas gp = new GestorPlantas();
+			
+			gp.cargarPlantaDat();
+			gp.cargarPlantasAlta();
+		
+			
+			GestorEmpleados ge = new GestorEmpleados();
+			
+			
+			
+		MenuVendedor mn = new MenuVendedor(gp);
+		
+		mn.mostrarMenu();
+		
+		} catch (DatosInvalidosException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
 

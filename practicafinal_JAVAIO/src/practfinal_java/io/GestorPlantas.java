@@ -392,7 +392,7 @@ public class GestorPlantas {
 	} //PROBARLO ++
 
 
-	public Planta leerPlantaDatPorCodigo(int codigo) throws DatosInvalidosException{
+	public String leerPlantaDatPorCodigo(int codigo) throws DatosInvalidosException{
 		
 		try (RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r")){
 
@@ -410,10 +410,13 @@ public class GestorPlantas {
 		float precio = raf.readFloat();
 		int stock = raf.readInt();
 
-		System.out.println("Código: "+codigo + ", Precio: " + precio + ",Stock: " + stock);
+		String s = ("Código: "+codigo + ", Precio: " + precio + ",Stock: " + stock);
+		
+		return s;
 		
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("No se pudo leer el archivo.");
 		}
 		
 		return null;
@@ -616,24 +619,28 @@ public class GestorPlantas {
 	
 	
 	public String mostrarPlantas() {
-		try {
+	    StringBuilder sb = new StringBuilder();
 
-			String s = "";
-			for (Planta p : cargarPlantasAlta()) {
-				s+=p.toString();
-				s+=leerPlantaDatPorCodigo(p.getCodigo())+"\n";
+	    for (Planta p : plantasAlta) {
+	        try {
+	            sb.append(p.toString()).append("\n");
+	            String datosExtra = leerPlantaDatPorCodigo(p.getCodigo());
+	            
+	            if (datosExtra != null) {
+	                sb.append(datosExtra).append("\n");
+	            } else {
+	                sb.append("No se encontraron datos adicionales para esta planta.\n");
+	            }
 
-			}
-			return s;
+	            sb.append("-----------------------------\n");
 
-		} catch (DatosInvalidosException e){
-			System.out.println("No se pudo mostrar el catálogo");
-			return null;
-		}
+	        } catch (DatosInvalidosException e) {
+	            System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
+	        }
+	    }
+
+	    return sb.toString();
 	} //PROBARLO ++
-
-
-
 }
 
 

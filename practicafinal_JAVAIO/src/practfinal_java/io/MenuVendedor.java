@@ -10,9 +10,9 @@ public class MenuVendedor {
 	private Devolucion devoluciones;                                     
 	
 	
-	public MenuVendedor(Empleado empleado) {
+	public MenuVendedor(GestorPlantas gestor_p) {
 		super();
-		this.empleado = empleado;
+		this.gestor_p = gestor_p;
 	}
 
 	public Empleado getEmpleado() {
@@ -71,23 +71,24 @@ public class MenuVendedor {
 
 		do {
 
-			System.out.println("Bienvenido " + empleado.getNombre());
+			System.out.println("Bienvenido al sistema");
 			System.out.println("=== MENÚ VENDEDOR ===");
 			System.out.println("1. Visualizar catálogo de plantas\n"
 					+ "2. Generar venta\n"
 					+ "3. Generar devolución\n"
 					+ "0. Cerrar sesión");
-			System.out.println("Elige una opción: ");
 			System.out.println("0. Salir");
-
+			System.out.println("Elige una opción: ");
 
 			opcion = sc.nextInt();
 
+			
+			
+			
 			switch (opcion) {
 
 			case 1:
 				System.out.println(gestor_p.mostrarPlantas());
-				
 				break;
 
 			case 2:

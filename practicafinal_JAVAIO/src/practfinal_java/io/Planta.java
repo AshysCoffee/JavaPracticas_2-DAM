@@ -100,8 +100,7 @@ public class Planta {
 	
 
 	public String toString() {
-		return "Planta " + nombre + "\nFoto = " + foto + "\nDescripcion = " + descripcion + ",\nCodigo = " + codigo
-				+ "\nStock = " + stock + "\nPrecio = " + precio +" euros\n\n";
+		return "Planta " + nombre + "\nFoto = " + foto + "\nDescripcion = " + descripcion;
 	}
 	
 

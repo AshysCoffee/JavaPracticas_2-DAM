@@ -5,36 +5,38 @@ import java.io.File;
 public class ControlErrores {
 	
 	//MODIFICAR LOS METODOS Y DOCUMENTAR DIOS YA NO PUEDO AAAAAA
-	
+
 	public void verificarYCrearDirectorios() {
-		
-	    System.out.println("Verificando estructura de directorios...");
-	    
-	    String[] carpetasNecesarias = { "Plantas","Empleados","Empleados/Bajas","Tickets","Devoluciones" };
-	    
-	    boolean existente = true;
-	    
-	    for (String ruta : carpetasNecesarias) {
-	        File carpeta = new File(ruta);
-	        
-	        if (!carpeta.exists()) {
-	            System.out.println("Creando carpeta '" + ruta);
-	            if (carpeta.mkdirs()) {
-	                System.out.println("Carpeta '" + ruta + "' creada correctamente");
-	            } else {
-	                System.out.println("Error al crear carpeta '" + ruta + "'");
-	                existente = false;
-	            }
-	        } else {
-	            System.out.println("Carpeta '" + ruta + "' encontrada");
-	        }
-	    }
-	    
-	    if (existente) {
-	        System.out.println("Estructura de directorios verificada correctamente\n");
-	    } else {
-	        System.out.println("Hubo problemas al crear la estructura de directorios\n");
-	    }
+
+		System.out.println("Verificando estructura de directorios...");
+
+		String[] carpetasNecesarias = { "PLANTAS","EMPLEADOS","EMPLEADOS/BAJAS","TICKETS","DEVOLUCIONES" };
+
+		boolean existente = true;
+
+		for (String ruta : carpetasNecesarias) {
+			File carpeta = new File(ruta);
+
+			try{  
+
+				if (!carpeta.exists()) {
+					System.out.println("Creando carpeta '" + ruta);
+					carpeta.mkdirs();
+					System.out.println("Carpeta '" + ruta + "' creada correctamente");
+				}	        	
+
+			}catch (Exception e) {
+				System.out.println("Error al crear carpeta '" + ruta + "'");
+				existente = false;
+			}
+
+			if (existente) {
+				System.out.println("Estructura de directorios verificada correctamente");
+			} else {
+				System.out.println("Hubo problemas al crear la estructura de directorios");
+			}
+		}
+
 	}
 	
 	public boolean verificarArchivosObligatorios() {
@@ -46,7 +48,7 @@ public class ControlErrores {
 	    String[] archivosObligatorios = {
 	        "PLANTAS/plantas.xml",
 	        "PLANTAS/plantas.dat",
-	        "EMPLEADOS/empleados.dat"
+	        "EMPLEADOS/empleado.dat"
 	    };
 	    
 	    for (String ruta : archivosObligatorios) {
