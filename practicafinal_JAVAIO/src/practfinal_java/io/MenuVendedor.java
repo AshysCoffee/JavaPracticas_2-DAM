@@ -1,6 +1,5 @@
 package practfinal_java.io;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class MenuVendedor {
@@ -8,8 +7,7 @@ public class MenuVendedor {
 	private Empleado empleado;
 	private GestorPlantas gestor_p;
 	private Venta ventas;
-	private Devolucion devoluciones;
-	
+	private Devolucion devoluciones;                                     
 	
 	
 	public MenuVendedor(Empleado empleado) {

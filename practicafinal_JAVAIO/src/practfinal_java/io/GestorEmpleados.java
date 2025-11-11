@@ -157,7 +157,12 @@ public class GestorEmpleados {
 					System.out.println("He iniciado sesion correctamente");
 					switch (e.getCargo()) {
 					case VENDEDOR:
-						new MenuVendedor(e).mostrarMenu();
+						try {
+							new MenuVendedor(e).mostrarMenu();
+						} catch (DatosInvalidosException e1) {
+
+							e1.printStackTrace();
+						}
 						break;
 					case ENCARGADO:
 						new MenuGestor(e, this, gp).mostrarMenu();
