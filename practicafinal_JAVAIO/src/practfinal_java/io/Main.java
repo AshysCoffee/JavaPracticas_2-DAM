@@ -19,6 +19,7 @@ public class Main {
 //	    System.out.println("Credenciales incorrectas");
 //	}
 
+<<<<<<< HEAD
 	
 	public static void main(String[] args) {
 			try {
@@ -48,6 +49,16 @@ public class Main {
 		
 	}
 	
+=======
+	//Pruebas unitarias ->
+
+    Planta p1 = (21, "Margarita", "Margarita.png", "Flor comúnen zonas aledañas del norte");
+
+    System.out.println (p1.toString);
+
+
+
+>>>>>>> dde921bd497be78295941df6eb8a7d012e80e7ff
 }
 
 

@@ -609,38 +609,48 @@ public class GestorPlantas {
 	
 	
 	public Planta buscarPlantaEnBaja(int codigo) {
-	    for (Planta p : plantasBaja) {
-	        if (p.getCodigo() == codigo) {
-	            return p;
-	        }
-	    }
-	    return null;
+		for (Planta p : plantasBaja) {
+			if (p.getCodigo() == codigo) {
+				return p;
+			}
+		}
+		return null;
 	} //PROBARLO ++
-	
-	
+
+
 	public String mostrarPlantas() {
-	    StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
-	    for (Planta p : plantasAlta) {
-	        try {
-	            sb.append(p.toString()).append("\n");
-	            String datosExtra = leerPlantaDatPorCodigo(p.getCodigo());
-	            
-	            if (datosExtra != null) {
-	                sb.append(datosExtra).append("\n");
-	            } else {
-	                sb.append("No se encontraron datos adicionales para esta planta.\n");
-	            }
+		for (Planta p : plantasAlta) {
+			try {
+				sb.append(p.toString()).append("\n");
+				String datosExtra = leerPlantaDatPorCodigo(p.getCodigo());
 
-	            sb.append("-----------------------------\n");
+				if (datosExtra != null) {
+					sb.append(datosExtra).append("\n");
+				} else {
+					sb.append("No se encontraron datos adicionales para esta planta.\n");
+				}
+				try {
+					String s = "";
+					for (Planta p_leer : cargarPlantasAlta()) {
+						s+=p_leer.toString();
+						s+=leerPlantaDatPorCodigo(p_leer.getCodigo())+"\n";
 
-	        } catch (DatosInvalidosException e) {
-	            System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
-	        }
-	    }
+						sb.append("-----------------------------\n");
 
-	    return sb.toString();
-	} //PROBARLO ++
+					}
+				} catch (DatosInvalidosException e) {
+					System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
+				}
+
+			} catch (DatosInvalidosException e) {
+				System.out.println("No se pudo leer los datos de la planta con código: " + p.getCodigo());
+			}
+			
+		} 
+		return sb.toString();
+	}//PROBARLO ++
+
 }
-
 
