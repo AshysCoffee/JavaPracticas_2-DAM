@@ -88,6 +88,8 @@ public class MenuGestor {
 			
 			case 1:
 				
+				try {
+					
 				System.out.println("Por favor introduzca los siguientes datos:\n");
 				System.out.println("ID del producto:");
 				int id = sc.nextInt();
@@ -110,8 +112,9 @@ public class MenuGestor {
                 float precio = sc.nextFloat();
                 sc.nextLine();
 
-                try {
+                
 					gestor_p.dardeAltaPlanta(id, nombre, foto, descripcion, stock, precio);
+					System.out.println("Se ha podido crear la planta correctamente");
 				} catch (DatosInvalidosException e) {
 					e.printStackTrace();
 				}

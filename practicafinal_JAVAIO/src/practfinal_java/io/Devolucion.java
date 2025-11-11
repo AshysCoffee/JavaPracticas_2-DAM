@@ -1,5 +1,5 @@
 package practfinal_java.io;
 
-public class Devoluciones {
+public class Devolucion {
 
 }

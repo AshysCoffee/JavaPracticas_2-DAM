@@ -1,11 +1,17 @@
 package practfinal_java.io;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MenuVendedor {
 
 	private Empleado empleado;
-
+	private GestorPlantas gestor_p;
+	private Venta ventas;
+	private Devolucion devoluciones;
+	
+	
+	
 	public MenuVendedor(Empleado empleado) {
 		super();
 		this.empleado = empleado;
@@ -17,6 +23,30 @@ public class MenuVendedor {
 
 	public void setEmpleado(Empleado empleado) {
 		this.empleado = empleado;
+	}
+	
+	public GestorPlantas getGestor_p() {
+		return gestor_p;
+	}
+
+	public void setGestor_p(GestorPlantas gestor_p) {
+		this.gestor_p = gestor_p;
+	}
+
+	public Venta getVentas() {
+		return ventas;
+	}
+
+	public void setVentas(Venta ventas) {
+		this.ventas = ventas;
+	}
+
+	public Devolucion getDevoluciones() {
+		return devoluciones;
+	}
+
+	public void setDevoluciones(Devolucion devoluciones) {
+		this.devoluciones = devoluciones;
 	}
 	
 //	public void mostrarCatalogo(); //Opcion 1
@@ -34,8 +64,10 @@ public class MenuVendedor {
 //	private void buscarTicket(int numeroTicket);
 //	private void procesarDevolucion(Ticket t);
 	
-	public void mostrarMenu() {
+	
 
+	public void mostrarMenu() throws DatosInvalidosException {
+		
 		Scanner sc = new Scanner(System.in);
 		int opcion;
 
@@ -56,7 +88,8 @@ public class MenuVendedor {
 			switch (opcion) {
 
 			case 1:
-
+				System.out.println(gestor_p.mostrarPlantas());
+				
 				break;
 
 			case 2:

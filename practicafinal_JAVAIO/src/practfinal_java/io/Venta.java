@@ -1,6 +1,7 @@
 package practfinal_java.io;
 
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +23,6 @@ public class Venta implements Serializable{
 	private GestorPlantas gestor;
 	ArrayList <LineaTicket> lista_prod;
 	ArrayList <Planta> cesta;
-	
 	
 	public Venta(int cod_empleado, String nombre_empleado, GestorPlantas gestor) {
 		super();
@@ -140,8 +140,6 @@ public class Venta implements Serializable{
 	    return ultimoTicket;
 	} //PROBARLO++ --- INCREMENTA EL NUMERO, SE PONE AL GENERAR UNA NUEVA VENTA
 	
-	
-	
 
 	
 /////METODOS DE ESPECIFICOS
@@ -163,7 +161,20 @@ public class Venta implements Serializable{
 		return total;
 	} //PROBARLO++
 
+	public LineaTicket buscarLinea(int id) {
+		
+		LineaTicket linea = null;
+		
+		for (LineaTicket l : lista_prod) {
+	        if (l.getPlanta().getCodigo() == id) {
+	            linea = l;
+	        }
+	    }
+		
+		return linea;
+	} //PROBARLO
 
+	
 /////METODOS DE LINEAS	
 	
 	public void agregarLinea(LineaTicket linea) {
@@ -171,46 +182,67 @@ public class Venta implements Serializable{
 		this.total += linea.calcularSubtotal();
 	} //PROBARLO++
 
+	
 	public void eliminarLinea(LineaTicket linea) {
 		lista_prod.remove(linea);
 		this.total -= linea.calcularSubtotal();
 	} //PROBARLO++
 
 	
+	public LineaTicket devolucionLinea (int id) {
+		
+		LineaTicket linea = buscarLinea(id);
+		
+		if (lista_prod.contains(linea)) {
+		
+		String s = "-"+String.valueOf(linea.getCantidad());
+		int devolucion = Integer.parseInt(s);
+		linea.setCantidad(devolucion);
+		return linea;
+		
+		}
+		
+		System.out.println("No se pudo encontrar la linea deseada para realizar la devolución");
+		return null;
+		
+	} //Pone negativa la cantidad + PROBARLO
+	
 /////METODOS DE ARRAYLISTS	
 	
 	
-	
-//	public void agregarProducto (int id, int cantidad) {
-//		
-//		if (p == null || cantidad <= 0 || p.getStock()<1) {
-//	        System.out.println("Error: planta nula o cantidad inválida");
-//	        return;
-//	    }
-//		
-//		if (p.getStock()<cantidad) {
-//	        System.out.println("Error: no hay stock suficiente");
-//	        return;
-//	    }
-//		
-//		cesta.add(p);
-//		agregarLinea(new LineaTicket (cantidad,p));
-//		
-//		try {
-//			p.setStock(p.getStock()-cantidad);
-//			
-//		} catch (DatosInvalidosException e) {
-//			e.printStackTrace();
-//		}
-//	} //PROBARLO++
+	public void agregarProducto (int id, int cantidad) {
+
+		Planta p = gestor.buscarPlantaEnAlta(id);
+		try {
+			if (p == null || cantidad <= 0 || p.getStock()<1) {
+				System.out.println("Error: planta nula o cantidad inválida");
+				return;
+			}
+
+			if (p.getStock()<cantidad) {
+				System.out.println("Error: no hay stock suficiente");
+				return;
+			}
+
+			cesta.add(p);
+			agregarLinea(new LineaTicket (cantidad,p));
+
+
+			p.setStock(p.getStock()-cantidad);
+			gestor.actualizarStockDat(id, p.getStock());
+
+		} catch (DatosInvalidosException | IOException e) {
+			e.printStackTrace();
+		}
+	} //PROBARLO++
 	
 		
-	public void eliminarProducto(int codigoPlanta) {
+	public void eliminarProducto(int id) {
 	   
 		LineaTicket lineaAEliminar = null;
 
 	    for (LineaTicket l : lista_prod) {
-	        if (l.getPlanta().getCodigo() == codigoPlanta) {
+	        if (l.getPlanta().getCodigo() == id) {
 	            lineaAEliminar = l;
 	            break;
 	        }
@@ -218,13 +250,13 @@ public class Venta implements Serializable{
 
 	    if (lineaAEliminar != null) {
 	    	
-	    	cesta.removeIf(p -> p.getCodigo() == codigoPlanta);  //Eliminamos todas las unidades que encontremos
+	    	cesta.removeIf(p -> p.getCodigo() == id);  //Eliminamos todas las unidades que encontremos
 	    	
 	    	eliminarLinea(lineaAEliminar);// Quita la línea y resta el subtotal del total
 	    	
-	    	System.out.println("Producto con código " + codigoPlanta + " eliminado del ticket.");
+	    	System.out.println("Producto con codigo " + id + " eliminado del ticket.");
 	    } else {
-	    	System.out.println("No se encontró el producto con código " + codigoPlanta + " en el ticket.");
+	    	System.out.println("No se encontro el producto con codigo " + id + " en el ticket.");
 	    }
 	} //PROBARLO++
 
@@ -259,28 +291,27 @@ public class Venta implements Serializable{
 
 	            System.out.println("Ticket " + cod_ticket + " guardado correctamente en /TICKETS");
 
-	        }
-	    } catch (IOException e) {
-	        System.out.println("Error al guardar ticket: " + e.getMessage());
-	    }
-		
-		
-		
+			}
+		} catch (IOException e) {
+			System.out.println("Error al guardar ticket: " + e.getMessage());
+		}
+
+
+
 	} //PROBARLO++
 
-	
 
 	public void leerTicket () {
 
 		try {
 
 			File carpeta = new File("TICKETS");
-	        if (!carpeta.exists()) {
-	            carpeta.mkdirs();
-	        }
-			
-	        File f = new File ("TICKETS/"+cod_ticket+".txt");
-			
+			if (!carpeta.exists()) {
+				carpeta.mkdirs();
+			}
+
+			File f = new File ("TICKETS/"+cod_ticket+".txt");
+
 			BufferedReader buffer_r = new BufferedReader(new FileReader (f));
 			String linea;
 
@@ -291,18 +322,65 @@ public class Venta implements Serializable{
 
 		} catch (IOException e) {
 			e.getMessage();
-	}
-		
+		}
+
 	}	
 
-	public String toString() {
-		
-		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
-				+"\nEmpleado que ha atendido: "+cod_empleado+"\nNombre del empleado: "+nombre_empleado+"\n"
-						+ "Fecha: "+fecha+"\n"+
-				"CodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas()+"\nTotal: "+total;		
+//	public void buscarTicket (int venta) { //USAR JAVA NIO XD NO SE TOY CANSADA :(
+//		
+//		File directorio = new File("TICKETS");
+//		String[] nombresArchivos = directorio.list();
+//		
+//		for (String archivo : nombresArchivos) {
+//	        if (nombreAb)
+//	}
+	
+	public void generarTicketDevolucion (int ticket,int id) {
+
+		try {
+
+			File carpeta = new File("DEVOLUCIONES");
+			if (!carpeta.exists()) {
+				carpeta.mkdirs();
+			}
+
+			File f = new File ("DEVOLUCIONES/"+ticket+".txt");
+
+			try (BufferedWriter buffer_w = new BufferedWriter(new FileWriter(f))) {
+
+				buffer_w.write("===== TICKET DE VENTA Nº " + cod_ticket + " =====\n");
+				buffer_w.write("Fecha: " + java.time.LocalDate.now() + "\n\n");
+
+				// Escribimos cada línea de producto
+				for (LineaTicket l : lista_prod) {
+					buffer_w.write(l.toString() + "\n");
+				}
+
+				buffer_w.write("\n------------------------------------\n");
+				buffer_w.write("TOTAL: " + total + " €\n");
+				buffer_w.write("====================================\n");
+
+				System.out.println("Ticket " + cod_ticket + " guardado correctamente en /TICKETS");
+
+				System.out.println("------------DEVOLUCION------------");
+
+				System.out.println(devolucionLinea(id));
+
+			}
+		} catch (IOException e) {
+			System.out.println("Error al guardar ticket: " + e.getMessage());
+		}
+
 	}
 	
 	
-	
+	public String toString() {
+
+		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
+				+"\nEmpleado que ha atendido: "+cod_empleado+"\nNombre del empleado: "+nombre_empleado+"\n"
+				+ "Fecha: "+fecha+"\nCodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas()+"\nTotal: "+total;
+	}
+
+
+
 }

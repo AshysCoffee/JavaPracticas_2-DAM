@@ -49,7 +49,7 @@ public class GestorPlantas {
 			}
 
 
-			if (!archivoBaja.exists()) {
+			if (!archivoBaja.exists()) { //Construimos el archivo raiz para ir añadiendo
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.newDocument();
@@ -215,7 +215,6 @@ public class GestorPlantas {
 		plantasBaja.clear();
 		
 		try {
-
 			File ficheroXML = new File("PLANTAS/plantasBaja.xml");
 			
 			if (!ficheroXML.exists()) {
@@ -430,7 +429,7 @@ public class GestorPlantas {
 
 		raf.seek(posicion);
 
-		raf.readInt(); // Saltar código
+		raf.readInt(); // Saltar código de código
 		float precio = raf.readFloat(); // Leer precio actual
 
 		// Volver a la posición del código para reescribir todo
@@ -552,7 +551,6 @@ public class GestorPlantas {
 
 			plantasBaja.removeIf(p -> p.getCodigo() == plantaBaja.getCodigo()); //elimina la planta con ese código de la lista plantasBaja
 			
-			
 			reescribirPlantas(plantasAlta);// 7. Reescribir plantas.xml (sin la planta borrada)
 
 			System.out.println("Planta '" + plantaBaja.getNombre() + 
@@ -588,7 +586,6 @@ public class GestorPlantas {
 	    plantasAlta.add(plantaRescatar);
 	    
 	    // 4. Eliminar de plantasBaja
-	    
 	    plantasBaja.removeIf(p -> p.getCodigo() == plantaRescatar.getCodigo());
 	    
 	    reescribirplantasBorradas(plantasBaja);
@@ -618,18 +615,25 @@ public class GestorPlantas {
 	} //PROBARLO ++
 	
 	
-	public String mostrarPlantas() throws DatosInvalidosException {
-		String s = "";
-		for (Planta p : cargarPlantasAlta()) {
-			s+=p.toString();
-			s+=leerPlantaDatPorCodigo(p.getCodigo())+"\n";
+	public String mostrarPlantas() {
+		try {
 
+			String s = "";
+			for (Planta p : cargarPlantasAlta()) {
+				s+=p.toString();
+				s+=leerPlantaDatPorCodigo(p.getCodigo())+"\n";
+
+			}
+			return s;
+
+		} catch (DatosInvalidosException e){
+			System.out.println("No se pudo mostrar el catálogo");
+			return null;
 		}
-		return s;
 	} //PROBARLO ++
 
 
-	
+
 }
 
 

@@ -6,7 +6,7 @@ public class ControlErrores {
 	
 	//MODIFICAR LOS METODOS Y DOCUMENTAR DIOS YA NO PUEDO AAAAAA
 	
-	public void verificarYCrearEstructura() {
+	public void verificarYCrearDirectorios() {
 		
 	    System.out.println("Verificando estructura de directorios...");
 	    
@@ -38,7 +38,7 @@ public class ControlErrores {
 	}
 	
 	public boolean verificarArchivosObligatorios() {
-	    System.out.println("📄 Verificando archivos obligatorios...");
+	    System.out.println("Verificando archivos obligatorios...");
 	    
 	    boolean todosExisten = true;
 	    
@@ -71,39 +71,6 @@ public class ControlErrores {
 	    
 	    System.out.println("Todos los archivos obligatorios encontrados\n");
 	    return true;
-	}
-
-	public boolean verificarPermisos() {
-	    System.out.println("Verificando permisos...");
-	    
-	    String[] directoriosEscritura = {
-	        "PLANTAS",
-	        "EMPLEADOS",
-	        "TICKETS",
-	        "DEVOLUCIONES"
-	    };
-	    
-	    boolean todosOk = true;
-	    
-	    for (String ruta : directoriosEscritura) {
-	        File dir = new File(ruta);
-	        
-	        if (!dir.canRead()) {
-	            System.out.println("Sin permisos de LECTURA en: " + ruta);
-	            todosOk = false;
-	        }
-	        
-	        if (!dir.canWrite()) {
-	            System.out.println("Sin permisos de ESCRITURA en: " + ruta);
-	            todosOk = false;
-	        }
-	    }
-	    
-	    if (todosOk) {
-	        System.out.println("Todos los permisos OK");
-	    }
-	    
-	    return todosOk;
 	}
 	
 	
