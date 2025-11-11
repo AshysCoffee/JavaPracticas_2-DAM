@@ -617,7 +617,6 @@ public class GestorPlantas {
 	
 	public String mostrarPlantas() {
 		try {
-
 			String s = "";
 			for (Planta p : cargarPlantasAlta()) {
 				s+=p.toString();

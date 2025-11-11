@@ -17,7 +17,14 @@ public class Main {
 //	    System.out.println("Credenciales incorrectas");
 //	}
 
-	
+	//Pruebas unitarias ->
+
+    Planta p1 = (21, "Margarita", "Margarita.png", "Flor comúnen zonas aledañas del norte");
+
+    System.out.println (p1.toString);
+
+
+
 }
 
 
