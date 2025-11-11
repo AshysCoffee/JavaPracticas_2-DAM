@@ -55,6 +55,7 @@ public class GestorEmpleados {
 
 		} catch (IOException i) {
 			i.printStackTrace();
+			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
 	} //TERMINADO --
 	
@@ -71,6 +72,7 @@ public class GestorEmpleados {
 
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
+			System.out.println ("No se pudieron leer los objectos desde empleado.dat");
 		}
 
 		return empleadosAltas;
@@ -103,7 +105,8 @@ public class GestorEmpleados {
 			System.out.println("Objetos leídos correctamente desde empleado.dat");
 
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+           e.printStackTrace();
+		   System.out.println ("Los objetos no son posibles de leer del archivo empleado.dat");
 		}
 
 		return empleadosBajas;
