@@ -193,14 +193,15 @@ public class Venta implements Serializable{
 	public void agregarProducto (int id, int cantidad) {
 
 		Planta p = gestor.buscarPlantaEnAlta(id);
+		
 		try {
 			if (p == null || cantidad <= 0 || p.getStock()<1) {
-				System.out.println("Error: planta nula o cantidad inválida");
+				System.err.println("Error: planta nula o cantidad inválida");
 				return;
 			}
 
 			if (p.getStock()<cantidad) {
-				System.out.println("Error: no hay stock suficiente");
+				System.err.println("Error: no hay stock suficiente");
 				return;
 			}
 

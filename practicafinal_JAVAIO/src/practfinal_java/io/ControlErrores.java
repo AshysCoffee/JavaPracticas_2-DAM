@@ -1,6 +1,8 @@
 package practfinal_java.io;
 
 import java.io.File;
+import java.util.regex.Pattern;
+
 
 public class ControlErrores {
 	
@@ -74,6 +76,32 @@ public class ControlErrores {
 	    System.out.println("Todos los archivos obligatorios encontrados\n");
 	    return true;
 	}
+	
+	
+	public boolean soloNumeros(int numero) {
+		
+			String patron = "\\d";
+			String datos = String.valueOf(numero);
+			
+			if (datos.matches(patron)) {
+				return true;
+			}
+			
+		return false;	
+	}
+	
+	
+	public boolean soloLetras(String palabra) {
+		
+		String patron = "[a-zA-Z]";
+		String datos = palabra;
+		
+		if (datos.matches(patron)) {
+			return true;
+		}
+		
+	return false;	
+}
 	
 	
 }

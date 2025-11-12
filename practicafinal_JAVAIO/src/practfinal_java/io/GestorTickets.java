@@ -9,11 +9,9 @@ import java.util.ArrayList;
 
 public class GestorTickets {
 
-
-	private static final String CARPETA_TICKETS = "TICKETS";
-
+	
 	public String buscarTicketPorNumero(int numTicket) {
-		File archivo = new File(CARPETA_TICKETS, numTicket + ".txt");
+		File archivo = new File("TICKETS/"+ numTicket + ".txt");
 		if (!archivo.exists()) {
 			System.out.println("No se encontró el ticket Nº " + numTicket);
 			return null;
@@ -34,7 +32,7 @@ public class GestorTickets {
 
 	
 	public void agregarDevolucionATicket(int numTicket, ArrayList<String> lineasDevolucion) {
-		File archivo = new File(CARPETA_TICKETS, numTicket + ".txt");
+		File archivo = new File("TICKETS/"+  numTicket + ".txt");
 		if (!archivo.exists()) {
 			System.out.println("No se encontró el ticket Nº " + numTicket);
 			return;

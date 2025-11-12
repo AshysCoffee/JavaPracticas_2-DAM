@@ -64,6 +64,9 @@ public class MenuGestor {
 
 	public void mostrarMenu() {
 
+		String patron_numero = "\\d";
+		String patron_letras = "[a-zA-Z]";
+		
 		Scanner sc = new Scanner(System.in);
 		int opcion;
 
@@ -134,6 +137,8 @@ public class MenuGestor {
 				
 			case 3:
 
+				
+				
 				break;
 				
 			case 4:

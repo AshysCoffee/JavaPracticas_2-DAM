@@ -8,7 +8,8 @@ public class MenuVendedor {
 	private Empleado empleado;
 	private GestorPlantas gestor_p;
 	private Venta ventas;
-	private Devolucion devoluciones;                                     
+	private Devolucion devoluciones;         
+	private ControlErrores ce;
 	
 	
 	public MenuVendedor(GestorPlantas gestor_p) {
@@ -48,25 +49,14 @@ public class MenuVendedor {
 		this.devoluciones = devoluciones;
 	}
 	
-//	public void mostrarCatalogo(); //Opcion 1
-//	
-//	
-//	//Opcion 2
-//	public void generarVenta();            // coordina todo el proceso
-//	public void agregarACompra();          // añade planta y cantidad a la cesta
-//	public void confirmarVenta();          // genera el ticket y actualiza stock
-//	public void generarTicket(Venta v);    // escribe el ticket en /TICKETS
-//	
-//	
-//	//Opcion 3
-//	public void generarDevolucion();
-//	private void buscarTicket(int numeroTicket);
-//	private void procesarDevolucion(Ticket t);
-	
+
+///////////////// MOSTRAR MENU	
 	
 
 	public void mostrarMenu() throws DatosInvalidosException {
 		
+		String patron_numero = "\\d";
+		String patron_letras = "[a-zA-Z]";
 		Scanner sc = new Scanner(System.in);
 		int opcion;
 
@@ -81,8 +71,15 @@ public class MenuVendedor {
 			System.out.println("0. Salir");
 			System.out.println("Elige una opción: ");
 
+			
+			
 			opcion = sc.nextInt();
 
+			if (String.valueOf(opcion).matches(patron_numero)) {
+				opcion = sc.nextInt();
+			}else {
+				System.err.println("Por favor, introduzca un valor válido");
+			}
 			
 			switch (opcion) {
 
@@ -92,16 +89,75 @@ public class MenuVendedor {
 				break;
 
 			case 2:
+				
+				String confirmacion =" ";
+				
+				Venta v = new Venta();
+				
+				int id_planta = 0;
+				int cantidad = 0;
+				
+				do {
+				  System.out.println("Introduce el codigo de la planta que desea y la cantidad deseada, cuando termine de seleccionar introduzca 200 en cada apartado");
+				  System.out.print("Codigo de la planta:");
+	
+					
+					if (String.valueOf(id_planta).matches(patron_numero)) {
+						id_planta = sc.nextInt();
+					}else {
+						System.err.println("Por favor, introduzca un valor válido");
+					}
+					
 
-				
-				
+					System.out.print("Cantidad deseada de plantas:");
+
+					if (String.valueOf(cantidad).matches(patron_numero)) {
+						id_planta = sc.nextInt();
+					}else {
+						System.err.println("Por favor, introduzca un valor válido");
+					}
+
+
+					v.agregarProducto(id_planta, cantidad);
+
+				}while (id_planta!=200 && cantidad!=200);
+
+
+				System.out.println("Esta es su cesta:");
+				System.out.println(v.toString());
+				System.out.println("¿Desea continuar con la compra? [Y/N]");
+
+				if (String.valueOf(cantidad).matches(patron_letras)) {
+					confirmacion = sc.next();
+
+					if (confirmacion.equalsIgnoreCase("Y")) {
+						v.generarTicket();
+						System.out.println("Se genero el ticket correctamente");
+					} else if (confirmacion.equalsIgnoreCase("N")) {
+						System.out.println("NO se pudo continuar la compra");
+					}
+
+
+
+				}else {
+					System.err.println("Por favor, introduzca un valor válido");
+				}
+
 				
 				break;
 
 			case 3:
 				
 			    System.out.print("Introduce el número del ticket a buscar: ");
-			    int num = sc.nextInt();
+			    
+			    int num = 0;
+			    
+			    if (String.valueOf(num).matches(patron_numero)) {
+					num = sc.nextInt();
+				}else {
+					System.err.println("Por favor, introduzca un valor válido");
+				}
+			    
 
 			    GestorTickets gt = new GestorTickets();
 			    String contenido = gt.buscarTicketPorNumero(num);
@@ -111,23 +167,30 @@ public class MenuVendedor {
 			    }
 			    System.out.println(contenido);
 
+			    int id = 0;
+			    
 			    System.out.print("Introduce el ID de la planta a devolver: ");
-			    int id = sc.nextInt();
+			   
+			    if (String.valueOf(id).matches(patron_numero)) {
+					id = sc.nextInt();
+				}else {
+					System.err.println("Por favor, introduzca un valor válido");
+				}
 
 			    System.out.print("Introduce la cantidad a devolver: ");
-			    int cantidad = sc.nextInt();
+			    int cantidad_d = sc.nextInt();
 
 			    Planta p = gestor_p.buscarPlantaEnAlta(id);
 
 			    if (p != null) {
 			        ArrayList<String> lineasDevolucion = new ArrayList<>();
-			        lineasDevolucion.add(p.getNombre() + " x" + cantidad + " -> -" + p.getPrecio() * cantidad + "€");
+			        lineasDevolucion.add(p.getNombre() + " x" + cantidad_d + " -> -" + p.getPrecio() * cantidad_d + "€");
 
 			        // Añadimos al archivo existente:
 			        gt.agregarDevolucionATicket(num, lineasDevolucion);
 
 			        // Actualizamos el stock (si quieres reflejarlo en el sistema):
-			        p.setStock(p.getStock() + cantidad);
+			        p.setStock(p.getStock() + cantidad_d);
 
 			    } else {
 			        System.out.println("Planta no encontrada.");
