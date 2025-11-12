@@ -57,7 +57,6 @@ public class GestorEmpleados {
 			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
 	} //TERMINADO --
-	
 
 
 	private void leerArchivo(ArrayList<Empleado> lista, String ruta) {
@@ -147,13 +146,11 @@ public class GestorEmpleados {
 			}	
 		}while (empleado==null);
 
-		
 		System.out.println("Contacte con soporte para resetear el usuario");
 	
-	} catch (DatosInvalidosException e1) {
-                                                
-                                                e1.printStackTrace();
-                                            }
+	} catch (DatosInvalidosException e1) {                                           
+       e1.printStackTrace();
+    }
 		return null; // Si no se encuentra coincidencia
 	} //TERMINADO --
 
