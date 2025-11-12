@@ -1,12 +1,11 @@
 package practfinal_java.io;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.File;
-import java.io.IOException;
-
 import java.util.ArrayList;
 
 //PONER UN SYSO EN LOS ERORRES PARA QUE SEA MAS VISUAL CON EL USUARIO
@@ -59,38 +58,22 @@ public class GestorEmpleados {
 		}
 	} //TERMINADO --
 	
-	
-	public ArrayList<Empleado> leerArchivoAlta() {
-		
-		try (FileInputStream ficherolectura = new FileInputStream("empleado.dat");
-				ObjectInputStream lectura = new ObjectInputStream(ficherolectura)) {
 
-			// Leer el ArrayList de Empleado desde el archivo
-			empleadosAltas = (ArrayList<Empleado>) lectura.readObject();
 
-			System.out.println("Objetos leídos correctamente desde empleado.dat");
-
+	private void leerArchivo(ArrayList<Empleado> lista, String ruta) {
+		try (FileInputStream fis = new FileInputStream(ruta);
+			ObjectInputStream ois = new ObjectInputStream(fis)) {
+			lista.clear();
+			lista.addAll((ArrayList<Empleado>) ois.readObject());
+			System.out.println("Objetos leídos correctamente desde " + ruta);
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println ("No se pudieron leer los objectos desde empleado.dat");
+			System.out.println("Error al leer archivo: " + e.getMessage());
 		}
-
-		return empleadosAltas;
-	} //TERMINADO --
+	}
 
 
 	public void leerEmpleadosAlta() {
-		if (empleadosAltas == null || empleadosAltas.isEmpty()) {
-		    System.out.println("No hay empleados para mostrar.");
-		    return;
-		}
-		
-		// Imprimir los empleados leídos
-		if (empleadosAltas != null) {
-			for (Empleado empleado : empleadosAltas) {
-				System.out.println(empleado.toString());
-			}
-		}
+		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
 	}  //TERMINADO --
 
 
@@ -113,18 +96,8 @@ public class GestorEmpleados {
 	} //TERMINADO --
 
 	
-	public void leerEmpleadosBaja() {
-		if (empleadosBajas == null || empleadosBajas.isEmpty()) {
-		    System.out.println("No hay empleados para mostrar.");
-		    return;
-		}
-		
-		// Imprimir los empleados leídos
-		if (empleadosBajas != null) {
-			for (Empleado empleado : empleadosBajas) {
-				System.out.println(empleado.toString());
-			}
-		}
+	public void leerEmpleadosBajas() {
+		leerArchivo(empleadosBajas, "EMPLEADOS/BAJAS/empleadoBaja.dat");
 	}  //TERMINADO --
 	
 	
@@ -152,33 +125,35 @@ public class GestorEmpleados {
 ////////////VALIDACIONES DE CREDENCIALES	
 	
 	public Empleado validarLogin(int id, String contraseña, GestorPlantas gp) {
+	
+	try {
+		Empleado empleado = null;
 
-		for (int i=0; i<4; i++) {	
+		do{
 			for (Empleado e : empleadosAltas) {
 				if (e.getId_empleado() == id && e.getContraseña().equals(contraseña)) {
 					// Devuelve el empleado si las credenciales son correctas
 					System.out.println("He iniciado sesion correctamente");
 					switch (e.getCargo()) {
-					case VENDEDOR:
-						try {
-							new MenuVendedor(gp).mostrarMenu();
-						} catch (DatosInvalidosException e1) {
-
-							e1.printStackTrace();
-						}
-						break;
-					case ENCARGADO:
-						new MenuGestor(e, this, gp).mostrarMenu();
-						break;
+					case VENDEDOR: new MenuVendedor(gp).mostrarMenu();               
+					case ENCARGADO : new MenuGestor(e, this, gp).mostrarMenu();
 					}
+					empleado = e;
 					return e;
 				}else{
 					System.out.println("Datos erroneos, por favor intentelo de nuevo.");
 				}
 
 			}	
-		}
+		}while (empleado==null);
+
+		
 		System.out.println("Contacte con soporte para resetear el usuario");
+	
+	} catch (DatosInvalidosException e1) {
+                                                
+                                                e1.printStackTrace();
+                                            }
 		return null; // Si no se encuentra coincidencia
 	} //TERMINADO --
 
