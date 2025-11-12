@@ -79,9 +79,10 @@ public class Devolucion implements Serializable{
 		total += linea.getSubtotal();
 		try {
 			p.setStock(p.getStock() + cantidad);
+			
 		} catch (DatosInvalidosException e) {
-
 			e.printStackTrace();
+			System.out.println("Error al actualizar el stock de la planta durante la devolución: " + e.getMessage());
 		} // se devuelve al stock
 	}
 
@@ -106,6 +107,7 @@ public class Devolucion implements Serializable{
 			System.out.println("Devolución Nº " + codDevolucion + " registrada correctamente");
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Error al guardar ticket de devolución: " + e.getMessage());
 		}
 	}

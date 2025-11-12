@@ -27,13 +27,31 @@ public class GestorPlantas {
 	
 	private ArrayList <Planta> plantasAlta;
 	private ArrayList <Planta> plantasBaja;
-	
+
 	//CONSTRUCTOR
 	public GestorPlantas() {
-		
 		this.plantasAlta = new ArrayList <>();
 		this.plantasBaja = new ArrayList <>();
 	}
+
+	public void setPlantasAlta(ArrayList<Planta> plantasAlta) {
+		this.plantasAlta = plantasAlta;
+	}
+
+	public ArrayList<Planta> getPlantasAlta() {
+		return plantasAlta;
+	}
+
+	public void setPlantasBaja(ArrayList<Planta> plantasBaja) {
+		this.plantasBaja = plantasBaja;
+	}
+
+	public ArrayList<Planta> getPlantasBaja() {
+			return plantasBaja;
+		}
+	
+
+
 
 	public void inicializar() {
 
@@ -618,18 +636,25 @@ public class GestorPlantas {
 	        sb.append("Foto: ").append(p.getFoto()).append("\n");
 	        sb.append("Descripción: ").append(p.getDescripcion()).append("\n");
 
-	        try {
 	            // Agregamos precio y stock desde el archivo .dat
 	            sb.append(leerPlantaDatPorCodigo(p.getCodigo())).append("\n");
-	        } catch (DatosInvalidosException e) {
-	            sb.append("Error al leer datos del archivo .dat para código ").append(p.getCodigo()).append("\n");
-	        }
 
 	        sb.append("-----------------------------\n");
 	    }
 
 	    return sb.toString();
 	}
+
+    public void mostrarEstadisticas() {
+        
+		int totalPlantas = plantasAlta.size() + plantasBaja.size();
+		System.out.println("Total de plantas (activas + bajas): " + totalPlantas);
+		System.out.println("Plantas activas: " + plantasAlta.size());
+		System.out.println("Plantas dadas de baja: " + plantasBaja.size());
+
+
+    }
+
 
 }
 

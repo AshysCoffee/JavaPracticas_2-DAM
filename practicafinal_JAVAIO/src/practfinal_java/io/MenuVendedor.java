@@ -9,7 +9,6 @@ public class MenuVendedor {
 	private GestorPlantas gestor_p;
 	private Venta ventas;
 	private Devolucion devoluciones;         
-	private ControlErrores ce;
 	
 	
 	public MenuVendedor(GestorPlantas gestor_p) {
@@ -55,6 +54,7 @@ public class MenuVendedor {
 
 	public void mostrarMenu() throws DatosInvalidosException {
 		
+		String input;
 		String patron_numero = "\\d";
 		String patron_letras = "[a-zA-Z]";
 		Scanner sc = new Scanner(System.in);
@@ -93,7 +93,7 @@ public class MenuVendedor {
 
 				String confirmacion =" ";
 
-				Venta v = new Venta();
+				Venta v = new Venta(empleado.getNombre(),empleado.getId_empleado());
 				
 				int id_planta = 0;
 				int cantidad = 0;
@@ -101,18 +101,11 @@ public class MenuVendedor {
 				do {
 				  System.out.println("Introduce el codigo de la planta que desea y la cantidad deseada, cuando termine de seleccionar introduzca 200 en cada apartado");
 				  System.out.print("Codigo de la planta:");
-	
+					
+				  input = sc.next();
+					
 					
 					if (String.valueOf(id_planta).matches(patron_numero)) {
-						id_planta = sc.nextInt();
-					}else {
-						System.err.println("Por favor, introduzca un valor válido");
-					}
-					
-
-					System.out.print("Cantidad deseada de plantas:");
-
-					if (String.valueOf(cantidad).matches(patron_numero)) {
 						id_planta = sc.nextInt();
 					}else {
 						System.err.println("Por favor, introduzca un valor válido");
@@ -124,20 +117,21 @@ public class MenuVendedor {
 				}while (id_planta!=200 && cantidad!=200);
 
 
-				System.out.println("Esta es su cesta:");
+				System.out.println("Esta es su cesta:===========");
 				System.out.println(v.toString());
+
 				System.out.println("¿Desea continuar con la compra? [Y/N]");
+				String resp =" ";
 
-				if (String.valueOf(cantidad).matches(patron_letras)) {
-					confirmacion = sc.next();
+				if (String.valueOf(resp).matches(patron_letras)) {
+					resp = sc.next();
 
-					if (confirmacion.equalsIgnoreCase("Y")) {
+					if (resp.equalsIgnoreCase("Y")) {
 						v.generarTicket();
 						System.out.println("Se genero el ticket correctamente");
-					} else if (confirmacion.equalsIgnoreCase("N")) {
+					} else if (resp.equalsIgnoreCase("N")) {
 						System.out.println("NO se pudo continuar la compra");
 					}
-
 
 
 				}else {
@@ -174,14 +168,15 @@ public class MenuVendedor {
 			   
 			    if (String.valueOf(id).matches(patron_numero)) {
 					id = sc.nextInt();
-				}else {
+				}else{
 					System.err.println("Por favor, introduzca un valor válido");
 				}
 
 			    System.out.print("Introduce la cantidad a devolver: ");
-			    int cantidad_d = sc.nextInt();
+			    
+				int cantidad_d = sc.nextInt();
 
-			    Planta p = gestor_p.buscarPlantaEnAlta(id);
+			    Planta p = gestor_p.buscarPlanta(getGestor_p().getPlantasAlta(),id);
 
 			    if (p != null) {
 			        ArrayList<String> lineasDevolucion = new ArrayList<>();
@@ -192,7 +187,7 @@ public class MenuVendedor {
 
 			        // Actualizamos el stock (si quieres reflejarlo en el sistema):
 			        p.setStock(p.getStock() + cantidad_d);
-
+					System.out.println("Devolución procesada correctamente.");
 			    } else {
 			        System.out.println("Planta no encontrada.");
 			    }

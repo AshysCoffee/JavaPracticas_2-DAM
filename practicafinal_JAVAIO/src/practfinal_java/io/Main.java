@@ -30,11 +30,10 @@ public class Main {
 				ce.verificarYCrearDirectorios();
 				ce.verificarArchivosObligatorios();
 					
-				try {
-					gp.crearPlantasDat();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
+				gp.crearPlantasDat();
+
+				ge.EscribirArchivoAlta();
 				
 				gp.inicializar();
 				

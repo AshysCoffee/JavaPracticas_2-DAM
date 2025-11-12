@@ -24,8 +24,10 @@ public class Venta implements Serializable{
 	ArrayList <LineaTicket> lista_prod;
 	ArrayList <Planta> cesta;
 	
-	public Venta() {
+	public Venta(String nombre_empleado, int cod_empleado){
 		super();
+		this.nombre_empleado = nombre_empleado;
+        this.cod_empleado = cod_empleado;
 		this.cod_ticket = 0;
 		this.fecha = LocalDate.now();
 		this.total = 0;
@@ -113,6 +115,8 @@ public class Venta implements Serializable{
 	                int num = Integer.parseInt(nombre); //Los volvemos numeros normales
 	                if (num > max) max = num; //si el num es mayor que max, max se asigna ese valor
 	            } catch (NumberFormatException e) {
+					e.printStackTrace();
+					System.out.println("Error al leer el ticket: " + e.getMessage());
 	                // Ignorar archivos que no sean tickets
 	            }
 	        }
@@ -148,8 +152,7 @@ public class Venta implements Serializable{
 		}
 		return s;
 	} //SOLO SIRVE PARA EL TOSTRING NATURAL
-	
-	
+		
 	public double calcularTotal() {
 
 		for (Planta p: cesta) {
@@ -192,7 +195,7 @@ public class Venta implements Serializable{
 	
 	public void agregarProducto (int id, int cantidad) {
 
-		Planta p = gestor.buscarPlantaEnAlta(id);
+		Planta p = gestor.buscarPlanta(gestor.getPlantasAlta(),id);
 		
 		try {
 			if (p == null || cantidad <= 0 || p.getStock()<1) {
@@ -213,11 +216,11 @@ public class Venta implements Serializable{
 			gestor.actualizarStockDat(id, p.getStock());
 
 			
-		} catch (DatosInvalidosException | IOException e) {
+		} catch (DatosInvalidosException e) {
 			e.printStackTrace();
+			System.err.println("Error al actualizar stock: " + e.getMessage());
 		}
 	} //PROBARLO++
-	
 		
 	public void eliminarProducto(int id) {
 	   
@@ -235,6 +238,14 @@ public class Venta implements Serializable{
 	    	cesta.removeIf(p -> p.getCodigo() == id);  //Eliminamos todas las unidades que encontremos
 	    	eliminarLinea(lineaAEliminar);// Quita la línea y resta el subtotal del total
 	    	
+			try {
+				lineaAEliminar.getPlanta().setStock(lineaAEliminar.getPlanta().getStock() + lineaAEliminar.getCantidad());
+			} catch (DatosInvalidosException e) {
+				e.printStackTrace();
+				System.out.println("Error al actualizar stock: " + e.getMessage());
+			}
+	    	gestor.actualizarStockDat(id, lineaAEliminar.getPlanta().getStock());
+
 	    	System.out.println("Producto con codigo " + id + " eliminado del ticket.");
 	    } else {
 	    	System.out.println("No se encontro el producto con codigo " + id + " en el ticket.");
@@ -260,6 +271,9 @@ public class Venta implements Serializable{
 
 	            buffer_w.write("===== TICKET DE VENTA Nº " + cod_ticket + " =====\n");
 	            buffer_w.write("Fecha: " + java.time.LocalDate.now() + "\n\n");
+				buffer_w.write("Empleado que ha atendido: " + cod_empleado + "\n");
+				buffer_w.write("Nombre del empleado: " + nombre_empleado + "\n\n");
+	            buffer_w.write("CódigoProducto\tProducto\tCantidad\tPrecioUnitario\n");				
 
 	            // Escribimos cada línea de producto
 	            for (LineaTicket l : lista_prod) {
@@ -281,7 +295,6 @@ public class Venta implements Serializable{
 
 	} //PROBARLO++
 
-
 	public void leerTicket () {
 
 		try {
@@ -299,10 +312,13 @@ public class Venta implements Serializable{
 			while ((linea=buffer_r.readLine())!=null){
 				System.out.println(linea);
 			}
+
 			buffer_r.close();
 
 		} catch (IOException e) {
-			e.getMessage();
+			e.printStackTrace();
+			System.out.println("Error al leer ticket: " + e.getMessage());
+
 		}
 
 	}	
@@ -327,7 +343,7 @@ public class Venta implements Serializable{
 	        // 3️. Leer el contenido línea a línea
 	        System.out.println("\nMostrando contenido del ticket Nº " + numTicket + ":\n");
 
-	        try (BufferedReader lector = new BufferedReader(new FileReader(archivoTicket))) {
+	    	try (BufferedReader lector = new BufferedReader(new FileReader(archivoTicket))) {
 	            String linea;
 	            while ((linea = lector.readLine()) != null) {
 	                System.out.println(linea);
@@ -345,15 +361,15 @@ public class Venta implements Serializable{
 	    
 	}
 
-	
-	
+	@Override	
 	public String toString() {
 
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
 				+"\nEmpleado que ha atendido: "+cod_empleado+"\nNombre del empleado: "+nombre_empleado+"\n"
-				+ "Fecha: "+fecha+"\nCodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas()+"\nTotal: "+total;
-	}
+				+ "Fecha: "+fecha+"\nCodigoProducto\tProducto\tCantidad\tPrecioUnitario\n"+leerLineas()+"\n"+
+				"-------------------------------\nTotal: "+total;
 
+	}
 
 
 }

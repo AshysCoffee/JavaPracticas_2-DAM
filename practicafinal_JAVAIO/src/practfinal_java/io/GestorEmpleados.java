@@ -25,6 +25,24 @@ public class GestorEmpleados implements Serializable {
 	}
 
 
+	public ArrayList<Empleado> getEmpleadosAltas() {
+		return empleadosAltas;
+	}
+	
+	public void setEmpleadosAltas(ArrayList<Empleado> empleadosAltas) {
+		this.empleadosAltas = empleadosAltas;
+	}
+
+	
+	public ArrayList<Empleado> getEmpleadosBajas() {
+		return empleadosBajas;
+	}
+
+	
+	public void setEmpleadosBajas(ArrayList<Empleado> empleadosBajas) {
+		this.empleadosBajas = empleadosBajas;
+	}
+
 	public void inicializarGestores() throws DatosInvalidosException, IOException {
 		EscribirArchivoAlta();
 		leerEmpleadosAlta();
@@ -34,7 +52,9 @@ public class GestorEmpleados implements Serializable {
 
 //////////ESCRITURA Y LECTURA DE EMPLEADOS
 
-	public void EscribirArchivoAlta() throws DatosInvalidosException, IOException{
+	public void EscribirArchivoAlta(){
+
+		try {
 
 		File f = new File("EMPLEADOS/empleado.dat");
 		if (!f.exists()) {
@@ -44,8 +64,8 @@ public class GestorEmpleados implements Serializable {
 		}	
 		
 		
-		try (FileOutputStream FicheroEscritura = new FileOutputStream(f);
-				ObjectOutputStream escritura = new ObjectOutputStream(FicheroEscritura)) {
+			FileOutputStream FicheroEscritura = new FileOutputStream(f);
+			ObjectOutputStream escritura = new ObjectOutputStream(FicheroEscritura);
 
 
 			Empleado empleado1 = new Empleado(6202,"Gabriela","p2s5mXw", Cargo.VENDEDOR);
@@ -61,12 +81,11 @@ public class GestorEmpleados implements Serializable {
 
 			System.out.println("Objetos escritos correctamente en empleado.dat");
 
-		} catch (IOException i) {
+		} catch (IOException | DatosInvalidosException i) {
 			i.printStackTrace();
 			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
 	} //TERMINADO --
-
 
 	public void leerArchivo(ArrayList<Empleado> lista, String ruta) {
 		try (FileInputStream fis = new FileInputStream(ruta);
@@ -82,7 +101,6 @@ public class GestorEmpleados implements Serializable {
 
 		}
 	}
-
 
 	public void leerEmpleadosAlta() {
 		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
@@ -127,12 +145,6 @@ public class GestorEmpleados implements Serializable {
 		}
 		return null;
 	}
-
-	/**
-	 * Permite hasta maxAttempts intentos leyendo desde la consola.
-	 * Si el login tiene éxito, lanza el menú correspondiente y devuelve el empleado.
-	 * Devuelve null si se agotan los intentos.
-	 */
 
 	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) {
 		Scanner sc = new Scanner(System.in);
@@ -190,7 +202,6 @@ public class GestorEmpleados implements Serializable {
 	}
 
 
-
 /////////////OPCIONES PARA EL GESTOR	
 
 	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo){
@@ -214,7 +225,6 @@ public class GestorEmpleados implements Serializable {
 		System.out.println("No se encontró el empleado en activos.");
 	} //PROBARLO ++
 
-	
 	public void guardarEmpleadoEnAlta() {
 
 		if (empleadosAltas.isEmpty()) {
@@ -232,11 +242,11 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Empleado guardado correctamente.");
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
 
 	} //PROBARLO ++
-
 
 	public void darBajaEmpleado(int id){
 
@@ -246,7 +256,6 @@ public class GestorEmpleados implements Serializable {
 		    System.out.println("El empleado ya está dado de baja.");
 		    return;
 		}
-		
 		
 		if (e_buscado == null) {
 			System.out.println("No se encontró el empleado en activos.");
@@ -264,9 +273,7 @@ public class GestorEmpleados implements Serializable {
 			return;
 		}
 
-		System.out.println("No se encontró el empleado en activos.");
 	} //PROBARLO ++
-
 
 	public void guardarEmpleadoEnBaja() {
 
@@ -288,7 +295,6 @@ public class GestorEmpleados implements Serializable {
 		}
 
 	} //PROBARLO ++
-
 
 	public void recuperarEmpleado(int id) {
 
