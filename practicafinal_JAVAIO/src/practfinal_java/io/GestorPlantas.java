@@ -1,6 +1,7 @@
 package practfinal_java.io;
 
 import java.io.File;
+import java.io.IO;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class GestorPlantas {
 	//COMENTAR TODO EL CODIGO POR FAVOR ;n; 
 	//PONER MENSAJES DE ERROR EXPLICITOS
 	
-	public ArrayList <Planta> plantasAlta;
-	public ArrayList <Planta> plantasBaja;
+	private ArrayList <Planta> plantasAlta;
+	private ArrayList <Planta> plantasBaja;
 	
 	//CONSTRUCTOR
 	public GestorPlantas() {
@@ -34,19 +35,21 @@ public class GestorPlantas {
 		this.plantasBaja = new ArrayList <>();
 	}
 
-	
 	public void inicializar() {
+
+	File archivoBaja = new File("PLANTAS/plantasBaja.xml");
 
 		try {    
 			this.plantasAlta = cargarPlantasAlta();// Cargar plantas activas desde XML
-			System.out.println("Plantas activas cargadas: " + plantasAlta.size());
-
-
-			File archivoBaja = new File("PLANTAS/plantasBaja.xml");// Cargar plantas de baja (si existen)
+			if (!plantasAlta.isEmpty()) {
+				System.out.println("Plantas activas cargadas: " + plantasAlta.size());
+			}
 
 			if (!archivoBaja.getParentFile().exists()) {
 				archivoBaja.getParentFile().mkdirs(); //Creamos carpeta PLANTAS
 			}
+				archivoBaja.getParentFile().mkdirs(); //Creamos carpeta PLANTAS
+			
 
 
 			if (!archivoBaja.exists()) { //Construimos el archivo raiz para ir añadiendo
@@ -74,15 +77,11 @@ public class GestorPlantas {
 				System.out.println("Plantas bajas cargadas: " + plantasBaja.size());
 			}
 
-			cargarPlantaDat();
-			
-			cargarPlantasAlta();
+			crearPlantasDat();
 
 		}catch (Exception e){ 
-			System.out.println("No se pudo crear el archivo 'plantasBaja.xml'");;
+			System.out.println("No se pudo crear el archivo 'plantasBaja.xml': " + e.getMessage());
 		}  
-
-	
 	} //Carga todo de una + PROBARLO ++
 	 
 	
@@ -94,7 +93,7 @@ public class GestorPlantas {
 		
 		try {
 
-			File ficheroXML = new File("F:\\java-workspace_ashley\\practicafinal_JAVAIO\\PLANTAS\\plantas.xml");
+			File ficheroXML = new File("PLANTAS/plantas.xml");
 			
 
 			if (!ficheroXML.exists()) {
@@ -136,6 +135,7 @@ public class GestorPlantas {
 		} catch (Exception e) {
 
 			e.printStackTrace();
+			System.err.println("Error al cargar las plantas activas desde XML: " + e.getMessage());
 
 		}
 	    this.plantasAlta = listaTemporal; // actualiza el atributo
@@ -144,22 +144,74 @@ public class GestorPlantas {
 		
 	} //TERMINADO --
 
+	public ArrayList<Planta> cargarPlantasBaja(){
+
+		plantasBaja.clear();
+		
+		try {
+			File ficheroXML = new File("PLANTAS/plantasBaja.xml");
+			
+			if (!ficheroXML.exists()) {
+				System.out.println("El archivo no existe");
+				return plantasBaja;  // Devolver lista vacía si no existe
+
+			}
+
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docB = dbf.newDocumentBuilder();
+			Document doc = docB.parse(ficheroXML);
+			doc.getDocumentElement().normalize();
+
+			NodeList lista = doc.getElementsByTagName("planta");
+
+			int longitud_lista = lista.getLength();
+
+			for (int i = 0; i < longitud_lista; i++) {
+				Node nodo = lista.item(i);
+
+				if (nodo.getNodeType() == Node.ELEMENT_NODE) {
+					Element planta = (Element) nodo;
+
+					Planta planta_p = new Planta( // creamos la fruta y lo guardamos en el constructor
+							Integer.valueOf((planta.getElementsByTagName("codigo").item(0).getTextContent())),
+							planta.getElementsByTagName("nombre").item(0).getTextContent(),
+							planta.getElementsByTagName("foto").item(0).getTextContent(),
+							planta.getElementsByTagName("descripcion").item(0).getTextContent());
+
+
+					plantasBaja.add(planta_p);
+
+				}
+
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error al cargar las plantas dadas de baja desde XML: " + e.getMessage());
+		}
+		return plantasBaja;
+
+	} //PROBARLO ++
 	
-	public void reescribirPlantas (ArrayList<Planta> p){
+
+	public boolean reescribirPlantas (ArrayList<Planta> p, String rutaFile){
 
 		try {
 
 			// Crear archivo si no existe
+			
+			File f = new File(rutaFile);
 
-			File f = new File("PLANTAS/plantas.xml");
+			if (!f.exists()) {
+				f.createNewFile();
+				System.out.println("Archivo no existía, se creó uno nuevo.");
+			}
 
 			if (!f.getParentFile().exists()) {
 				f.getParentFile().mkdirs();
 			}
-			
-			 if (!f.exists()) {
-		            System.out.println("Error, la reescritura no es posible a realizar dado que no existe el archivo");
-		       }
+		
   
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -206,150 +258,47 @@ public class GestorPlantas {
 			StreamResult result = new StreamResult(f);
 			transformer.transform(source, result);
 
-			System.out.println("Se pudo guardar plantasBaja.xml guardado");
-
-
+			System.out.println("Archivo reescrito con éxito: " + rutaFile);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.err.println("Error al reescribir el archivo: " + e.getMessage());
+			return false;
+    }
+
+	} //PROBARLO ++
+
+	public void reescribirPlantas (){
+		if (reescribirPlantas(plantasAlta, "PLANTAS/plantas.xml")) {
+    	System.out.println("Guardado correcto");
+		} else {
+			System.out.println("Error al guardar");
 		}
 
 	} //PROBARLO ++
 
-	
-	public ArrayList<Planta> cargarPlantasBaja(){
-
-		plantasBaja.clear();
-		
-		try {
-			File ficheroXML = new File("PLANTAS/plantasBaja.xml");
-			
-			if (!ficheroXML.exists()) {
-				System.out.println("El archivo no existe");
-				return plantasBaja;  // Devolver lista vacía si no existe
-
-			}
-
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docB = dbf.newDocumentBuilder();
-			Document doc = docB.parse(ficheroXML);
-			doc.getDocumentElement().normalize();
-
-			NodeList lista = doc.getElementsByTagName("planta");
-
-			int longitud_lista = lista.getLength();
-
-			for (int i = 0; i < longitud_lista; i++) {
-				Node nodo = lista.item(i);
-
-				if (nodo.getNodeType() == Node.ELEMENT_NODE) {
-					Element planta = (Element) nodo;
-
-					Planta planta_p = new Planta( // creamos la fruta y lo guardamos en el constructor
-							Integer.valueOf((planta.getElementsByTagName("codigo").item(0).getTextContent())),
-							planta.getElementsByTagName("nombre").item(0).getTextContent(),
-							planta.getElementsByTagName("foto").item(0).getTextContent(),
-							planta.getElementsByTagName("descripcion").item(0).getTextContent());
-
-
-					plantasBaja.add(planta_p);
-
-				}
-
-
-			}
-
-		} catch (Exception e) {
-
-			e.getMessage();
-
-		}
-		return plantasBaja;
-
-	} //PROBARLO ++
-	
-	
-	public void reescribirplantasBorradas(ArrayList<Planta> p){
-
-		try {
-
-			// Crear archivo si no existe
-
-			File f = new File("PLANTAS/plantasBaja.xml");
-
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
-			}
-
-			if (!f.exists()) {
-	            System.out.println("Error: No existe el archvio creando");
-	       }
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.newDocument();
-			
-			
-			Element rootElement = doc.createElement("plantas");
-			doc.appendChild(rootElement);
-
-			for (Planta pl : p) {
-
-				Element planta = doc.createElement("planta");
-				rootElement.appendChild(planta);
-
-				Element codigo = doc.createElement("codigo");
-				Text codigo_planta = doc.createTextNode(String.valueOf(pl.getCodigo()).toString());
-				codigo.appendChild(codigo_planta);
-				planta.appendChild(codigo);
-
-				Element nombre = doc.createElement("nombre");
-				Text nombre_planta = doc.createTextNode(pl.getNombre());
-				nombre.appendChild(nombre_planta);
-				planta.appendChild(nombre);
-
-				Element foto = doc.createElement("foto");
-				Text foto_planta = doc.createTextNode(pl.getFoto());
-				foto.appendChild(foto_planta);
-				planta.appendChild(foto);
-
-				Element descripcion = doc.createElement("descripcion");
-				Text descripcion_planta = doc.createTextNode(pl.getDescripcion());
-				descripcion.appendChild(descripcion_planta);
-				planta.appendChild(descripcion);
-
-				//lo añadimos como un elemento a la raíz
-				rootElement.appendChild(planta);
-
-
-			}
-
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(f);
-			transformer.transform(source, result);
-
-			System.out.println("Se pudo guardar plantasBaja.xml guardado");
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void reescribirplantasBorradas (){
+		if (reescribirPlantas(plantasBaja, "PLANTAS/plantas.xml")) {
+    	System.out.println("Guardado correcto");
+		} else {
+			System.out.println("Error al guardar");
 		}
 
 	} //PROBARLO ++
 
 
+	
 	///////////////// METODOS .DAT
 	
 
-	public void crearPlantasDat() throws IOException {
+	public void crearPlantasDat() {
+		try {
 
 		File f = new File("PLANTAS/plantas.dat");
 		if (!f.exists()) {
 		    f.getParentFile().mkdirs(); // crear carpeta si no existe
-		    f.createNewFile();          // crear archivo vacío
+			f.createNewFile();
+			// crear archivo vacío
 		    System.out.println("Archivo creado porque no existía");
 		}
 		
@@ -371,6 +320,11 @@ public class GestorPlantas {
 			raf.writeInt(50); 
 		}
 		raf.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("Error al crear el archivo plantas.dat: " + e.getMessage());
+		}
 	} //CREAR Y PROBADOR ++
 
 
@@ -394,12 +348,13 @@ public class GestorPlantas {
 			System.out.println("Se ha podido cargar el archivo plantas.dat");
 		}catch (IOException e) {
 			e.printStackTrace();
+			System.err.println("Error al cargar el archivo plantas.dat: " + e.getMessage());
 		}
 
 	} //PROBARLO ++
 
 	
-	public String leerPlantaDatPorCodigo(int codigo) throws DatosInvalidosException {
+	public String leerPlantaDatPorCodigo(int codigo) {
 
 		try {
 
@@ -425,16 +380,18 @@ public class GestorPlantas {
 			}
 
 			  throw new DatosInvalidosException("Código inválido: " + codigo);
-	    } catch (IOException e) {
+	    } catch (IOException | DatosInvalidosException e) {
 	        e.printStackTrace();
-	        return "Error leyendo archivo";
+	        return "Error leyendo el archivo";
 	    }
 
 	}
 
 	
-	public void actualizarStockDat(int codigo, int nuevoStock) throws IOException {
-		RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
+	public void actualizarStockDat(int codigo, int nuevoStock) {
+		
+		try {
+			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
 
 		final int TAM_REGISTRO = 12;
 		long posicion = (codigo - 1) * TAM_REGISTRO;
@@ -451,10 +408,19 @@ public class GestorPlantas {
 		raf.writeInt(nuevoStock); // NUEVO stock
 
 		raf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
+		}
+		
+		
 	} //PROBARLO ++
 	
 	
-	public void actualizarPrecioDat(int codigo, float nuevoPrecio) throws IOException {
+	public void actualizarPrecioDat(int codigo, float nuevoPrecio) {
+		
+		try {
+		
 		RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
 
 		final int TAM_REGISTRO = 12;
@@ -472,10 +438,18 @@ public class GestorPlantas {
 		raf.writeInt(stock); // NUEVO stock
 
 		raf.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
+		}
 	} //PROBARLO ++
 
 
-	public void darDeBajaEnDat(int codigo) throws IOException {
+	public void darDeBajaEnDat(int codigo) {
+		
+		try{
+		
 		RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
 
 		final int TAM_REGISTRO = 12;
@@ -490,28 +464,33 @@ public class GestorPlantas {
 		raf.close();
 
 		System.out.println("Planta " + codigo + " dada de baja en .dat");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
+		}
 	} //PROBARLO ++
 	
 	
 
 	/////////////// METODOS GENERALES
 
-	public void dardeAltaPlanta(int id, String nombre, String foto, String descripcion, int stock, float precio) throws DatosInvalidosException {
+	public void dardeAltaPlanta(int id, String nombre, String foto, String descripcion, int stock, float precio) {
 		
+		try {
+
 		  if (id < 1 || id > 20)
 		        throw new DatosInvalidosException("ID fuera del rango (1-20).");
 
 		    // Validar que no exista ya
-		    if (buscarPlantaEnAlta(id) != null)
+		    if (buscarPlanta(plantasAlta, id) != null)
 		        throw new DatosInvalidosException("ID ya existe, elige otro.");
 		
 			Planta p = new Planta (id, nombre, foto, descripcion);
 			
 			plantasAlta.add(p);
-			reescribirPlantas(plantasAlta);
+			reescribirPlantas();
 			
-			
-		try {
 			
 			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
 			final int TAM_REGISTRO = 12; //Usamos una constante dado que siempre es el mismo tamaño
@@ -531,7 +510,7 @@ public class GestorPlantas {
 			raf.close();
 			
 			
-		} catch (IOException e) {
+		} catch (IOException | DatosInvalidosException e) {
 			System.out.println("Error al escribir la planta sobre el fichero.");;
 		}
 		
@@ -542,7 +521,7 @@ public class GestorPlantas {
 
 		try {
 
-			Planta plantaBaja = buscarPlantaEnAlta(codigo);// 1. Buscar la planta en plantasActivas
+			Planta plantaBaja = buscarPlanta(plantasAlta, codigo);// 1. Buscar la planta en plantasActivas
 
 			if (plantaBaja == null) { //Error por si no encuenta la planta
 				System.out.println("Planta no encontrada con código: " + codigo);
@@ -558,27 +537,34 @@ public class GestorPlantas {
 				return;
 			}
 
-			reescribirplantasBorradas(plantasBaja);// 4. Guardar en plantasBaja.xml
+			reescribirplantasBorradas();// 4. Guardar en plantasBaja.xml
+			
 			darDeBajaEnDat(codigo); // 5. Poner precio y stock a 0 en plantas.dat
 
-			plantasBaja.removeIf(p -> p.getCodigo() == plantaBaja.getCodigo()); //elimina la planta con ese código de la lista plantasBaja
+			plantasAlta.removeIf(p -> p.getCodigo() == plantaBaja.getCodigo()); //elimina la planta con ese código de la lista plantasBaja
 			
-			reescribirPlantas(plantasAlta);// 7. Reescribir plantas.xml (sin la planta borrada)
+			reescribirPlantas();// 7. Reescribir plantas.xml (sin la planta borrada)
 
 			System.out.println("Planta '" + plantaBaja.getNombre() + 
 					"' se ha dado de baja correctamente");
 
 		} catch (Exception e) {
-			System.out.println("Error al dar de baja planta");
 			e.printStackTrace();
+			System.out.println("Error al dar de baja planta");
 		}
 		
 	} //PROBARLO ++
 
 
-	public void recuperarPlanta(int codigo, float precio, int stock) throws IOException {
-	    // 1. Buscar en plantasBaja.xml
-	    Planta plantaRescatar = buscarPlantaEnBaja(codigo);
+	public void recuperarPlanta(int codigo, float precio, int stock) {
+	    
+		try{
+
+	    plantasAlta = cargarPlantasAlta();
+	    plantasBaja = cargarPlantasBaja();
+		
+		// 1. Buscar en plantasBaja.xml
+	    Planta plantaRescatar = buscarPlanta(plantasBaja,codigo);
 	    
 	    if (plantaRescatar == null) {
 	        System.out.println("Planta no encontrada en bajas");
@@ -600,15 +586,21 @@ public class GestorPlantas {
 	    // 4. Eliminar de plantasBaja
 	    plantasBaja.removeIf(p -> p.getCodigo() == plantaRescatar.getCodigo());
 	    
-	    reescribirplantasBorradas(plantasBaja);
-	    reescribirPlantas(plantasAlta);
+	    reescribirplantasBorradas();
+	    reescribirPlantas();
 	    
 	    System.out.println("Planta fue reactivada correctamente");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error al cargar las plantas");
+		}
+		
 	} //PROBARLO ++ Esto es una función solo para gestores
  
 	
-	public Planta buscarPlantaEnAlta(int codigo) {
-	    for (Planta p : plantasAlta) {
+	public Planta buscarPlanta(ArrayList<Planta> a, int codigo) {
+	    for (Planta p : a) {
 	        if (p.getCodigo() == codigo) {
 	            return p;
 	        }
@@ -616,16 +608,6 @@ public class GestorPlantas {
 	    return null;
 	} //PROBARLO ++
 	
-	
-	public Planta buscarPlantaEnBaja(int codigo) {
-		for (Planta p : plantasBaja) {
-			if (p.getCodigo() == codigo) {
-				return p;
-			}
-		}
-		return null;
-	} //PROBARLO ++
-
 
 	public String mostrarPlantas() {
 	    StringBuilder sb = new StringBuilder();

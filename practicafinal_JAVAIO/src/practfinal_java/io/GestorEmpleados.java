@@ -6,20 +6,29 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 //PONER UN SYSO EN LOS ERORRES PARA QUE SEA MAS VISUAL CON EL USUARIO
 
-public class GestorEmpleados {
+public class GestorEmpleados implements Serializable {
 
-	public ArrayList <Empleado> empleadosAltas;
-	public ArrayList <Empleado> empleadosBajas;
+	private ArrayList <Empleado> empleadosAltas;
+	private ArrayList <Empleado> empleadosBajas;
 
 
 	public GestorEmpleados(  ) {
 		super();
 		this.empleadosAltas = new ArrayList <>();
 		this.empleadosBajas = new ArrayList <>();
+	}
+
+
+	public void inicializarGestores() throws DatosInvalidosException, IOException {
+		EscribirArchivoAlta();
+		leerEmpleadosAlta();
+		leerEmpleadosBajas();
 	}
 
 
@@ -59,14 +68,18 @@ public class GestorEmpleados {
 	} //TERMINADO --
 
 
-	private void leerArchivo(ArrayList<Empleado> lista, String ruta) {
+	public void leerArchivo(ArrayList<Empleado> lista, String ruta) {
 		try (FileInputStream fis = new FileInputStream(ruta);
+
 			ObjectInputStream ois = new ObjectInputStream(fis)) {
 			lista.clear();
 			lista.addAll((ArrayList<Empleado>) ois.readObject());
 			System.out.println("Objetos leídos correctamente desde " + ruta);
+
 		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 			System.out.println("Error al leer archivo: " + e.getMessage());
+
 		}
 	}
 
@@ -74,26 +87,6 @@ public class GestorEmpleados {
 	public void leerEmpleadosAlta() {
 		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
 	}  //TERMINADO --
-
-
-	public ArrayList<Empleado> leerArchivoBaja() {
-
-		try (FileInputStream ficherolectura = new FileInputStream("empleado.dat");
-				ObjectInputStream lectura = new ObjectInputStream(ficherolectura)) {
-
-			// Leer el ArrayList de Empleado desde el archivo
-			empleadosBajas = (ArrayList<Empleado>) lectura.readObject();
-
-			System.out.println("Objetos leídos correctamente desde empleado.dat");
-
-		} catch (IOException | ClassNotFoundException e) {
-           e.printStackTrace();
-		   System.out.println ("Los objetos no son posibles de leer del archivo empleado.dat");
-		}
-
-		return empleadosBajas;
-	} //TERMINADO --
-
 	
 	public void leerEmpleadosBajas() {
 		leerArchivo(empleadosBajas, "EMPLEADOS/BAJAS/empleadoBaja.dat");
@@ -111,49 +104,93 @@ public class GestorEmpleados {
 	} //TERMINADO --
 	
 	
-	public void buscarEmpleadoPorIdAlta(int id) {
-		buscarEmpleadoPorId(empleadosAltas, id);
+	public Empleado buscarEmpleadoPorIdAlta(ArrayList <Empleado> arraylist, int id) {
+		return buscarEmpleadoPorId(empleadosAltas, id);
 	} //TERMINADO --
 	
 	
-	public void buscarEmpleadoPorIdBaja(int id) {
-		buscarEmpleadoPorId(empleadosBajas, id);
+	public Empleado buscarEmpleadoPorIdBaja(ArrayList <Empleado> arraylist,int id) {
+		return buscarEmpleadoPorId(empleadosBajas, id);
 	} //TERMINADO --
 	
 
 	
 ////////////VALIDACIONES DE CREDENCIALES	
 	
-	public Empleado validarLogin(int id, String contraseña, GestorPlantas gp) {
-	
-	try {
-		Empleado empleado = null;
+	/**
+	 * Comprueba las credenciales y devuelve el empleado si coinciden, o null si no.
+	 * No hace IO ni muestra menús: solo valida.
+	 */
+	public Empleado validarLogin(int id, String contraseña) {
+		if (contraseña == null) return null;
+		for (Empleado e : empleadosAltas) {
+			if (e.getId_empleado() == id && contraseña.equals(e.getContraseña())) {
+				return e;
+			}
+		}
+		return null;
+	}
 
-		do{
-			for (Empleado e : empleadosAltas) {
-				if (e.getId_empleado() == id && e.getContraseña().equals(contraseña)) {
-					// Devuelve el empleado si las credenciales son correctas
-					System.out.println("He iniciado sesion correctamente");
-					switch (e.getCargo()) {
-					case VENDEDOR: new MenuVendedor(gp).mostrarMenu();               
-					case ENCARGADO : new MenuGestor(e, this, gp).mostrarMenu();
-					}
-					empleado = e;
-					return e;
-				}else{
-					System.out.println("Datos erroneos, por favor intentelo de nuevo.");
+	/**
+	 * Versión interactiva: permite hasta maxAttempts intentos leyendo desde la consola.
+	 * Si el login tiene éxito, lanza el menú correspondiente y devuelve el empleado.
+	 * Devuelve null si se agotan los intentos.
+	 */
+
+	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) {
+		Scanner sc = new Scanner(System.in);
+		int intentos = 0;
+		while (intentos < intentosMaximos) {
+			intentos++;
+			System.out.print("ID: ");
+			String id_ingresado = sc.nextLine().trim();
+			int id;
+			try {
+				id = Integer.parseInt(id_ingresado);
+			} catch (NumberFormatException e1) {
+				System.out.println("ID inválido. Debe ser un número.");
+				continue;
+			}
+
+			System.out.print("Contraseña: ");
+			String pwd = sc.nextLine();
+
+			Empleado e = validarLogin(id, pwd);
+			if (e != null) {
+				System.out.println("He iniciado sesión correctamente");
+				switch (e.getCargo()) {
+					case VENDEDOR:
+						try {
+							new MenuVendedor(gp).mostrarMenu();
+						} catch (Exception ex) {
+							System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
+							ex.printStackTrace();
+						}
+						break;
+					case ENCARGADO:
+						try {
+							new MenuGestor(e, this, gp).mostrarMenu();
+						} catch (Exception ex) {
+							System.err.println("Error al mostrar menú gestor: " + ex.getMessage());
+							ex.printStackTrace();
+						}
+						break;
+					default:
+						/System.out.println("Cargo no reconocido. No se puede mostrar el menú correspondiente.");
 				}
-
-			}	
-		}while (empleado==null);
-
-		System.out.println("Contacte con soporte para resetear el usuario");
-	
-	} catch (DatosInvalidosException e1) {                                           
-       e1.printStackTrace();
-    }
-		return null; // Si no se encuentra coincidencia
-	} //TERMINADO --
+				return e;
+			} else {
+				int restantes = intentosMaximos - intentos;
+				if (restantes > 0) {
+					System.out.println("Credenciales incorrectas. Te quedan " + restantes + " intentos.");
+				} else {
+					System.out.println("Has agotado el número máximo de intentos. Usuario bloqueado temporalmente.");
+				}
+			}
+		}
+		// No cerramos scanner porque podría cerrar System.in para el resto de la app
+		return null;
+	}
 
 
 
@@ -161,7 +198,7 @@ public class GestorEmpleados {
 
 	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo){
 
-		Empleado e_buscado = buscarEmpleadoPorIdAlta(id);
+		Empleado e_buscado = buscarEmpleadoPorId(empleadosAltas, id);
 
 		if (e_buscado == null) {
 			System.out.println("No se encontró el empleado en activos.");
@@ -206,7 +243,7 @@ public class GestorEmpleados {
 
 	public void darBajaEmpleado(int id){
 
-		Empleado e_buscado = buscarEmpleadoPorIdAlta(id);
+		Empleado e_buscado = buscarEmpleadoPorId(empleadosAltas,id);
 
 		if (empleadosBajas.contains(e_buscado)) {
 		    System.out.println("El empleado ya está dado de baja.");
@@ -258,7 +295,7 @@ public class GestorEmpleados {
 
 	public void recuperarEmpleado(int id) {
 
-		Empleado e_recupera = buscarEmpleadoPorIdBaja(id);
+		Empleado e_recupera = buscarEmpleadoPorId(empleadosBajas,id);
 
 		if (e_recupera == null) {
 			System.out.println("Empleado no encontrada en bajas");
