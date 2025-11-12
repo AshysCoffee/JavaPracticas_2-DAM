@@ -35,11 +35,10 @@ public class Main {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				gp.cargarPlantaDat();
-				gp.cargarPlantasAlta();
 				
+				gp.inicializar();
 				
-				
+				ge.guardarEmpleadoEnAlta();
 				
 			MenuVendedor mn = new MenuVendedor(gp);
 			

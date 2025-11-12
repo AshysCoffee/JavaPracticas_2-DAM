@@ -74,7 +74,9 @@ public class GestorPlantas {
 				System.out.println("Plantas bajas cargadas: " + plantasBaja.size());
 			}
 
+			cargarPlantaDat();
 			
+			cargarPlantasAlta();
 
 		}catch (Exception e){ 
 			System.out.println("No se pudo crear el archivo 'plantasBaja.xml'");;
@@ -137,7 +139,6 @@ public class GestorPlantas {
 
 		}
 	    this.plantasAlta = listaTemporal; // actualiza el atributo
-	    System.out.println("Plantas cargadas -> " + this.plantasAlta.size());
 	    return this.plantasAlta;
 	
 		
@@ -432,7 +433,6 @@ public class GestorPlantas {
 	}
 
 	
-	
 	public void actualizarStockDat(int codigo, int nuevoStock) throws IOException {
 		RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "rw");
 
@@ -633,7 +633,6 @@ public class GestorPlantas {
 	    // Recorremos solo el ArrayList plantasAlta que ya está cargado
 	    for (Planta p : plantasAlta) {
 	        sb.append("Nombre: ").append(p.getNombre()).append("\n");
-	        sb.append("Código: ").append(p.getCodigo()).append("\n");
 	        sb.append("Foto: ").append(p.getFoto()).append("\n");
 	        sb.append("Descripción: ").append(p.getDescripcion()).append("\n");
 

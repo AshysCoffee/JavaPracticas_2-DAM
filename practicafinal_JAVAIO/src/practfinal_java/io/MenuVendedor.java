@@ -58,11 +58,13 @@ public class MenuVendedor {
 		String patron_numero = "\\d";
 		String patron_letras = "[a-zA-Z]";
 		Scanner sc = new Scanner(System.in);
-		int opcion;
+		int opcion = 0;
+
+		System.out.println("Bienvenido al sistema");		
 
 		do {
 
-			System.out.println("Bienvenido al sistema");
+
 			System.out.println("=== MENÚ VENDEDOR ===");
 			System.out.println("1. Visualizar catálogo de plantas\n"
 					+ "2. Generar venta\n"
@@ -71,27 +73,26 @@ public class MenuVendedor {
 			System.out.println("0. Salir");
 			System.out.println("Elige una opción: ");
 
-			
-			
-			opcion = sc.nextInt();
+
 
 			if (String.valueOf(opcion).matches(patron_numero)) {
 				opcion = sc.nextInt();
+
 			}else {
 				System.err.println("Por favor, introduzca un valor válido");
 			}
-			
+
 			switch (opcion) {
 
 			case 1:
-				
+
 				System.out.println(gestor_p.mostrarPlantas()); 
 				break;
 
 			case 2:
-				
+
 				String confirmacion =" ";
-				
+
 				Venta v = new Venta();
 				
 				int id_planta = 0;

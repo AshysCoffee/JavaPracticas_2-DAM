@@ -85,8 +85,14 @@ public class MenuGestor {
 
 			System.out.println("Elige una opción: ");
 
+			
 			opcion = sc.nextInt();
 
+			if (String.valueOf(opcion).matches(patron_numero)) {
+				opcion = sc.nextInt();
+			}else {
+				System.err.println("Por favor, introduzca un valor válido");
+			}
 			switch (opcion) {
 			
 			case 1:

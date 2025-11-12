@@ -100,8 +100,9 @@ public class GestorEmpleados {
 	}  //TERMINADO --
 	
 	
-	public Empleado buscarEmpleadoPorIdAlta(int id) {
-		for (Empleado e : empleadosAltas) {
+	
+	public Empleado buscarEmpleadoPorId(ArrayList <Empleado> arraylist ,int id) {
+		for (Empleado e : arraylist) {
             if (e.getId_empleado() == id) {
                 return e;
             }
@@ -110,13 +111,13 @@ public class GestorEmpleados {
 	} //TERMINADO --
 	
 	
-	public Empleado buscarEmpleadoPorIdBaja(int id) {
-		for (Empleado e : empleadosBajas) {
-            if (e.getId_empleado() == id) {
-                return e;
-            }
-        }
-        return null;
+	public void buscarEmpleadoPorIdAlta(int id) {
+		buscarEmpleadoPorId(empleadosAltas, id);
+	} //TERMINADO --
+	
+	
+	public void buscarEmpleadoPorIdBaja(int id) {
+		buscarEmpleadoPorId(empleadosBajas, id);
 	} //TERMINADO --
 	
 
