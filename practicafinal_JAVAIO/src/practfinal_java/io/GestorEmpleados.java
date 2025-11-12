@@ -117,10 +117,7 @@ public class GestorEmpleados implements Serializable {
 	
 ////////////VALIDACIONES DE CREDENCIALES	
 	
-	/**
-	 * Comprueba las credenciales y devuelve el empleado si coinciden, o null si no.
-	 * No hace IO ni muestra menús: solo valida.
-	 */
+	
 	public Empleado validarLogin(int id, String contraseña) {
 		if (contraseña == null) return null;
 		for (Empleado e : empleadosAltas) {
@@ -132,7 +129,7 @@ public class GestorEmpleados implements Serializable {
 	}
 
 	/**
-	 * Versión interactiva: permite hasta maxAttempts intentos leyendo desde la consola.
+	 * Permite hasta maxAttempts intentos leyendo desde la consola.
 	 * Si el login tiene éxito, lanza el menú correspondiente y devuelve el empleado.
 	 * Devuelve null si se agotan los intentos.
 	 */
@@ -176,7 +173,7 @@ public class GestorEmpleados implements Serializable {
 						}
 						break;
 					default:
-						/System.out.println("Cargo no reconocido. No se puede mostrar el menú correspondiente.");
+						System.out.println("Cargo no reconocido. No se puede mostrar el menú correspondiente.");
 				}
 				return e;
 			} else {
