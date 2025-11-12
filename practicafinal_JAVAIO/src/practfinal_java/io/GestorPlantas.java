@@ -55,6 +55,7 @@ public class GestorPlantas {
 
 	public void inicializar() {
 
+
 	File archivoBaja = new File("PLANTAS/plantasBaja.xml");
 
 		try {    

@@ -21,32 +21,35 @@ public class Main {
 
 
 		public static void main(String[] args) {
-				try {
-					
-				ControlErrores ce = new ControlErrores();
-				GestorEmpleados ge = new GestorEmpleados();
-				GestorPlantas gp = new GestorPlantas();
-				
-				ce.verificarYCrearDirectorios();
-				ce.verificarArchivosObligatorios();
-					
-				
-				gp.crearPlantasDat();
+			try {
 
-				ge.EscribirArchivoAlta();
-				
+				ControlErrores ce = new ControlErrores();
+				ce.verificarYCrearDirectorios();
+				if (!ce.verificarArchivosObligatorios()) {
+					System.out.println("Faltan archivos obligatorios. Terminando ejecución.");
+					return;
+				}
+
+				GestorPlantas gp = new GestorPlantas();
+
 				gp.inicializar();
+
+				gp.cargarPlantasAlta();
+				gp.cargarPlantasBaja();
+				gp.cargarPlantaDat();
+
+				GestorEmpleados gestor = new GestorEmpleados();
 				
-				ge.guardarEmpleadoEnAlta();
+				gestor.inicializarGestores();
 				
-			MenuVendedor mn = new MenuVendedor(gp);
-			
-			mn.mostrarMenu();
-			
-			
-			} catch (DatosInvalidosException e) {
+				gestor.autenticarInteractivo(gp, 3);
+
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+
 			
 		}
 
