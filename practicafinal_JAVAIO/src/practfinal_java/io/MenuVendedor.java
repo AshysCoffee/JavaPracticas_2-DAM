@@ -9,11 +9,12 @@ public class MenuVendedor {
 	private GestorPlantas gestor_p;
 	private Venta ventas;
 	private Devolucion devoluciones;         
+	private ControlErrores ce;
 	
-	
-	public MenuVendedor(GestorPlantas gestor_p) {
+	public MenuVendedor(GestorPlantas gestor_p, Empleado empleado) {
 		super();
 		this.gestor_p = gestor_p;
+		this.empleado = empleado;
 	}
 
 	public Empleado getEmpleado() {
@@ -70,7 +71,6 @@ public class MenuVendedor {
 					+ "2. Generar venta\n"
 					+ "3. Generar devolución\n"
 					+ "0. Cerrar sesión");
-			System.out.println("0. Salir");
 			System.out.println("Elige una opción: ");
 
 
@@ -91,7 +91,6 @@ public class MenuVendedor {
 
 			case 2:
 
-				String confirmacion =" ";
 
 				Venta v = new Venta(empleado.getNombre(),empleado.getId_empleado());
 				
@@ -99,20 +98,17 @@ public class MenuVendedor {
 				int cantidad = 0;
 				
 				do {
-				  System.out.println("Introduce el codigo de la planta que desea y la cantidad deseada, cuando termine de seleccionar introduzca 200 en cada apartado");
+				  System.out.println("Introduce el codigo de la planta que desea y la cantidad deseada.\nCuando termine de seleccionar introduzca 200 en cada apartado");
 				  System.out.print("Codigo de la planta:");
 					
 				  input = sc.next();
-					
-					
-					if (String.valueOf(id_planta).matches(patron_numero)) {
-						id_planta = sc.nextInt();
-					}else {
-						System.err.println("Por favor, introduzca un valor válido");
-					}
-
-
-					v.agregarProducto(id_planta, cantidad);
+				  id_planta = ControlErrores.leerEntero(input);
+				  
+				  System.out.print("Cantidad deseada:");
+				  input = sc.next();
+				  cantidad = ControlErrores.leerEntero(input);
+				  
+				v.agregarProducto(id_planta, cantidad);
 
 				}while (id_planta!=200 && cantidad!=200);
 
@@ -121,27 +117,20 @@ public class MenuVendedor {
 				System.out.println(v.toString());
 
 				System.out.println("¿Desea continuar con la compra? [Y/N]");
-				String resp =" ";
 
-				if (String.valueOf(resp).matches(patron_letras)) {
-					resp = sc.next();
+				input = sc.nextLine();
+				String resp = ControlErrores.leerTexto(input);
 
-					if (resp.equalsIgnoreCase("Y")) {
-						v.generarTicket();
-						System.out.println("Se genero el ticket correctamente");
-					} else if (resp.equalsIgnoreCase("N")) {
-						System.out.println("NO se pudo continuar la compra");
-					}
-
-
-				}else {
-					System.err.println("Por favor, introduzca un valor válido");
+				if (resp.equalsIgnoreCase("Y")) {
+					v.generarTicket();
+					System.out.println("Se genero el ticket correctamente");
+				} else if (resp.equalsIgnoreCase("N")) {
+					System.out.println("NO se pudo continuar la compra");
 				}
 
-				
-				break;
+			break;
 
-			case 3:
+		case 3:
 				
 			    System.out.print("Introduce el número del ticket a buscar: ");
 			    

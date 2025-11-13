@@ -46,7 +46,6 @@ public class GestorEmpleados implements Serializable {
 	public void inicializarGestores() throws DatosInvalidosException, IOException {
 		EscribirArchivoAlta();
 		leerEmpleadosAlta();
-		leerEmpleadosBajas();
 	}
 
 
@@ -70,7 +69,7 @@ public class GestorEmpleados implements Serializable {
 
 			Empleado empleado1 = new Empleado(6202,"Gabriela","p2s5mXw", Cargo.VENDEDOR);
 			Empleado empleado2 = new Empleado(8331,"Federico","0fM123",Cargo.VENDEDOR);
-			Empleado empleado3 = new Empleado(47,"Maria Jose","JkS67",Cargo.ENCARGADO);
+			Empleado empleado3 = new Empleado(0047,"Maria Jose","JkS67",Cargo.ENCARGADO);
 
 			empleadosAltas.add(empleado1);
 			empleadosAltas.add(empleado2);
@@ -170,7 +169,7 @@ public class GestorEmpleados implements Serializable {
 				switch (e.getCargo()) {
 					case VENDEDOR:
 						try {
-							new MenuVendedor(gp).mostrarMenu();
+							new MenuVendedor(gp,e).mostrarMenu();
 						} catch (Exception ex) {
 							System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
 							ex.printStackTrace();
