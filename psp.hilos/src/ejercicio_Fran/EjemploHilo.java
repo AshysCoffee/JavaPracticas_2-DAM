@@ -2,11 +2,14 @@ package ejercicio_Fran;
 
 public class EjemploHilo{
 	
+	public static int cantidad = 0;
+	public static Integer contador = 20;
+	
 	public static void main (String [] args) {
+	
+	final int NUM_HILOS = 15;	
 		
-	final int NUM_HILOS = 5;	
-		
-	System.out.println("Soy el hilo principal");	
+	//System.out.println("Soy el hilo principal");	
 
 	MiHilo arrayHilos [] = new MiHilo [NUM_HILOS]; 
 	

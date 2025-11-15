@@ -4,7 +4,8 @@ import java.util.Random;
 
 public class MiHilo extends Thread{
 
-@Override
+	final int NUM_HILOS = 20;
+
 	public void run() {
 	
 	Random r = new Random();
@@ -17,6 +18,12 @@ public class MiHilo extends Thread{
 	}
 	
 		System.out.println("Soy el hilo: " + this.getName());
+		
+		synchronized(EjemploHilo.contador) {
+			System.out.println("Soy el HILO "+this.getName());
+		EjemploHilo.contador--;
+		System.out.println("Contador value: " +EjemploHilo.contador);
+		}
 	}
 	
 }
