@@ -22,8 +22,6 @@ import org.w3c.dom.Text;
 
 public class GestorPlantas {
 	
-	//COMENTAR TODO EL CODIGO POR FAVOR ;n; 
-	//PONER MENSAJES DE ERROR EXPLICITOS
 	
 	private ArrayList <Planta> plantasAlta;
 	private ArrayList <Planta> plantasBaja;
@@ -55,49 +53,19 @@ public class GestorPlantas {
 
 	public void inicializar() {
 
+		try {
+		this.plantasAlta = cargarPlantasAlta(); // Cargar plantas activas desde XML
+        if (!plantasAlta.isEmpty()) {
+            System.out.println("Plantas activas cargadas: " + plantasAlta.size());
+        }
 
-	File archivoBaja = new File("PLANTAS/plantasBaja.xml");
+        this.plantasBaja = cargarPlantasBaja();
+        if (!plantasBaja.isEmpty()) {
+            System.out.println("Plantas bajas cargadas: " + plantasBaja.size());
+        }
 
-		try {    
-			this.plantasAlta = cargarPlantasAlta();// Cargar plantas activas desde XML
-			if (!plantasAlta.isEmpty()) {
-				System.out.println("Plantas activas cargadas: " + plantasAlta.size());
-			}
-
-			if (!archivoBaja.getParentFile().exists()) {
-				archivoBaja.getParentFile().mkdirs(); //Creamos carpeta PLANTAS
-			}
-				archivoBaja.getParentFile().mkdirs(); //Creamos carpeta PLANTAS
-			
-
-
-			if (!archivoBaja.exists()) { //Construimos el archivo raiz para ir añadiendo
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.newDocument();
-
-				// Crear elemento raíz <plantas>
-				Element root = doc.createElement("plantas");
-				doc.appendChild(root);
-
-				// Guardar el documento inicial en archivo
-				Transformer transformer = TransformerFactory.newInstance().newTransformer();
-				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-				transformer.transform(new DOMSource(doc), new StreamResult(archivoBaja));
-
-				System.out.println("Archivo 'plantasBaja.xml' creado con estructura inicial.");
-			}
-
-
-
-			if (archivoBaja.exists()) {
-				this.plantasBaja = cargarPlantasBaja();
-				System.out.println("Plantas bajas cargadas: " + plantasBaja.size());
-			}
-
-			crearPlantasDat();
-
+        crearPlantasDat();
+		
 		}catch (Exception e){ 
 			System.out.println("No se pudo crear el archivo 'plantasBaja.xml': " + e.getMessage());
 		}  
@@ -158,6 +126,7 @@ public class GestorPlantas {
 
 		}
 	    this.plantasAlta = listaTemporal; // actualiza el atributo
+		System.out.println("Se han cargado " + this.plantasAlta.size() + " plantas activas desde XML.");
 	    return this.plantasAlta;
 	
 		

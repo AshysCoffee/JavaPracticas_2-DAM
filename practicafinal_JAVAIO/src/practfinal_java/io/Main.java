@@ -5,6 +5,18 @@ public class Main {
 		public static void main(String[] args) {
 			try {
 
+				GestorPlantas gp = new GestorPlantas();
+
+				gp.inicializar();
+
+				gp.cargarPlantasAlta();
+				gp.cargarPlantaDat();
+
+				GestorEmpleados gestor = new GestorEmpleados();
+				
+				gestor.inicializarGestores();
+
+
 				ControlErrores ce = new ControlErrores();
 				ce.verificarYCrearDirectorios();
 				if (!ce.verificarArchivosObligatorios()) {
@@ -12,18 +24,6 @@ public class Main {
 					return;
 				}
 
-				GestorPlantas gp = new GestorPlantas();
-
-				gp.inicializar();
-
-				gp.cargarPlantasAlta();
-				gp.cargarPlantasBaja();
-				gp.cargarPlantaDat();
-
-				GestorEmpleados gestor = new GestorEmpleados();
-				
-				gestor.inicializarGestores();
-				
 				gestor.autenticarInteractivo(gp, 3);
 
 
