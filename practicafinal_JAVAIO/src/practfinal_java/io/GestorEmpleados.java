@@ -44,41 +44,40 @@ public class GestorEmpleados implements Serializable {
 	}
 
 	public void inicializarGestores() throws DatosInvalidosException, IOException {
-		EscribirArchivoAlta();
+		escribirArchivoAlta();
 		leerEmpleadosAlta();
+		leerEmpleadosBaja();
 	}
 
 
 //////////ESCRITURA Y LECTURA DE EMPLEADOS
 
-	public void EscribirArchivoAlta(){
+	public void escribirArchivoAlta(){
 
 		try {
 
-		File f = new File("EMPLEADOS/empleado.dat");
-		if (!f.exists()) {
-		    f.getParentFile().mkdirs(); // crear carpeta si no existe
-		    f.createNewFile();          // crear archivo vacío
-		    System.out.println("Archivo creado porque no existía");
-		}	
-		
-		
-			FileOutputStream FicheroEscritura = new FileOutputStream(f);
-			ObjectOutputStream escritura = new ObjectOutputStream(FicheroEscritura);
+			File f = new File("EMPLEADOS/empleado.dat");
+			if (!f.exists()) {
+				f.getParentFile().mkdirs(); // crear carpeta si no existe
+				f.createNewFile(); // crear archivo vacío
+				System.out.println("Archivo creado porque no existía");
+			}
 
+			ObjectOutputStream escritura = new ObjectOutputStream(new FileOutputStream(f));
 
-			Empleado empleado1 = new Empleado(6202,"Gabriela","p2s5mXw", Cargo.VENDEDOR);
-			Empleado empleado2 = new Empleado(8331,"Federico","0fM123",Cargo.VENDEDOR);
-			Empleado empleado3 = new Empleado(0047,"Maria Jose","JkS67",Cargo.ENCARGADO);
+			Empleado empleado1 = new Empleado(6202, "Gabriela", "p2s5mXw", Cargo.VENDEDOR);
+			Empleado empleado2 = new Empleado(8331, "Federico", "0fM123", Cargo.VENDEDOR);
+			Empleado empleado3 = new Empleado(0002, "Maria Jose", "JkS67", Cargo.ENCARGADO);
+			Empleado empleado4 = new Empleado(1500, "Pablo", "02IndOO", Cargo.ENCARGADO);
 
 			empleadosAltas.add(empleado1);
 			empleadosAltas.add(empleado2);
 			empleadosAltas.add(empleado3);
+			empleadosAltas.add(empleado4);
 
 			escritura.writeObject(empleadosAltas);
 
-
-			System.out.println("Objetos escritos correctamente en empleado.dat");
+			System.out.println("Objetos escritos correctamente en empleado.dat\n");
 
 		} catch (IOException | DatosInvalidosException i) {
 			i.printStackTrace();
@@ -87,14 +86,13 @@ public class GestorEmpleados implements Serializable {
 	} //TERMINADO --
 
 	public void leerArchivo(ArrayList<Empleado> lista, String ruta) {
-		try (FileInputStream fis = new FileInputStream(ruta);
-
-			ObjectInputStream ois = new ObjectInputStream(fis)) {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
+			
 			lista.clear();
 			lista.addAll((ArrayList<Empleado>) ois.readObject());
-			System.out.println("Objetos leídos correctamente desde " + ruta);
+			System.out.println("Objetos leídos correctamente desde " + ruta+"");
 
-		} catch (IOException | ClassNotFoundException e) {
+		}catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Error al leer archivo: " + e.getMessage());
 
@@ -105,28 +103,47 @@ public class GestorEmpleados implements Serializable {
 		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
 	}  //TERMINADO --
 	
-	public void leerEmpleadosBajas() {
-		leerArchivo(empleadosBajas, "EMPLEADOS/BAJAS/empleadoBaja.dat");
+	public void leerEmpleadosBaja() {
+		
+		try {
+
+			File f_baja = new File("EMPLEADOS/BAJAS/empleadoBaja.dat");
+
+			if (!f_baja.exists()) {
+				f_baja.getParentFile().mkdirs(); // crear carpeta si no existe
+				f_baja.createNewFile();          // crear archivo vacío
+				System.out.println("Archivo creado porque no existía");
+			}
+
+			if(empleadosBajas.isEmpty() || !f_baja.exists() || f_baja.length()==0) {
+				System.out.println("No existen empleados de baja en EMPLEADOS/BAJAS/empleadoBaja.dat\n");
+			}else{
+				leerArchivo(empleadosBajas, "EMPLEADOS/BAJAS/empleadoBaja.dat");
+			}
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}  //TERMINADO --
-	
-	
-	
+
+
+
 	public Empleado buscarEmpleadoPorId(ArrayList <Empleado> arraylist ,int id) {
 		for (Empleado e : arraylist) {
-            if (e.getId_empleado() == id) {
-                return e;
-            }
-        }
-        return null;
+			if (e.getId_empleado() == id) {
+				return e;
+			}
+		}
+		return null;
 	} //TERMINADO --
-	
-	
-	public Empleado buscarEmpleadoPorIdAlta(ArrayList <Empleado> arraylist, int id) {
+
+
+	public Empleado buscarEmpleadoPorIdAlta(int id) {
 		return buscarEmpleadoPorId(empleadosAltas, id);
 	} //TERMINADO --
 	
 	
-	public Empleado buscarEmpleadoPorIdBaja(ArrayList <Empleado> arraylist,int id) {
+	public Empleado buscarEmpleadoPorIdBaja(int id) {
 		return buscarEmpleadoPorId(empleadosBajas, id);
 	} //TERMINADO --
 	
@@ -136,7 +153,12 @@ public class GestorEmpleados implements Serializable {
 	
 	
 	public Empleado validarLogin(int id, String contraseña) {
-		if (contraseña == null) return null;
+		
+		if (empleadosAltas.isEmpty() || buscarEmpleadoPorIdAlta(id)==null) {
+			System.out.println("No existen empleados para acceder al login");
+			return null;
+		}
+		
 		for (Empleado e : empleadosAltas) {
 			if (e.getId_empleado() == id && contraseña.equals(e.getContraseña())) {
 				return e;
@@ -146,49 +168,56 @@ public class GestorEmpleados implements Serializable {
 	}
 
 	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) {
+		
 		Scanner sc = new Scanner(System.in);
+		
 		int intentos = 0;
 		while (intentos < intentosMaximos) {
 			intentos++;
+			
 			System.out.print("ID: ");
-			String id_ingresado = sc.nextLine().trim();
-			int id;
-			try {
-				id = Integer.parseInt(id_ingresado);
-			} catch (NumberFormatException e1) {
-				System.out.println("ID inválido. Debe ser un número.");
-				continue;
-			}
+
+			String input = sc.nextLine().trim();
+
+			int id = ControlErrores.leerEntero(input);
 
 			System.out.print("Contraseña: ");
-			String pwd = sc.nextLine();
+			String pwd = sc.nextLine().trim();
 
 			Empleado e = validarLogin(id, pwd);
+
 			if (e != null) {
-				System.out.println("He iniciado sesión correctamente");
+				System.out.println("\nHe iniciado sesión correctamente");
+
 				switch (e.getCargo()) {
-					case VENDEDOR:
-						try {
-							new MenuVendedor(gp,e).mostrarMenu();
-						} catch (Exception ex) {
-							System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
-							ex.printStackTrace();
-						}
-						break;
-					case ENCARGADO:
-						try {
-							new MenuGestor(e, this, gp).mostrarMenu();
-						} catch (Exception ex) {
-							System.err.println("Error al mostrar menú gestor: " + ex.getMessage());
-							ex.printStackTrace();
-						}
-						break;
-					default:
-						System.out.println("Cargo no reconocido. No se puede mostrar el menú correspondiente.");
+				case VENDEDOR:
+
+					try {
+						new MenuVendedor(gp,e).mostrarMenu();
+					} catch (Exception ex) {
+						System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
+						ex.printStackTrace();
+					}
+					break;
+
+				case ENCARGADO:
+					try {
+						new MenuGestor(e, this, gp).mostrarMenu();
+					} catch (Exception ex) {
+						System.err.println("Error al mostrar menú gestor: " + ex.getMessage());
+						ex.printStackTrace();
+					}
+					break;
+
+				default:
+					System.out.println("Cargo no reconocido. No se puede mostrar el menú correspondiente.");
 				}
 				return e;
-			} else {
+
+			}else{
+				
 				int restantes = intentosMaximos - intentos;
+				
 				if (restantes > 0) {
 					System.out.println("Credenciales incorrectas. Te quedan " + restantes + " intentos.");
 				} else {
@@ -201,7 +230,7 @@ public class GestorEmpleados implements Serializable {
 	}
 
 
-/////////////OPCIONES PARA EL GESTOR	
+	/////////////OPCIONES PARA EL GESTOR	
 
 	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo){
 
@@ -283,12 +312,13 @@ public class GestorEmpleados implements Serializable {
 		
 		
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("BAJA/empleadosBaja.dat"))) {
+			
 			for (Empleado e : empleadosBajas) {
 				oos.writeObject(e);
 			}
-
 			System.out.println("Empleado guardado correctamente.");
 
+			
 		} catch (IOException e) {
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}

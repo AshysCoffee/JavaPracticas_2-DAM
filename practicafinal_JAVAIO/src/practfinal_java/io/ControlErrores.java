@@ -40,7 +40,7 @@ public class ControlErrores {
 	}
 
 	public boolean verificarArchivosObligatorios() {
-		System.out.println("Verificando archivos obligatorios...");
+		System.out.println("\nVerificando archivos obligatorios...");
 
 		boolean todosExisten = true;
 
@@ -75,6 +75,11 @@ public class ControlErrores {
 		return true;
 	}
 
+	
+	
+	
+////////METODOS DE CONTROL DE ERRORES	
+	
 	public static int leerEntero(String mensaje) {
 		int numero = 0;
 		String input;

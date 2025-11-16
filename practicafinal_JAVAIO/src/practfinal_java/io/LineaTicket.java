@@ -37,7 +37,7 @@ public class LineaTicket implements Serializable{
 	
 	@Override
 	public String toString() {
-		return planta.getCodigo() + "\t" + cantidad + "\t"+ planta.getPrecio()+"\n";
+		return planta.getCodigo() + "\t\t" + cantidad + "\t\t" + calcularSubtotal()+"\t\t"+ planta.getPrecio()+"\n";
 	}
 	
 	

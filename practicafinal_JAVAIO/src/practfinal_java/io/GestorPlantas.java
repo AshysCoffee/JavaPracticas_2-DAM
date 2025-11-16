@@ -63,8 +63,8 @@ public class GestorPlantas {
         if (!plantasBaja.isEmpty()) {
             System.out.println("Plantas bajas cargadas: " + plantasBaja.size());
         }
-
-        crearPlantasDat();
+ 
+        cargarPlantaDat();
 		
 		}catch (Exception e){ 
 			System.out.println("No se pudo crear el archivo 'plantasBaja.xml': " + e.getMessage());
@@ -83,7 +83,7 @@ public class GestorPlantas {
 			File ficheroXML = new File("PLANTAS/plantas.xml");
 			
 
-			if (!ficheroXML.exists()) {
+			if (!ficheroXML.exists()||ficheroXML.getParent()==null) {
 				System.out.println("El archivo no existe");
 				return listaTemporal;  // Devolver lista vacía si no existe
 
@@ -126,7 +126,6 @@ public class GestorPlantas {
 
 		}
 	    this.plantasAlta = listaTemporal; // actualiza el atributo
-		System.out.println("Se han cargado " + this.plantasAlta.size() + " plantas activas desde XML.");
 	    return this.plantasAlta;
 	
 		
@@ -140,7 +139,7 @@ public class GestorPlantas {
 			File ficheroXML = new File("PLANTAS/plantasBaja.xml");
 			
 			if (!ficheroXML.exists()) {
-				System.out.println("El archivo no existe");
+				System.out.println("El archivo plantasBajas.xml no existe");
 				return plantasBaja;  // Devolver lista vacía si no existe
 
 			}
@@ -266,7 +265,7 @@ public class GestorPlantas {
 	} //PROBARLO ++
 
 	public void reescribirplantasBorradas (){
-		if (reescribirPlantas(plantasBaja, "PLANTAS/plantas.xml")) {
+		if (reescribirPlantas(plantasBaja, "PLANTAS/plantasBajas.xml")) {
     	System.out.println("Guardado correcto");
 		} else {
 			System.out.println("Error al guardar");
@@ -317,24 +316,34 @@ public class GestorPlantas {
 
 
 	public void cargarPlantaDat() {
-		
-		int posicion=0;
 
-		try (RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r")) {
+		try {
+
+			int posicion=0;
+
+			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r");
 			long size = raf.length();
-			while (posicion < size) {
 
-				int codigo = raf.readInt();
-				float precio = raf.readFloat();
-				int stock = raf.readInt();
+			for (Planta p : plantasAlta) {
 
-				System.out.println("Código: "+codigo + ", Precio: " + precio + ", Stock: " + stock);
+				if (raf.getFilePointer() < raf.length()) {
 
-				// Avanzar la posición según los bytes leídos (4 + 4 + 4 = 12 bytes)
-				posicion += 12;
-			} 
+					int codigo = raf.readInt();
+					float precio = raf.readFloat();
+					int stock = raf.readInt();
+					
+					p.setPrecio(precio);
+					p.setStock(stock);
+
+					System.out.println("Código: "+codigo + ", Precio: " + precio + ", Stock: " + stock);
+
+					posicion += 12;
+					
+				}
+			}	
+
 			System.out.println("Se ha podido cargar el archivo plantas.dat");
-		}catch (IOException e) {
+		}catch (IOException | DatosInvalidosException e) {
 			e.printStackTrace();
 			System.err.println("Error al cargar el archivo plantas.dat: " + e.getMessage());
 		}
@@ -347,26 +356,28 @@ public class GestorPlantas {
 		try {
 
 			plantasAlta = cargarPlantasAlta(); // Esto debe llenarte la lista
-			crearPlantasDat();
+			cargarPlantaDat();
 
 			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r");
 			final int TAM_REGISTRO = 12;
 			long size = raf.length();
 			long posicion = 0;
 
-			while (posicion < size) {
-				raf.seek(posicion);
-				int codigoLeido = raf.readInt();
-				float precio = raf.readFloat();
-				int stock = raf.readInt();
+				while (posicion < size) {
+					raf.seek(posicion);
+					
+					int codigoLeido = raf.readInt();
+					float precio = raf.readFloat();
+					int stock = raf.readInt();
+					
+					if (codigoLeido == codigo) {
+						return "Código: " + codigoLeido + " | Precio: " + precio + " | Stock: " + stock;
+					}
 
-				if (codigoLeido == codigo) {
-					return "Código: " + codigoLeido + " | Precio: " + precio + " | Stock: " + stock;
+					posicion += TAM_REGISTRO;
+			
 				}
-
-				posicion += TAM_REGISTRO;
-			}
-
+			
 			  throw new DatosInvalidosException("Código inválido: " + codigo);
 	    } catch (IOException | DatosInvalidosException e) {
 	        e.printStackTrace();

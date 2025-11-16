@@ -2,38 +2,32 @@ package practfinal_java.io;
 
 public class Main {
 
-		public static void main(String[] args) {
-			try {
+	public static void main(String[] args) {
 
-				GestorPlantas gp = new GestorPlantas();
+		try {
 
-				gp.inicializar();
-
-				gp.cargarPlantasAlta();
-				gp.cargarPlantaDat();
-
-				GestorEmpleados gestor = new GestorEmpleados();
-				
-				gestor.inicializarGestores();
+			GestorPlantas gp = new GestorPlantas();
+			gp.inicializar();
 
 
-				ControlErrores ce = new ControlErrores();
-				ce.verificarYCrearDirectorios();
-				if (!ce.verificarArchivosObligatorios()) {
-					System.out.println("Faltan archivos obligatorios. Terminando ejecución.");
-					return;
-				}
-
-				gestor.autenticarInteractivo(gp, 3);
+			GestorEmpleados ge = new GestorEmpleados();
+			ge.inicializarGestores();
 
 
-			} catch (Exception e) {
-				e.printStackTrace();
+			ControlErrores ce = new ControlErrores();
+			ce.verificarYCrearDirectorios();
+			if (!ce.verificarArchivosObligatorios()) {
+				System.out.println("Faltan archivos obligatorios. Terminando ejecución.");
 			}
 
-
+			ge.autenticarInteractivo(gp, 3);
 			
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+	}
 
 }
 
