@@ -81,17 +81,14 @@ public class MenuGestor {
 					System.out.println("3. Modificar ambos");
 					System.out.println("0. Volver al menú principal");
 					System.out.print("Elige una opción: ");
-					sc.nextLine();
 					input = sc.nextLine();
-
 					opcion = ControlErrores.leerEntero(input);
 
 					switch (opcion) {
 						case 1:
 							System.out.print("Introduce el nuevo precio: ");
-							sc.nextLine();
-							input = sc.nextLine();
 
+							input = sc.nextLine();
 							float nuevoPrecio = ControlErrores.leerFloat(input);
 
 							if (nuevoPrecio >= 0) {
@@ -109,7 +106,6 @@ public class MenuGestor {
 
 						case 2:
 							System.out.print("Introduce el nuevo stock: ");
-							sc.nextLine();
 							input = sc.nextLine();
 
 							int nuevoStock = ControlErrores.leerEntero(input);
@@ -130,15 +126,12 @@ public class MenuGestor {
 						case 3:
 							System.out.print("Introduce el nuevo precio: ");
 
-							sc.nextLine();
 							input = sc.nextLine();
 
 							float precioAmbos = ControlErrores.leerFloat(input);
 							System.out.print("Introduce el nuevo stock: ");
 
-							sc.nextLine();
 							input = sc.nextLine();
-
 							int stockAmbos = ControlErrores.leerEntero(input);
 
 							if (precioAmbos >= 0 && stockAmbos >= 0) {
@@ -200,9 +193,7 @@ public class MenuGestor {
 
 			System.out.println("Elige una opción: ");
 
-			sc.nextLine();
-			input = sc.nextLine();
-
+			input = sc.next();
 			opcion = ControlErrores.leerEntero(input);
 
 			switch (opcion) {
@@ -211,16 +202,15 @@ public class MenuGestor {
 
 					System.out.println("Por favor introduzca los siguientes datos:\n");
 					System.out.println("ID del producto:");
-					sc.nextLine();
-					input = sc.nextLine();
+					input = sc.next();
 					int id = ControlErrores.leerEntero(input);
 
 					System.out.println("Nombre de la planta:");
-					input = sc.nextLine();
+					input = sc.next();
 					String nombre = ControlErrores.leerTexto(input);
 
 					System.out.println("Foto de la planta:");
-					input = sc.nextLine();
+					input = sc.next();
 					String foto = ControlErrores.leerTexto(input);
 
 					System.out.println("Descripción de la planta:");
@@ -228,16 +218,11 @@ public class MenuGestor {
 					String descripcion = ControlErrores.leerTexto(input);
 
 					System.out.println("Stock:");
-					sc.nextLine();
-					input = sc.nextLine();
+					input = sc.next();
 					int stock = ControlErrores.leerEntero(input);
 
-					sc.nextLine();
-
 					System.out.println("Precio:");
-
-					sc.nextLine();
-					input = sc.nextLine();
+					input = sc.next();
 					float precio = ControlErrores.leerFloat(input);
 
 					gestor_p.dardeAltaPlanta(id, nombre, foto, descripcion, stock, precio);
@@ -259,33 +244,29 @@ public class MenuGestor {
 				case 3:
 
 					System.out.println("Introduzca el ID del producto que quiere modificar:");
-
 					input = sc.next(); // Leemos como String
 					int codigo = ControlErrores.leerEntero(input);
 
 					modificarPlanta(codigo);
 
-					break;
 
 				case 4:
 
 					System.out.println("Dando de alta a un nuevo empleado...");
 
 					System.out.print("ID del empleado: ");
-					sc.nextLine();
-					input = sc.nextLine();
+					input = sc.next();
 					int id_emp = ControlErrores.leerEntero(input);
 
 					System.out.print("Nombre del empleado: ");
-					input = sc.nextLine();
+					input = sc.next();
 					String nombre_emp = ControlErrores.leerTexto(input);
 
 
 					System.out.print("Contraseña del empleado: ");
-					String contraseña = sc.nextLine();
+					String contraseña = sc.next();
 
 					System.out.print("Cargo del empleado (1. VENDEDOR, 2. ENCARGADO): ");
-					sc.nextLine();
 					input = sc.nextLine();
 					int cargoInt = ControlErrores.leerEntero(input);
 
@@ -326,13 +307,13 @@ public class MenuGestor {
 
 				case 7:
 
-
 					gestor_p.mostrarEstadisticas();
 					break;
 
 				default:
+					
 					System.out.println("Opción no válida. Por favor, elige otra opción.");
-					break;
+					
 
 			}
 		} while (opcion != 0);

@@ -53,7 +53,7 @@ public class GestorPlantas {
 
 	public void inicializar() {
 
-		try {
+	try {
 		this.plantasAlta = cargarPlantasAlta(); // Cargar plantas activas desde XML
         if (!plantasAlta.isEmpty()) {
             System.out.println("Plantas activas cargadas: " + plantasAlta.size());
@@ -67,7 +67,7 @@ public class GestorPlantas {
         cargarPlantaDat();
 		
 		}catch (Exception e){ 
-			System.out.println("No se pudo crear el archivo 'plantasBaja.xml': " + e.getMessage());
+			System.out.println("Hubo un error en los archivos");
 		}  
 	} //Carga todo de una + PROBARLO ++
 	 
@@ -136,7 +136,7 @@ public class GestorPlantas {
 		plantasBaja.clear();
 		
 		try {
-			File ficheroXML = new File("PLANTAS/plantasBaja.xml");
+			File ficheroXML = new File("PLANTAS/plantasBajas.xml");
 			
 			if (!ficheroXML.exists()) {
 				System.out.println("El archivo plantasBajas.xml no existe");

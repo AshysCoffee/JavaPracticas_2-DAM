@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class GestorTickets {
@@ -32,23 +36,41 @@ public class GestorTickets {
 
 	
 	public void agregarDevolucionATicket(int numTicket, ArrayList<String> lineasDevolucion) {
-		File archivo = new File("TICKETS/"+  numTicket + ".txt");
+		
+		File archivo = new File("TICKETS/" + numTicket + ".txt");
+		
 		if (!archivo.exists()) {
 			System.out.println("No se encontró el ticket Nº " + numTicket);
 			return;
 		}
 
 		try (FileWriter fw = new FileWriter(archivo, true)) { // true → añadir al final
+			
 			fw.write("\n=== DEVOLUCIONES ===\n");
 			for (String linea : lineasDevolucion) {
 				fw.write(linea + "\n");
 			}
+			
 			System.out.println("Devoluciones añadidas al ticket Nº " + numTicket);
+			
+			
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Error al escribir devoluciones: " + e.getMessage());
 		}
+	
+	
+		try {
+			
+			Path origen = Paths.get("TICKETS/" + numTicket + ".txt");
+			Path destino = Paths.get("DEVOLUCIONES/" + numTicket + ".txt");
+			
+			Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
 	}
 }
-
-
-

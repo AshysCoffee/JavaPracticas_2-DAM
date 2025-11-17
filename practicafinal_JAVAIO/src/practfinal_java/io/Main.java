@@ -20,8 +20,9 @@ public class Main {
 				System.out.println("Faltan archivos obligatorios. Terminando ejecución.");
 			}
 
-			ge.autenticarInteractivo(gp, 3);
 			
+			ge.autenticarInteractivo(gp, 3);
+			  
 
 		} catch (Exception e) {
 			e.printStackTrace();

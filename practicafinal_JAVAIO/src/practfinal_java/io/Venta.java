@@ -15,29 +15,25 @@ import java.time.*;
 @SuppressWarnings("serial")
 public class Venta implements Serializable {
 
-	private static int ultimoTicket = 0;
-	private int cod_ticket;
+	private static int ultimoTicket = 1;
 	private Empleado empleado;
 	private double total;
 	private LocalDate fecha;
 	private GestorPlantas gestor;
-
+	private int cod_ticket ;
 	private ArrayList<LineaTicket> lista_prod;
 	private ArrayList<Planta> cesta;
 
 	public Venta(GestorPlantas gestor, Empleado empleado) {
 		this.gestor = gestor;
 		this.empleado = empleado;
-		this.cod_ticket = 0;
+		this.cod_ticket = ultimoTicket++;
 		this.fecha = LocalDate.now();
 		this.total = 0;
 		lista_prod = new ArrayList<>();
 		cesta = new ArrayList<>();
 	}
 
-	public int getCod_ticket() {
-		return cod_ticket;
-	}
 
 	public Empleado getEmpleado() {
 		return empleado;
@@ -89,7 +85,7 @@ public class Venta implements Serializable {
 
 		if (!carpetaTickets.exists()) { // lo creamos si no existe
 			carpetaTickets.mkdirs();
-			cod_ticket = 0;
+			int cod_ticket = 0;
 			return;
 		}
 
@@ -116,15 +112,10 @@ public class Venta implements Serializable {
 	} // PROBARLO++ ---- LEE EL ULTIMO NUMERO GUARDADO
 
 	public int generarNuevoTicket() {
-
-		// Este es el que usas cuando se hace una nueva venta.
-
-		ultimoTicket++; // siguiente número
-		this.cod_ticket = ultimoTicket; // asignarlo a la venta
-
-		generarTicket(); // guarda en carpeta TICKETS
-		return ultimoTicket;
-	} // PROBARLO++ --- INCREMENTA EL NUMERO, SE PONE AL GENERAR UNA NUEVA VENTA
+	    ultimoTicket++; 
+	    this.cod_ticket = ultimoTicket;
+	    return cod_ticket;
+	}
 
 	///// METODOS DE ESPECIFICOS
 
@@ -157,7 +148,7 @@ public class Venta implements Serializable {
 		return linea;
 	} // PROBARLO
 
-	///// METODOS DE LINEAS
+//////////// METODOS DE LINEAS
 
 	public void agregarLinea(LineaTicket linea) {
 		lista_prod.add(linea);
@@ -169,7 +160,9 @@ public class Venta implements Serializable {
 		this.total -= linea.calcularSubtotal();
 	} // PROBARLO++
 
-	///// METODOS DE ARRAYLISTS
+
+	
+/////////// METODOS DE ARRAYLISTS
 
 	public void agregarProducto(int id, int cantidad) {
 
@@ -184,19 +177,15 @@ public class Venta implements Serializable {
 			System.err.println("Error: no hay stock suficiente");
 			return;
 		}
-		try {
-			
-			if (p != null) {
-				cesta.add(p);
-				agregarLinea(new LineaTicket(cantidad, p));
-				p.setStock(p.getStock() - cantidad);
-				gestor.actualizarStockDat(id, p.getStock());
 
-			}
+		if (p != null) {
+			cesta.add(p);
+			agregarLinea(new LineaTicket(cantidad, p));
 
-		} catch (DatosInvalidosException e) {
-			e.printStackTrace();
-			System.err.println("Error al actualizar stock: " + e.getMessage() + "\n");
+		}
+		
+		if (p.getStock()==0) {
+			gestor.darDeBajaPlanta(p.getCodigo());
 		}
 
 	} // PROBARLO++
@@ -235,14 +224,13 @@ public class Venta implements Serializable {
 	///// METODOS DE LECTURA Y ESCRITURA
 
 	public void generarTicket() {
-
 		try {
-
+	
 			File carpeta = new File("TICKETS");
 			if (!carpeta.exists()) {
 				carpeta.mkdirs();
 			}
-
+			
 			int numeroTicket = generarNuevoTicket();
 			
 			File f = new File("TICKETS/" + numeroTicket + ".txt");
@@ -266,14 +254,29 @@ public class Venta implements Serializable {
 
 				System.out.println("Ticket " + numeroTicket + " guardado correctamente en /TICKETS");
 
+				for (LineaTicket l : lista_prod) {
+				    Planta p = l.getPlanta();
+				    int cantidad = l.getCantidad();
+
+				    int nuevoStock = (p.getStock() - cantidad);
+				    
+				    if (nuevoStock < 0) {
+				        throw new DatosInvalidosException("Stock no puede ser negativo");
+				    }else{
+				    	p.setStock(nuevoStock);
+				    }
+				    
+				    gestor.actualizarStockDat(p.getCodigo(), p.getStock());
+				}
+				
 			}
-		} catch (IOException e) {
+		} catch (IOException | DatosInvalidosException e) {
 			System.out.println("Error al guardar ticket: " + e.getMessage());
 		}
 
 	} // PROBARLO++
 
-	public void leerTicket() {
+	public void leerTicket(int id) {
 
 		try {
 
@@ -282,7 +285,7 @@ public class Venta implements Serializable {
 				carpeta.mkdirs();
 			}
 
-			File f = new File("TICKETS/" + cod_ticket + ".txt");
+			File f = new File("TICKETS/" + id + ".txt");
 
 			BufferedReader buffer_r = new BufferedReader(new FileReader(f));
 			String linea;

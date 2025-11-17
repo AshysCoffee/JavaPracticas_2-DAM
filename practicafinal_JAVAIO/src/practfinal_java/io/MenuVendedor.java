@@ -9,7 +9,6 @@ public class MenuVendedor {
 	private GestorPlantas gestor_p;
 	private Venta ventas;
 	private Devolucion devoluciones;
-	private ControlErrores ce;
 
 	public MenuVendedor(GestorPlantas gestor_p, Empleado empleado) {
 		super();
@@ -87,10 +86,12 @@ public class MenuVendedor {
 				do {
 					
 					System.out.println("\nCódigo planta (1000 para terminar):");
-					id_planta = sc.nextInt();
+					input = sc.nextLine();
+					id_planta = ControlErrores.leerEntero(input);
 
 					System.out.println("Cantidad (1000 para terminar):");
-					cantidad = sc.nextInt();
+					input = sc.nextLine();
+					cantidad = ControlErrores.leerEntero(input);
 
 					// Si el usuario quiere terminar la compra
 					if (id_planta == 1000 && cantidad == 1000) {
@@ -107,8 +108,6 @@ public class MenuVendedor {
 
 				System.out.println("¿Desea continuar con la compra? [Y/N]");
 
-				sc.nextLine();
-				
 				input = sc.nextLine();
 				String resp = ControlErrores.leerTexto(input);
 
@@ -124,8 +123,6 @@ public class MenuVendedor {
 			case 3:
 
 				System.out.print("Introduce el número del ticket a buscar: ");
-
-				sc.nextLine();
 				input = sc.nextLine();
 				int num = ControlErrores.leerEntero(input);
 
@@ -138,12 +135,10 @@ public class MenuVendedor {
 				System.out.println(contenido);
 
 				System.out.print("Introduce el ID de la planta a devolver: ");
-				sc.nextLine();
 				input = sc.nextLine();
 				int id = ControlErrores.leerEntero(input);
 
 				System.out.print("Introduce la cantidad a devolver: ");
-				sc.nextLine();
 				input = sc.nextLine();
 				int cantidad_d = ControlErrores.leerEntero(input);
 
@@ -160,6 +155,7 @@ public class MenuVendedor {
 					// Actualizamos el stock (si quieres reflejarlo en el sistema):
 					p.setStock(p.getStock() + cantidad_d);
 					System.out.println("Devolución procesada correctamente.");
+					
 				} else {
 					System.out.println("Planta no encontrada.");
 				}
@@ -167,7 +163,6 @@ public class MenuVendedor {
 
 			default:
 				System.out.println("No existe esa opción, por favor eliga alguna de las siguientes");
-				break;
 
 			}
 		} while (opcion != 0);
