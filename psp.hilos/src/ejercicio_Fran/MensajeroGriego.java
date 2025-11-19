@@ -4,40 +4,53 @@ import java.util.Date;
 
 public class MensajeroGriego implements Runnable {
 
-	@Override
-	public void run() {
+	 @Override
+	    public void run() {
 
-		///Convierto el numero del hilo en un número para mostrarlo en pantalla
+	        int threadNumber = Integer.parseInt(Thread.currentThread().getName());
 
-		int threadNumber = Integer.parseInt(Thread.currentThread().getName());
-		System.out.println("Comienza la ejecucion del hilo => " + threadNumber);
+	        long tsInicio = (new Date()).getTime();
 
-		// El tiempo en sistema informaticos se mide en ms desde las 00:00:00 del 1/1/70
-		long tsInicio = (new Date()).getTime();
+	        System.out.println("COMIENZA LA EJECUCIÓN EL HILO => " + threadNumber);
 
-		try {
-			// Simulamos que el hilo vive 2 segundos.
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		long tsFinalizacion = (new Date()).getTime();
+	        try {
+	            // Simulamos que el hilo vive 2 secs.
+	            Thread.sleep(2000);
+	        } catch (InterruptedException ex) {
+	            ex.printStackTrace();
+	        }
 
-		System.out.println("--[LLEGO A LA META]-- FINNNN DEL HILOOOOOOOO => " + threadNumber+ "\nTARDE " + (tsFinalizacion - tsInicio) / 1000.0f);
+	        long tsFinalización = (new Date()).getTime();
+	        System.out.println("[LLEGÓ A LA META] FINNNN DEL HILO => " + threadNumber
+	                + "\n\tTARDÉ " + (tsFinalización - tsInicio) / 1000.0f);
 
-		registraFinEjecucionHilo(threadNumber);
-	}
+	        registraFinEjecuciónHilo(threadNumber);
+	    }
 
-	public void registraFinEjecucionHilo(int threadNumber) {
-		
-		
-//		boolean [] arrayHilosFinalizados = SincronizacionWaitNotify.getFlagArrayHilosFinalizados();
-//		arrayHilosFinalizados [threadNumber -1] = true;
-//		
-//		for (boolean b : arrayHilosFinalizados) {
-//			if (b)
-//		}
-		
-	}
+	 
+	 
+	 		protected synchronized void registraFinEjecuciónHilo(int threadNumber) {
+	        boolean[] arrayHilosFinalizados = SincronizacionWaitNotify.getFlagsArrayHilosFinalizados();
+	        arrayHilosFinalizados[threadNumber - 1] = true;
+
+	        // Recorremos el array para comprobar si TODOS los hilos han acabado la carrera
+	        //boolean todosHilosFinalizaron = true;
+	        for (boolean b : arrayHilosFinalizados) {
+	            // Si alguno de ellos no ha acabado, salimos del método
+	            if (b == false) {
+	                return;
+	            }
+	        }
+
+	        // Imprimimos por pantalla qué hilo anuncia llega el último a la meta
+	        // y lo NOTIFICA al hilo principal
+	        System.out.println("Soy  >> " + threadNumber + " << el último hilo en llegar a meta, y he finalizado"
+	                + "\n\tSE LO COMUNICO AL HILO MAINNNNNNNN");
+
+	        // Notificamos al hilo principal que todos los hilos acabaron su procesamiento
+	        synchronized (arrayHilosFinalizados) {
+	            arrayHilosFinalizados.notify();
+	        }
+	    }
 
 }

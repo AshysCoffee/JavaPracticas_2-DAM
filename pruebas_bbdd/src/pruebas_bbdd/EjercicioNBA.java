@@ -361,7 +361,6 @@ public class EjercicioNBA {
 							String nombre_equipo = opciones.get(seleccion - 1);
 
 						
-						
 						sentencia_preparada.setInt(1, codigo);
 						sentencia_preparada.setString(2, nombre);
 						sentencia_preparada.setString(3, procedencia);
