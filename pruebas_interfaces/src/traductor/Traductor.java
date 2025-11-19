@@ -1,6 +1,5 @@
 package traductor;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -43,7 +42,7 @@ public class Traductor {
 			
 			System.out.println("Your word is "+resultado+":3");
 			
-			
+			sc.close();
 			
 	}
 

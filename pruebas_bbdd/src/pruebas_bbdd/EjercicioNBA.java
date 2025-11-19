@@ -284,39 +284,63 @@ public class EjercicioNBA {
 					int id_jugadores = sc.nextInt();
 
 					try {
+
 						Class.forName("com.mysql.cj.jdbc.Driver");
 						Connection conexion = DriverManager.getConnection(url, usuario, password);
 
-						Statement sentencia = conexion.createStatement();
-						String consulta = "DELETE FROM jugadores WHERE codigo = "+id_jugadores;
-						
-						int resultado = sentencia.executeUpdate(consulta);
+						// COMO NO HAY BORRADO EN CASCADA EN LA BASE DE DATOS, TENGO QUE BORRAR TODO A MANO LOL
+						// OSEA TENGO QUE BORRAR DE ESTADISTICA, REGISTRO, DEL EQUIPO EVERYWHERE
 
-						if (resultado > 0) {
-							System.out.println("Se borro el jugador con el codigo "+id_jugadores);
-						} else {
-							System.out.println("No se pudo borrar el jugador");
+						String consulta1 = "SELECT * FROM estadisticas WHERE jugador =  ?";
+						PreparedStatement sentencia1 = conexion.prepareStatement(consulta1);
+						sentencia1.setInt(1, id_jugadores);
+						
+						if (sentencia1.execute()) {
+							String consulta2 = "DELETE FROM estadisticas WHERE jugador = ?";
+							PreparedStatement sentencia2 = conexion.prepareStatement(consulta2);
+							sentencia2.setInt(1, id_jugadores);
+							
+							int resultado = sentencia2.executeUpdate();
+							
+							if (resultado > 0) {
+								System.out.println("Se ha borrado el jugador "+id_jugadores+" de estadisticas");
+						    } else {
+						        System.out.println("No se pudo borrar al jugador de estadisticas");
+						    }
+
 						}
+
+						String consulta3 = "DELETE FROM jugadores WHERE codigo = ?";
+						PreparedStatement sentencia3 = conexion.prepareStatement(consulta3);
+						sentencia3.setInt(1, id_jugadores);
+
+						int resultado = sentencia3.executeUpdate();
 						
+						if (resultado > 0) {
+							System.out.println("Se ha borrado el jugador "+id_jugadores);
+					    } else {
+					        System.out.println("No se pudo insertar el jugador");
+					    }
+
 						System.out.println("--------------");
-						
-					}catch(Exception e) {
+
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
+
 					break;
-					
+
 				case 2:
-					
+
 					System.out.println("Por favor, introduzca los siguientes datos:");
-					
+
 					System.out.println("Codigo: ");
 					int codigo = sc.nextInt();
 					sc.nextLine();
-					
+
 					System.out.println("Nombre: ");
 					String nombre = sc.next();
-	
+
 					System.out.println("Procedencia: ");
 					String procedencia = sc.next();
 	
@@ -390,8 +414,6 @@ public class EjercicioNBA {
 					
 				case 3:
 					
-					ArrayList <String> opciones = new ArrayList<>();
-					
 					try {
 						
 						
@@ -449,74 +471,74 @@ public class EjercicioNBA {
 					
 					break;
 	
-//				case 4:
-//	
-//					System.out.println("Por favor, introduzca los siguientes datos:");
-//					
-//					System.out.println("Codigo: ");
-//					int codigo = sc.nextInt();
-//					
-//					sc.nextLine();
-//					
-//					System.out.println("Nombre: ");
-//					String nombre = sc.next();
-//	
-//					System.out.println("Procedencia: ");
-//					String procedencia = sc.next();
-//	
-//					System.out.println("Altura: ");
-//					String altura = sc.next();
-//					
-//					System.out.println("Peso: ");
-//					int peso = sc.nextInt();
-//					sc.nextLine();
-//					
-//					System.out.println("Posicion: ");
-//					String posicion = sc.next();
-//	
-//					System.out.println("Nombre de su equipo: ");
-//					String nombre_equipo = sc.next();
-//			
-//					
-//	
-//					try {
-//	
-//						Class.forName("com.mysql.cj.jdbc.Driver");
-//	
-//						Connection conexion = DriverManager.getConnection(url,usuario,password);
-//						String consulta = "INSERT INTO jugadores VALUES (?,?,?,?,?,?,?)";
-//						PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta);	
-//	
-//						sentencia_preparada.setInt(1, codigo);
-//						sentencia_preparada.setString(2, nombre);
-//						sentencia_preparada.setString(3, procedencia);
-//						sentencia_preparada.setString(4, altura);
-//						sentencia_preparada.setInt(5, peso);
-//						sentencia_preparada.setString(6, posicion);
-//						sentencia_preparada.setString(7, nombre_equipo);
-//						
-//						int resultado = sentencia_preparada.executeUpdate();
-//									
-//						if (resultado > 0) {
-//					        
-//							System.out.println("---\nCodigo:"+codigo+"\nNombre: "+nombre+"\nProcedencia: "+procedencia+
-//									"\nAltura: "+altura+"\nPeso: "+peso+"\nPosición:"+posicion+"\nNombre del equipo:"+nombre_equipo+"\n-----\n");
-//							
-//					    } else {
-//					    	
-//					        System.out.println("No se pudo insertar el jugador");
-//					    }
-//						
-//	
-//					}catch(Exception e) {
-//						e.printStackTrace();
-//					}
-//	
+				case 4:
+	
+					ArrayList <String> opciones_distr = new ArrayList<>();
+					
+					try {
+						
+						Class.forName("com.mysql.cj.jdbc.Driver");
+						Connection conexion = DriverManager.getConnection(url,usuario,password);
+				
+						Statement sentencia = conexion.createStatement();	
+						String consulta = "SELECT DISTINCT nombre_equipo FROM jugadores";
+						ResultSet resultado = sentencia.executeQuery(consulta);		
+						
+						int contador = 0;
+						
+						
+						
+						System.out.println("\nEquipos existentes:---------------");
+						
+						while (resultado.next()){
+							String nombre_equipo = resultado.getString("nombre_equipo");
+							contador++;
+							System.out.println(contador +". "+ nombre_equipo+"");
+							
+							opciones_distr.add(nombre_equipo);
+							
+						}	
+						
+						System.out.print("Escriba el número del equipo que desea fichar a dicho jugador: ");
+						int seleccion=sc.nextInt();
+					
+						String nombre_equipo = opciones_distr.get(seleccion - 1);
+						
+						
+						String consulta_prep = "SELECT * FROM jugadores INNER JOIN estadisticas ON jugadores.codigo = estadisticas.jugador"
+								+ " WHERE nombre_equipo = ?;";
+						PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta_prep);
+						sentencia_preparada.setString(1, nombre_equipo);
+						
+						ResultSet resultado_est = sentencia_preparada.executeQuery();
+						
+						while (resultado_est.next()){
+							
+							nombre = resultado_est.getString("Nombre");
+							procedencia = resultado_est.getString("Procedencia");
+							posicion = resultado_est.getString("Posicion");
+							nombre_equipo = resultado_est.getString("Nombre_equipo");
+							float puntos_partido = resultado_est.getFloat("Puntos_por_partido");
+							float asistencia_partido= resultado_est.getFloat("Asistencias_por_partido");
+							float tapones_partido= resultado_est.getFloat("Tapones_por_partido");
+							float rebotes_partido= resultado_est.getFloat("Rebotes_por_partido");
+							
+							
+							
+							System.out.println("---\nNombre: "+nombre+"\nProcedencia: "+procedencia+
+									"\nPosición:"+posicion+"\nPuntos por partido: "+puntos_partido+"\nAsistencias por partido: "+asistencia_partido+""
+											+ "\nTapones por partido: "+tapones_partido+"\nPuntos por partido: "+rebotes_partido+"\n-----\n");
+							System.out.println("--------------");
+					
+						}	
+						
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					
 					
 				default:
 					System.out.println("No es una opcion");
-				
-						
 						
 				}		
 				

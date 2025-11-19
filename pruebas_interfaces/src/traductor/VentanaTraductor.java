@@ -15,8 +15,7 @@ public class VentanaTraductor extends JFrame{
 		setResizable(true);
 		setLocationRelativeTo(null);
 		
-		Panel miPanel = new Panel();
-		
+		PanelJ miPanel = new PanelJ();
 		add(miPanel);
 		
 	}

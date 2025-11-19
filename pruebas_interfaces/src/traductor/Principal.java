@@ -14,7 +14,8 @@ public class Principal {
 					
 					VentanaTraductor miVentana = new VentanaTraductor();
 					miVentana.setVisible(true);
-					miVentana.setSize(1200,800);
+					miVentana.setSize(500,500);
+					
 					//Si pongo un set aqui, estoy modificando el constructor xD
 					
 				} catch (Exception e) {
