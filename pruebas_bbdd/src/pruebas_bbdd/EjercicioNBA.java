@@ -388,83 +388,67 @@ public class EjercicioNBA {
 					break;
 					
 					
-//				case 3:
-//					
-//					ArrayList <String> opciones = new ArrayList<>();
-//					
-//					try {
-//						
-//						Class.forName("com.mysql.cj.jdbc.Driver");
-//						Connection conexion = DriverManager.getConnection(url,usuario,password);
-//				
-//						Statement sentencia = conexion.createStatement();	
-//						String consulta = "SELECT DISTINCT nombre_equipo FROM jugadores";
-//						ResultSet resultado = sentencia.executeQuery(consulta);		
-//						
-//						int contador = 0;
-//						
-//						
-//						System.out.println("\nEquipos existentes:---------------");
-//						
-//						while (resultado.next()){
-//							String nombre_equipo = resultado.getString("nombre_equipo");
-//							contador++;
-//							System.out.println(contador +". "+ nombre_equipo+"");
-//							
-//							opciones.add(nombre_equipo);
-//							
-//						}	
-//						
-//						System.out.println("\n");
-//						
-//					}catch(Exception e) {
-//						e.printStackTrace();
-//					}
-//					
-//					
-//					int seleccion=0;
-//					
-//					System.out.print("Escriba el número del equipo que desea consultar: ");
-//					seleccion=sc.nextInt();
-//					
-//					
-//					try {
-//						
-//						Class.forName("com.mysql.cj.jdbc.Driver");
-//						
-//						Connection conexion = DriverManager.getConnection(url,usuario,password);
-//						String consulta = "SELECT * FROM jugadores WHERE nombre_equipo = ?";
-//						PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta);	
-//						
-//						String condicion = opciones.get(seleccion-1);
-//						
-//						sentencia_preparada.setString(1, condicion);
-//						
-//						
-//						ResultSet resultado = sentencia_preparada.executeQuery();
-//						
-//						System.out.println("Equipo "+opciones.get(seleccion-1).toString()+":");
-//						
-//						while (resultado.next()){
-//							int codigo = resultado.getInt("codigo");
-//							String nombre = resultado.getString("Nombre");
-//							String procedencia = resultado.getString("Procedencia");
-//							int peso = resultado.getInt("Peso");
-//							String posicion = resultado.getString("Posicion");
-//							
-//							
-//							System.out.println("---\nCodigo:"+codigo+"\nNombre: "+nombre+"\nProcedencia: "+procedencia+
-//									"\nPeso: "+peso+"\nPosición:"+posicion+"\n-----\n");
-//							
-//					
-//						}	
-//						
-//					}catch(Exception e) {
-//						e.printStackTrace();
-//					}
-//	
-//					break;
-//	
+				case 3:
+					
+					ArrayList <String> opciones = new ArrayList<>();
+					
+					try {
+						
+						
+						System.out.println("Por favor, introduzca los siguientes datos:");
+						
+						System.out.println("Codigo: ");
+						int codigo_partido = sc.nextInt();
+						sc.nextLine();
+						
+						System.out.println("Equipo local: ");
+						String equipo_local = sc.next();
+		
+						System.out.println("Equipo visitante: ");
+						String equipo_visitante = sc.next();
+		
+						System.out.println("Puntos de local: ");
+						int puntos_local = sc.nextInt();
+						sc.nextLine();
+						
+						System.out.println("Puntos de visitante: ");
+						int puntos_visitante = sc.nextInt();
+						sc.nextLine();
+						
+						System.out.println("Temporada (??/??): ");
+						String temporada = sc.next();
+						
+						Class.forName("com.mysql.cj.jdbc.Driver");
+						Connection conexion = DriverManager.getConnection(url,usuario,password);
+						String consulta = "INSERT INTO partidos VALUES (?,?,?,?,?,?)";
+						PreparedStatement sentencia_preparada = conexion.prepareStatement(consulta);							
+						
+						
+						sentencia_preparada.setInt(1, codigo_partido);
+						sentencia_preparada.setString(2, equipo_local);
+						sentencia_preparada.setString(3, equipo_visitante);
+						sentencia_preparada.setInt(4, puntos_local);
+						sentencia_preparada.setInt(5, puntos_visitante);
+						sentencia_preparada.setString(6, temporada);
+						
+						
+						int resultado = sentencia_preparada.executeUpdate();
+						
+						if (resultado > 0) {
+							System.out.println("---\nCodigo:"+codigo_partido+"\nEquipo local: "+equipo_local+"\nEquipo visitante: "+equipo_visitante+
+									"\nPuntos de local: "+puntos_local+"\nPuntos de visitante: "+puntos_visitante+"\nTemporada: "+temporada+"\n-----\n");
+					    } else {
+					        System.out.println("No se pudo insertar el partido");
+					    }
+						
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					
+					
+					
+					break;
+	
 //				case 4:
 //	
 //					System.out.println("Por favor, introduzca los siguientes datos:");
