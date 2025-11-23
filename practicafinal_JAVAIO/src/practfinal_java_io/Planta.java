@@ -1,4 +1,4 @@
-package practfinal_java.io;
+package practfinal_java_io;
 
 public class Planta {
 	

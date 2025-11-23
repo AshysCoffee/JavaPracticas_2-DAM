@@ -1,4 +1,4 @@
-package practfinal_java.io;
+package practfinal_java_io;
 
 import java.io.BufferedReader;
 import java.io.File;

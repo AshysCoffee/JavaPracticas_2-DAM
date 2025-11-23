@@ -1,4 +1,4 @@
-package practfinal_java.io;
+package practfinal_java_io;
 
 @SuppressWarnings("serial")
 public class DatosInvalidosException extends Exception{
