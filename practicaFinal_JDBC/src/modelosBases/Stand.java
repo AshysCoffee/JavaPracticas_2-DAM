@@ -8,13 +8,14 @@ public class Stand {
 	private String descripcion;
 	
 	
-	public Stand(int id_stand, int id_zona, String nombre, String descripcion) {
+	public Stand(int id_stand, String nombre, String descripcion, int id_zona) {
 		this.id_stand = id_stand;
 		this.id_zona = id_zona;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}
 	
+
 	public int getId_stand() {
 		return id_stand;
 	}

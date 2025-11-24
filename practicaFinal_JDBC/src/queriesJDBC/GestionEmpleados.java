@@ -19,7 +19,9 @@ public class GestionEmpleados {
 		this.conn = conn;
 	}
 
-	// CREATE
+
+///////CRUD///////	
+	
 	public boolean insertarEmpleado(Empleado emp) {
 		String sql = "INSERT INTO empleado (nombre, cargo, fecha_ingreso) VALUES (?, ?, ?)";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -34,7 +36,7 @@ public class GestionEmpleados {
 		}
 	}
 
-	// READ
+	
 	public ArrayList<Empleado> listarEmpleados() {
 		ArrayList<Empleado> lista = new ArrayList<>();
 		String sql = "SELECT * FROM empleado";
@@ -45,8 +47,7 @@ public class GestionEmpleados {
 
 				Cargo cargo = Cargo.valueOf(rs.getString("cargo"));
 
-				Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo,
-						rs.getDate("fecha_ingreso").toLocalDate());
+				Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
 				lista.add(emp);
 			}
 
@@ -56,7 +57,6 @@ public class GestionEmpleados {
 		return lista;
 	}
 
-	// UPDATE
 	public boolean actualizarEmpleado(Empleado emp) {
 		String sql = "UPDATE empleado SET nombre=?, cargo=?, fecha_ingreso=? WHERE id_empleado=?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -74,7 +74,6 @@ public class GestionEmpleados {
 		}
 	}
 
-	// DELETE
 	public boolean eliminarEmpleado(int id) {
 		String sql = "DELETE FROM empleado WHERE id_empleado = ?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -88,4 +87,71 @@ public class GestionEmpleados {
 		}
 	}
 
+	
+////////////OTRAS CONSULTAS////////	
+	
+	public Empleado obtenerEmpleadoPorId(int id) {
+		String sql = "SELECT * FROM empleado WHERE id_empleado = ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, id);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					Cargo cargo = Cargo.valueOf(rs.getString("cargo"));
+					return new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	
+	public ArrayList<Empleado> obtenerEmpleadosPorCargo(Cargo cargo) {
+		ArrayList<Empleado> lista = new ArrayList<>();
+		String sql = "SELECT * FROM empleado WHERE cargo = ?";
+
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setString(1, cargo.name());
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
+					lista.add(emp);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public ArrayList<Empleado> obtenerVentasDeEmpleado(int idEmpleado) {
+		ArrayList<Empleado> lista = new ArrayList<>();
+		String sql = "SELECT e.id_empleado, e.nombre, e.cargo, e.fecha_ingreso " +
+		             "FROM empleado e " +
+		             "JOIN venta v ON e.id_empleado = v.empleado_id " +
+		             "WHERE e.id_empleado = ?";
+
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, idEmpleado);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Cargo cargo = Cargo.valueOf(rs.getString("cargo"));
+					Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
+					lista.add(emp);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	
 }
