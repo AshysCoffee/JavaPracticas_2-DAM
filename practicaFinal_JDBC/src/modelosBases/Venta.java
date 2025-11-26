@@ -14,8 +14,8 @@ public class Venta {
 	private double importe;
 
 
-	public Venta(int id_venta, int id_empleado, int id_juguete, int id_stand, int id_zona, TipoPago tipoPago,
-			LocalDate fecha, double importe) {
+	public Venta(int id_venta,LocalDate fecha, TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona
+			 ) {
 		super();
 		this.id_venta = id_venta;
 		this.id_empleado = id_empleado;
@@ -25,6 +25,11 @@ public class Venta {
 		this.tipoPago = tipoPago;
 		this.fecha = fecha;
 		this.importe = importe;
+	}
+
+
+	public Venta() {
+
 	}
 
 

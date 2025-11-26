@@ -16,6 +16,13 @@ public class Juguete {
 		this.cantidad_stock = cantidad_stock;
 	}
 
+	public Juguete(String nombre, String descripcion, double precio, int cantidad_stock) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.cantidad_stock = cantidad_stock;
+	}
+	
 	public int getId_juguete() {
 		return id_juguete;
 	}

@@ -17,6 +17,10 @@ public class GestionJuguetes {
 		this.conn = conn;
 	}
 
+/// AÑADIR BORRADO EN CASCADAAAAAAAAA HAY QUE HACERLOS EN LOS SIGUIENTES ORDEN -->
+/// DELETE CAMBIO, VENTA, EMPLEADO (PARA BORRAR EMPLEADO)
+/// DELETE JUGUETE, STAND, STOCK;
+	
 //////CRUD JUGUETES//////
 
 	public boolean insertarJuguete(Juguete j) {
@@ -78,7 +82,7 @@ public class GestionJuguetes {
 	
 	
 	
-/////////OTRAS CONSULTAS//////
+/////////OTRAS CONSULTAS////// --> SOLO UN JUGUETE POR STANDS
 	
 	public Juguete obtenerJuguetePorId(int id) {
 		String querie = "SELECT * FROM juguete WHERE id_juguete=?";
@@ -165,5 +169,6 @@ public class GestionJuguetes {
 		return lista;
 	} 
 	
+
 	
 }

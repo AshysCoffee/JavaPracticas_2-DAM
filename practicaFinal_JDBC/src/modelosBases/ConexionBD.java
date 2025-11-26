@@ -8,6 +8,10 @@ public class ConexionBD {
 	String usuario = "root";
 	String password = "cfgs";
 
+	///AÑADIR UN CONTROL DE QUE SI LA BASE DE DATOS ESTA VACIA
+	/// Y YA DE AHI CARGAR CON UN INSERT
+	
+	
 	public Connection conectarBBDD() {
 		try {
 			

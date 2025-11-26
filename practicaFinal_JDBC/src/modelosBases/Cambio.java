@@ -17,7 +17,7 @@ public class Cambio {
     private int zonaDestino;
 	
     
-    public Cambio(int id_cambio, int id_empleado, int jugueteOriginal, int jugueteNuevo, String motivo, LocalDate fecha,
+    public Cambio(int id_cambio, String motivo, LocalDate fecha, int id_empleado, int jugueteOriginal, int jugueteNuevo,  
 			int standOrigen, int zonaOrigen, int standDestino, int zonaDestino) {
 		super();
 		this.id_cambio = id_cambio;
