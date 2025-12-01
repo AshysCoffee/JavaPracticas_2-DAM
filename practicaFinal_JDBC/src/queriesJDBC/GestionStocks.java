@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import modelosBases.Stock;
 
@@ -16,36 +17,64 @@ public class GestionStocks {
 		this.conn = conn;
 	}
 
-	public ArrayList<Stock> obtenerStockStand(int stand, int zona) {
-		ArrayList<Stock> lista = new ArrayList<>();
-		String querie = "SELECT * FROM stock WHERE stand_id=? AND zona_id=?";
-		try (PreparedStatement read = conn.prepareStatement(querie)) {
+	public boolean insertarStock(Stock s) {
+		String sql = "INSERT INTO cambio (stand_id, zona_id, juguete_id, cantidad"+
+				"VALUES (?, ?, ?, ?)";
 
-			read.setInt(1, stand);
-			read.setInt(2, zona);
+		
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			try (ResultSet rs = read.executeQuery()) {
+			ps.setInt(1, s.getId_stand());
+			ps.setInt(2, s.getId_zona());
+			ps.setInt(3, s.getId_juguete());
+			ps.setInt(4, s.getCantidad_disponible());
+	
+			if (ps.executeUpdate() == 0) {
+				return false;
+			}else{
+				return true;
+			}
+			
+			
+
+		} catch (SQLException e) {
+			System.out.println("Hubo un error :"+e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	public Stock obtenerStockdelStand(int stand, int zona, int juguete) {
+		String sql = "SELECT * FROM stock WHERE stand_id=? AND zona_id=? AND juguete_id=?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, stand);
+			ps.setInt(2, zona);
+			ps.setInt(3, juguete);
+
+			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					lista.add(new Stock(rs.getInt("stand_id"), rs.getInt("zona_id"), rs.getInt("juguete_id"),
-							rs.getInt("cantidad")));
+					return new Stock(rs.getInt("stand_id"), rs.getInt("zona_id"), rs.getInt("juguete_id"),
+							rs.getInt("cantidad"));
 				}
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
-		return lista;
+		return null;
 	}
 
-	public ArrayList<Stock> StockJuguete(int id) {
+	
+	public List<Stock> StockJuguete(int id) {
 
-		ArrayList<Stock> lista = new ArrayList<>();
-		String querie = "SELECT * FROM stock WHERE juguete_id=?";
-		try (PreparedStatement read = conn.prepareStatement(querie)) {
+		List<Stock> lista = new ArrayList<>();
+		String sql = "SELECT * FROM stock WHERE juguete_id=?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			read.setInt(1, id);
+			ps.setInt(1, id);
 
-			try (ResultSet rs = read.executeQuery()) {
+			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					lista.add(new Stock(rs.getInt("stand_id"), rs.getInt("zona_id"), rs.getInt("juguete_id"),
 							rs.getInt("cantidad")));
@@ -53,25 +82,32 @@ public class GestionStocks {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
 	
-	public void actualizarStock(int standId, int zonaId, int jugueteId, int nuevaCantidad) {
-		String querie = "UPDATE stock SET cantidad = ? WHERE stand_id = ? AND zona_id = ? AND juguete_id = ?";
-		try (PreparedStatement update = conn.prepareStatement(querie)) {
+	
+	public boolean actualizarStock(int standId, int zonaId, int jugueteId, int nuevaCantidad) {
+		String sql = "UPDATE stock SET cantidad = ? WHERE stand_id = ? AND zona_id = ? AND juguete_id = ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			update.setInt(1, nuevaCantidad);
-			update.setInt(2, standId);
-			update.setInt(3, zonaId);
-			update.setInt(4, jugueteId);
+			ps.setInt(1, nuevaCantidad);
+			ps.setInt(2, standId);
+			ps.setInt(3, zonaId);
+			ps.setInt(4, jugueteId);
 
-			update.executeUpdate();
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
+		
+		return false;
 	}
 	
 	

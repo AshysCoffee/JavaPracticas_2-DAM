@@ -12,6 +12,11 @@ public class Zona {
 		this.descripcion = descripcion;
 	}
 
+	public Zona(String nombre, String descripcion) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
 	public int getId_zona() {
 		return id_zona;
 	}
@@ -38,7 +43,7 @@ public class Zona {
 
 	@Override
 	public String toString() {
-		return "Zona [id_zona=" + id_zona + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
+		return "Zona " + id_zona + ", Nombre: " + nombre + ", Descripcion:" + descripcion ;
 	}
 	
 	

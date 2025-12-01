@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelosBases.Cargo;
 import modelosBases.Empleado;
@@ -29,16 +30,20 @@ public class GestionEmpleados {
 			ps.setString(2, emp.getCargo().name());
 			ps.setDate(3, Date.valueOf(emp.getFechaIngreso()));
 
-			return ps.executeUpdate() > 0;
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 			return false;
 		}
 	}
 
-	
-	public ArrayList<Empleado> listarEmpleados() {
-		ArrayList<Empleado> lista = new ArrayList<>();
+	public List<Empleado> listarEmpleados() {
+		List<Empleado> lista = new ArrayList<>();
 		String sql = "SELECT * FROM empleado";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
@@ -52,7 +57,7 @@ public class GestionEmpleados {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
@@ -66,27 +71,51 @@ public class GestionEmpleados {
 			ps.setDate(3, Date.valueOf(emp.getFechaIngreso()));
 			ps.setInt(4, emp.getIdEmpleado());
 
-			return ps.executeUpdate() > 0;
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 			return false;
 		}
 	}
 
 	public boolean eliminarEmpleado(int id) {
-		String sql = "DELETE FROM empleado WHERE id_empleado = ?";
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			ps.setInt(1, id);
-			return ps.executeUpdate() > 0;
+		if (obtenerEmpleadoPorId(id) == null) {
+			System.out.println("El empleado no existe.");
+			return false;
+		}
+
+		GestionVentas gv = new GestionVentas(conn);
+		GestionCambios gc = new GestionCambios(conn);
+
+		try {
+
+			gv.eliminarVentasDeEmpleado(id);
+			gc.eliminarCambiosDeEmpleado(id);
+
+			String sql = "DELETE FROM empleado WHERE id_empleado = ?";
+			try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+				ps.setInt(1, id);
+
+				if (ps.executeUpdate() == 0) {
+					return false;
+				} else {
+					return true;
+				}
+
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 			return false;
 		}
 	}
-
 	
 ////////////OTRAS CONSULTAS////////	
 	
@@ -103,14 +132,13 @@ public class GestionEmpleados {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return null;
 	}	
-
-	
-	public ArrayList<Empleado> obtenerEmpleadosPorCargo(Cargo cargo) {
-		ArrayList<Empleado> lista = new ArrayList<>();
+  
+	public List<Empleado> obtenerEmpleadosPorCargo(Cargo cargo) {
+		List<Empleado> lista = new ArrayList<>();
 		String sql = "SELECT * FROM empleado WHERE cargo = ?";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -118,37 +146,14 @@ public class GestionEmpleados {
 			ps.setString(1, cargo.name());
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
+					Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"),
+							cargo, rs.getDate("fecha_ingreso").toLocalDate());
 					lista.add(emp);
 				}
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return lista;
-	}
-	
-	public ArrayList<Empleado> obtenerVentasDeEmpleado(int idEmpleado) {
-		ArrayList<Empleado> lista = new ArrayList<>();
-		String sql = "SELECT e.id_empleado, e.nombre, e.cargo, e.fecha_ingreso " +
-		             "FROM empleado e " +
-		             "JOIN venta v ON e.id_empleado = v.empleado_id " +
-		             "WHERE e.id_empleado = ?";
-
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
-			ps.setInt(1, idEmpleado);
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					Cargo cargo = Cargo.valueOf(rs.getString("cargo"));
-					Empleado emp = new Empleado(rs.getInt("id_empleado"), rs.getString("nombre"), cargo, rs.getDate("fecha_ingreso").toLocalDate());
-					lista.add(emp);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}

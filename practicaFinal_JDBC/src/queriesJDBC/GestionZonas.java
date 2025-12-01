@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.util.List;
 
 import modelosBases.Zona;
 
@@ -20,8 +20,8 @@ public class GestionZonas {
 	
 ////////////CRUD////////	
 	
-	public ArrayList<Zona> listarZonas() {
-		ArrayList<Zona> lista = new ArrayList<>();
+	public List<Zona> listarZonas() {
+		List<Zona> lista = new ArrayList<>();
 		String sql = "SELECT * FROM zona";
 		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
@@ -29,10 +29,69 @@ public class GestionZonas {
 				lista.add(new Zona(rs.getInt("id_zona"), rs.getString("nombre"), rs.getString("descripcion")));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
+	
+	
+	public boolean agregarZona(Zona zona) {
+		String sql = "INSERT INTO zona (nombre, descripcion) VALUES (?, ?)";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, zona.getNombre());
+			ps.setString(2, zona.getDescripcion());
+
+			if (ps.executeUpdate() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Hubo un error :"+e.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean actualizarZona(Zona zona) {
+		String sql = "UPDATE zona SET nombre = ?, descripcion = ? WHERE id_zona = ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, zona.getNombre());
+			ps.setString(2, zona.getDescripcion());
+			ps.setInt(3, zona.getId_zona());
+			
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Hubo un error :"+e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	public boolean eliminarZona(int idZona) {
+		String sql = "DELETE FROM zona WHERE id_zona = ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, idZona);
+			
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Hubo un error :"+e.getMessage());
+			return false;
+		}
+	}
+	
+
+/////////OTRAS CONSULTAS////////	
 	
 	public Zona obtenerZonaPorId(int idZona) {
 		Zona zona = null;
@@ -45,39 +104,10 @@ public class GestionZonas {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return zona;
 	}
-	
-	
-	public boolean agregarZona(Zona zona) {
-		String sql = "INSERT INTO zona (nombre, descripcion) VALUES (?, ?)";
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, zona.getNombre());
-			ps.setString(2, zona.getDescripcion());
-			int filasAfectadas = ps.executeUpdate();
-			return filasAfectadas > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	public boolean eliminarZona(int idZona) {
-		String sql = "DELETE FROM zona WHERE id_zona = ?";
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, idZona);
-			int filasAfectadas = ps.executeUpdate();
-			return filasAfectadas > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	
-	
 	
 	
 }

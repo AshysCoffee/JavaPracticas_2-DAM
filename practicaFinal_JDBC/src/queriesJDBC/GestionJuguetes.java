@@ -17,67 +17,120 @@ public class GestionJuguetes {
 		this.conn = conn;
 	}
 
-/// AÑADIR BORRADO EN CASCADAAAAAAAAA HAY QUE HACERLOS EN LOS SIGUIENTES ORDEN -->
-/// DELETE CAMBIO, VENTA, EMPLEADO (PARA BORRAR EMPLEADO)
-/// DELETE JUGUETE, STAND, STOCK;
 	
 //////CRUD JUGUETES//////
 
 	public boolean insertarJuguete(Juguete j) {
-		String querie = "INSERT INTO juguete VALUES (?, ?, ?, ?, ?)";
-		try (PreparedStatement create = conn.prepareStatement(querie)) {
-			create.setInt(1, j.getId_juguete());
-			create.setString(2, j.getNombre());
-			create.setString(3, j.getDescripcion());
-			create.setDouble(4, j.getPrecio());
-			create.setInt(5, j.getCantidad_stock());
-			return create.executeUpdate() > 0;
+		String sql = "INSERT INTO juguete VALUES (?, ?, ?, ?, ?)";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, j.getId_juguete());
+			ps.setString(2, j.getNombre());
+			ps.setString(3, j.getDescripcion());
+			ps.setDouble(4, j.getPrecio());
+			ps.setInt(5, j.getCantidad_stock());
+			
+			if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 			return false;
 		}
 	}
 
+	
 	public List<Juguete> listarJuguetes() {
 		List<Juguete> lista = new ArrayList<>();
-		String querie = "SELECT * FROM juguete";
+		String sql = "SELECT * FROM juguete";
 
-		try (PreparedStatement read = conn.prepareStatement(querie); ResultSet rs = read.executeQuery()) {
+		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				lista.add(new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 						rs.getDouble("precio"), rs.getInt("cantidad_stock")));
 			}
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
 
-	public boolean actualizarJuguete(Juguete j) {
-		String querie = "UPDATE juguete SET nombre=?, descripcion=?, precio=?, cantidad_stock=? WHERE id_juguete=?";
-		try (PreparedStatement update = conn.prepareStatement(querie)) {
-			update.setString(1, j.getNombre());
-			update.setString(2, j.getDescripcion());
-			update.setDouble(3, j.getPrecio());
-			update.setInt(4, j.getCantidad_stock());
-			update.setInt(5, j.getId_juguete());
-			return update.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	
+	public boolean actualizarStock(int idJuguete, int nuevoStock) {
+	    String sql = "UPDATE juguete SET cantidad_stock = ? WHERE id_juguete = ?";
+	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setInt(1, nuevoStock);
+	        ps.setInt(2, idJuguete);
+	       
+	        if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+			
+	    } catch (SQLException e) {
+	        System.out.println("Hubo un error :"+e.getMessage());
+	        return false;
+	    }
 	}
 
+	
+	public boolean actualizarPrecio(int idJuguete, double nuevoPrecio) {
+	    String sql = "UPDATE juguete SET precio = ? WHERE id_juguete = ?";
+	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setDouble(1, nuevoPrecio);
+	        ps.setInt(2, idJuguete);
+	        
+	        if (ps.executeUpdate()==0) {
+				return false;
+			}else {
+				return true;
+			}
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Hubo un error :"+e.getMessage());
+	        return false;
+	    }
+	}
+
+
 	public boolean eliminarJuguete(int id) {
-		String querie = "DELETE FROM juguete WHERE id_juguete=?";
-		try (PreparedStatement delete = conn.prepareStatement(querie)) {
-			delete.setInt(1, id);
-			return delete.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		
+		
+		if (obtenerJuguetePorId(id)==null) {
+	        System.out.println("El juguete no existe.");
+	        return false;
+	    }
+		
+		GestionVentas gv = new GestionVentas(conn);
+		GestionCambios gc = new GestionCambios(conn);
+		
+		
+		try {
+
+			gv.eliminarVentasDeJuguete(id);
+	        gc.eliminarCambiosDeJuguete(id);
+
+	        String sql = "DELETE FROM juguete WHERE id_juguete = ?";
+	        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+	            ps.setInt(1, id);
+	            
+	            if (ps.executeUpdate()==0) {
+					return false;
+				}else {
+					return true;
+				}
+		        
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("Hubo un error :"+e.getMessage());
+	        return false;
+	    }
 	}
 	
 	
@@ -85,86 +138,86 @@ public class GestionJuguetes {
 /////////OTRAS CONSULTAS////// --> SOLO UN JUGUETE POR STANDS
 	
 	public Juguete obtenerJuguetePorId(int id) {
-		String querie = "SELECT * FROM juguete WHERE id_juguete=?";
-		try (PreparedStatement read = conn.prepareStatement(querie)) {
-			read.setInt(1, id);
-			try (ResultSet rs = read.executeQuery()) {
+		String sql = "SELECT * FROM juguete WHERE id_juguete=?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, id);
+			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					return new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 							rs.getDouble("precio"), rs.getInt("cantidad_stock"));
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return null;
 	}
 	
 	
-	public ArrayList<Juguete> buscarJuguetesPorCategoria(String nombre) {
-		ArrayList<Juguete> lista = new ArrayList<>();
-		String querie = "SELECT j.* FROM juguete j JOIN categoria_juguete cj ON j.id_juguete = cj.id_juguete "
+	public List<Juguete> buscarJuguetesPorCategoria(String nombre) {
+		List<Juguete> lista = new ArrayList<>();
+		String sql = "SELECT j.* FROM juguete j JOIN categoria_juguete cj ON j.id_juguete = cj.id_juguete "
 				+ "JOIN categoria c ON cj.id_categoria = c.id_categoria WHERE c.nombre = ?";
-		try (PreparedStatement read = conn.prepareStatement(querie)) {
-			read.setString(1, nombre);
-			try (ResultSet rs = read.executeQuery()) {
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, nombre);
+			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					lista.add(new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 							rs.getDouble("precio"), rs.getInt("cantidad_stock")));
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
 	
 	
-	public ArrayList<Juguete> JuguetesRangoPrecio(double precioMin, double precioMax) {
-		ArrayList<Juguete> lista = new ArrayList<>();
-		String querie = "SELECT * FROM juguete WHERE precio BETWEEN ? AND ?";
-		try (PreparedStatement read = conn.prepareStatement(querie)) {
-			read.setDouble(1, precioMin);
-			read.setDouble(2, precioMax);
-			try (ResultSet rs = read.executeQuery()) {
+	public List<Juguete> JuguetesRangoPrecio(double precioMin, double precioMax) {
+		List<Juguete> lista = new ArrayList<>();
+		String sql = "SELECT * FROM juguete WHERE precio BETWEEN ? AND ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setDouble(1, precioMin);
+			ps.setDouble(2, precioMax);
+			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					lista.add(new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 							rs.getDouble("precio"), rs.getInt("cantidad_stock")));
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	
 	}
 	
 	
-	public ArrayList<Juguete> JuguetesPorPrecioAsc() {
-		ArrayList<Juguete> lista = new ArrayList<>();
-		String querie = "SELECT * FROM juguete ORDER BY precio ASC";
-		try (PreparedStatement read = conn.prepareStatement(querie); ResultSet rs = read.executeQuery()) {
+	public List<Juguete> JuguetesPorPrecioAsc() {
+		List<Juguete> lista = new ArrayList<>();
+		String sql = "SELECT * FROM juguete ORDER BY precio ASC";
+		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
 				lista.add(new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 						rs.getDouble("precio"), rs.getInt("cantidad_stock")));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	}
 	
 
-	public ArrayList<Juguete> JuguetesPorPrecioDes(){
-		ArrayList<Juguete> lista = new ArrayList<>();
-		String querie = "SELECT * FROM juguete ORDER BY precio DESC";
-		try (PreparedStatement read = conn.prepareStatement(querie); ResultSet rs = read.executeQuery()) {
+	public List<Juguete> JuguetesPorPrecioDes(){
+		List<Juguete> lista = new ArrayList<>();
+		String sql = "SELECT * FROM juguete ORDER BY precio DESC";
+		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
 				lista.add(new Juguete(rs.getInt("id_juguete"), rs.getString("nombre"), rs.getString("descripcion"),
 						rs.getDouble("precio"), rs.getInt("cantidad_stock")));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Hubo un error :"+e.getMessage());
 		}
 		return lista;
 	} 

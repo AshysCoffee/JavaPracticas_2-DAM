@@ -44,7 +44,7 @@ public class Stand {
 
 	@Override
 	public String toString() {
-		return "Stand [id_stand=" + id_stand + ", id_zona=" + id_zona + ", nombre=" + nombre + ", descripcion="
+		return "Stand " + id_stand + ", ID Zona=" + id_zona + ", Nombre=" + nombre + ", Descripcion="
 				+ descripcion + "]";
 	}
 	

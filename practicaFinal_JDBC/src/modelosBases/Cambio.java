@@ -33,6 +33,21 @@ public class Cambio {
 	}
 
 
+    public Cambio(int id_cambio, String motivo, int id_empleado, int jugueteOriginal, int jugueteNuevo,  
+			int standOrigen, int zonaOrigen, int standDestino, int zonaDestino) {
+		this.id_cambio = id_cambio;
+		this.id_empleado = id_empleado;
+		this.jugueteOriginal = jugueteOriginal;
+		this.jugueteNuevo = jugueteNuevo;
+		this.motivo = motivo;
+		this.fecha = LocalDate.now();
+		this.standOrigen = standOrigen;
+		this.zonaOrigen = zonaOrigen;
+		this.standDestino = standDestino;
+		this.zonaDestino = zonaDestino;
+	}
+    
+    
 	public int getId_cambio() {
 		return id_cambio;
 	}
@@ -135,10 +150,10 @@ public class Cambio {
 
 	@Override
 	public String toString() {
-		return "Cambio [id_cambio=" + id_cambio + ", id_empleado=" + id_empleado + ", jugueteOriginal="
-				+ jugueteOriginal + ", jugueteNuevo=" + jugueteNuevo + ", motivo=" + motivo + ", fecha=" + fecha
-				+ ", standOrigen=" + standOrigen + ", zonaOrigen=" + zonaOrigen + ", standDestino=" + standDestino
-				+ ", zonaDestino=" + zonaDestino + "]";
+		return "Cambio: " + id_cambio + ", ID Empleado: " + id_empleado + ", Juguete Original: "
+				+ jugueteOriginal + ", Juguete Nuevo:" + jugueteNuevo + ", Motivo: " + motivo + ", Fecha: " + fecha
+				+ ", Stand Origen: " + standOrigen + ", Zona Origen: " + zonaOrigen + ", Stand Destino: " + standDestino
+				+ ", Zona Destino: " + zonaDestino;
 	}     
     
    

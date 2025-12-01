@@ -65,8 +65,8 @@ public class Juguete {
 
 	@Override
 	public String toString() {
-		return "Juguete [id_juguete=" + id_juguete + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio="
-				+ precio + ", cantidad_stock=" + cantidad_stock + "]";
+		return "Juguete " + id_juguete + ", Nombre: " + nombre + ", Descripcion: " + descripcion + ", Precio: "
+				+ precio + ", Stock: " + cantidad_stock;
 	}
 	
 	

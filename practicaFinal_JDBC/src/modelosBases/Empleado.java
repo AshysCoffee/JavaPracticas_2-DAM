@@ -24,8 +24,7 @@ public class Empleado {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	
-	
+
 	public int getIdEmpleado() {
 		return idEmpleado;
 	}
@@ -60,7 +59,7 @@ public class Empleado {
 	}
 	
 	public String toString() {
-		return "Empleado [nombre=" + nombre + ", cargo=" + cargo + ", fechaIngreso=" + fechaIngreso + "]";
+		return "Empleado " + nombre + " con ID "+ idEmpleado+", Cargo: " + cargo + ", Fecha de Antigüedad: " + fechaIngreso ;
 	}
 	
 }

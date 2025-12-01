@@ -48,9 +48,11 @@ public class Stock {
 
 	@Override
 	public String toString() {
-		return "Stock [id_stand=" + id_stand + ", id_zona=" + id_zona + ", id_juguete=" + id_juguete
-				+ ", cantidad_disponible=" + cantidad_disponible + "]";
+		return "Stock " + id_stand + ", ID Zona: " + id_zona + ", ID Juguete: " + id_juguete
+				+ ", Stock: " + cantidad_disponible + "]";
 	}
+
+	
 	
 	
 	

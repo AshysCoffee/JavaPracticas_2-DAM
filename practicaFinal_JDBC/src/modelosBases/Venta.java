@@ -16,21 +16,33 @@ public class Venta {
 
 	public Venta(int id_venta,LocalDate fecha, TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona
 			 ) {
-		super();
+
 		this.id_venta = id_venta;
 		this.id_empleado = id_empleado;
 		this.id_juguete = id_juguete;
 		this.id_stand = id_stand;
 		this.id_zona = id_zona;
 		this.tipoPago = tipoPago;
-		this.fecha = fecha;
+		this.fecha = LocalDate.now();
 		this.importe = importe;
 	}
 
-
+	public Venta(TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona) {
+		super();
+		this.id_empleado = id_empleado;
+		this.id_juguete = id_juguete;
+		this.id_stand = id_stand;
+		this.id_zona = id_zona;
+		this.tipoPago = tipoPago;
+		this.fecha = LocalDate.now();
+		this.importe = importe;
+	}
+	
+	
 	public Venta() {
 
 	}
+
 
 
 	public int getId_venta() {
@@ -115,9 +127,9 @@ public class Venta {
 
 	@Override
 	public String toString() {
-		return "Venta [id_venta=" + id_venta + ", id_empleado=" + id_empleado + ", id_juguete=" + id_juguete
-				+ ", id_stand=" + id_stand + ", id_zona=" + id_zona + ", tipoPago=" + tipoPago + ", fecha=" + fecha
-				+ ", importe=" + importe + "]";
+		return "Venta " + id_venta + ", ID Empleado: " + id_empleado + ", ID Juguete: " + id_juguete
+				+ ", ID Stand:" + id_stand + ", ID_Zona:" + id_zona + ", Pago: " + tipoPago + ", Fecha:" + fecha
+				+ ", Importe:" + importe;
 	}
 
 
