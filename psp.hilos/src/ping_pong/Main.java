@@ -21,6 +21,5 @@ public class Main {
 			pong2.start();
 
 			
-
 		}
 }
