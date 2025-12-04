@@ -2,10 +2,14 @@ package prototipo_Final;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 public class Prototipo_v1 {
 
@@ -43,7 +47,7 @@ public class Prototipo_v1 {
 		frame.setTitle("Noticiero Mapache");
 		frame.setBounds(100, 100, 600, 600);
 		frame.setResizable(false);
-		frame.setUndecorated(false);
+		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
@@ -51,6 +55,15 @@ public class Prototipo_v1 {
 		
 		JPanel iniciar = new JPanel();
 		frame.getContentPane().add(iniciar, "name_435875652272400");
+		iniciar.setLayout(null);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("New check box");
+		chckbxNewCheckBox.setBounds(87, 169, 97, 23);
+		iniciar.add(chckbxNewCheckBox);
+		
+		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("New check box");
+		chckbxNewCheckBox_1.setBounds(87, 128, 97, 23);
+		iniciar.add(chckbxNewCheckBox_1);
 		
 		JPanel config = new JPanel();
 		frame.getContentPane().add(config, "name_435880024319600");
@@ -63,6 +76,16 @@ public class Prototipo_v1 {
 		
 		JPanel configadmin = new JPanel();
 		frame.getContentPane().add(configadmin, "name_435957990256500");
+		
+		JButton salir = new JButton("Salir");
+		salir.setBounds(335, 227, 89, 23);
+		salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose(); //liberar memoria :3
+				System.exit(0);
+			}
+		});
+		iniciar.add(salir);
+		
 	}
-
 }
