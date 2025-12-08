@@ -20,7 +20,8 @@ public class Window6 {
 
 	private JFrame frame;
 	Timer tiempo, carga;
-	int i = 10, j=0;
+	int i = 10, j = 0;
+
 	/**
 	 * Launch the application.
 	 */
@@ -53,7 +54,6 @@ public class Window6 {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		
 		JLabel mensajito = new JLabel("Esto no se Odoo! xD");
 		mensajito.setVisible(false);
 		mensajito.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -62,14 +62,14 @@ public class Window6 {
 		mensajito.setFont(new Font("Ubuntu Mono", Font.BOLD, 10));
 		mensajito.setBounds(256, 197, 156, 19);
 		frame.getContentPane().add(mensajito);
-		
+
 		JButton start = new JButton("START");
 		start.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tiempo.start();
 				carga.start();
-				
+
 			}
 		});
 		start.setBounds(55, 55, 98, 59);
@@ -88,51 +88,50 @@ public class Window6 {
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(67, 169, 312, 19);
 		frame.getContentPane().add(progressBar);
-		
+
 		JLabel cargando = new JLabel("Cargando :0");
 		cargando.setBounds(55, 199, 46, 14);
 		frame.getContentPane().add(cargando);
 
+		tiempo = new Timer(1000, new ActionListener() {
 
-		tiempo = new Timer (1000, new ActionListener() {
-
-			public void actionPerformed (ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				i--;
 				contador_texto.setText(String.valueOf(i));
-				if (i==0) {
+				if (i == 0) {
 					tiempo.stop();
 					start.setEnabled(false);
 				}
 			}
 		});
 
-		carga = new Timer (1000, new ActionListener() {
+		carga = new Timer(1000, new ActionListener() {
 
-			public void actionPerformed (ActionEvent e) {
-				j+=10;
+			public void actionPerformed(ActionEvent e) {
+				j += 10;
 				progressBar.setValue(j);
-			cargando.setLocation((cargando.getLocation().x+10), cargando.getLocation().y);;
-				if (j==100) {
+				cargando.setLocation((cargando.getLocation().x + 10), cargando.getLocation().y);
+				;
+				if (j == 100) {
 					carga.stop();
 					mensajito.setVisible(true);
 					cargando.setVisible(false);
 				}
 			}
 		});
-		
+
 		progressBar.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if  (progressBar.getValue()==100) {
+				if (progressBar.getValue() == 100) {
 					String msg = "Me funcionaaaa, por fis sal de aqui y veras mi maravilloso programa B)";
-				
-					JOptionPane.showMessageDialog (null, msg,"Cierra aqui lol" ,1);
-				} 
-				
+
+					JOptionPane.showMessageDialog(null, msg, "Cierra aqui lol", 1);
+				}
+
 			}
 		});
-
 
 	}
 }
