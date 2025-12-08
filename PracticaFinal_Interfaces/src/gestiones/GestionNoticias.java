@@ -115,11 +115,10 @@ public class GestionNoticias {
 //		}
 		
 		for (Fuentes f : noticias) {
-			System.out.println(f.getCategoria());
 			String web = (f.getUrl());
 			Document doc = Jsoup.connect(web).get();
 			Element palabra = doc.select(f.getCss()).get(0);
-			String resultado = palabra.html().toUpperCase();
+			String resultado = palabra.text();
 			System.out.println(resultado);
 		}
 		
