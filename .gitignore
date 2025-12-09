@@ -30,14 +30,12 @@ Thumbs.db
 *.log
 
 # Archivos de backup o temporales
-*.tmp
 *.bak
 *.swp
 *.txt
 *.bin
 *.ser
 *.dat
-*.xml
 
 # Archivos específicos de Java
 *.class

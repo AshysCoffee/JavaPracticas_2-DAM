@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import modelos.Fuentes;
@@ -11,7 +12,27 @@ import modelos.Usuario;
 
 public class GestionHistorial {
 
-	  public boolean guardarHistorico(Usuario u, List<Fuentes> noticias) {
+	private List<Fuentes> historial;  
+	
+	
+	public GestionHistorial() {
+		this.historial = new ArrayList <>();
+	}
+
+
+	public List<Fuentes> getHistorial() {
+		return historial;
+	}
+
+
+
+	public void setHistorial(List<Fuentes> historial) {
+		this.historial = historial;
+	}
+
+
+
+	public boolean guardarHistorico(Usuario u) {
 		  
 		  BufferedWriter bw = null;
 
@@ -24,10 +45,11 @@ public class GestionHistorial {
 				bw.write(u.toStringUsuario());
 				bw.newLine();
 				
+				for (Fuentes fuentes : historial) {
+					bw.write(fuentes.toString());
+				}
 				
-				
-				
-
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;

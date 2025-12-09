@@ -17,10 +17,12 @@ import modelos.Fuentes;
 public class GestionNoticias {
 
 	private List<Fuentes> listaNoticias;
+	private List<String> titulares;
 
 	public GestionNoticias() {
 		super();
 		this.listaNoticias = new ArrayList<>();
+		this.titulares = new ArrayList<>();
 	}
 	
 	
@@ -32,7 +34,19 @@ public class GestionNoticias {
 		this.listaNoticias = listaNoticias;
 	}
 
+	public List<String> getTitulares() {
+		return titulares;
+	}
 
+	public void setTitulares(List<String> titulares) {
+		this.titulares = titulares;
+	}
+	
+	
+	public void iniciarNoticias() {
+		cargarFuentes();
+		cargarTitulares();
+	}
 //////////////////	
 	
 
@@ -101,25 +115,45 @@ public class GestionNoticias {
 		return null;
 
 	}
+	
+	
+	public List<String> cargarTitulares() {
+		
+		if (listaNoticias == null || listaNoticias.isEmpty()) {
+			return null;
+		}
+		
+		try {
+
+			for (Fuentes f : listaNoticias) {
+				String web = (f.getUrl());
+				Document doc = Jsoup.connect(web).get();
+				Element palabra = doc.select(f.getCss()).get(0);
+				String resultado = palabra.text();
+
+				titulares.add(resultado);
+
+			}
+
+			return titulares;
+
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+		return null;
+	}
 
 ///////////////////
 
 	public static void main (String[] args) throws IOException {
 		
 		GestionNoticias gn = new GestionNoticias();
-	
-		List<Fuentes> noticias = gn.cargarFuentes();
+
+		gn.iniciarNoticias();
 		
-//		for (Fuentes f : noticias) {
-//			System.out.println(f);
-//		}
-		
-		for (Fuentes f : noticias) {
-			String web = (f.getUrl());
-			Document doc = Jsoup.connect(web).get();
-			Element palabra = doc.select(f.getCss()).get(0);
-			String resultado = palabra.text();
-			System.out.println(resultado);
+		for (String s : gn.titulares) {
+			System.out.println(s);
 		}
 		
 	}
