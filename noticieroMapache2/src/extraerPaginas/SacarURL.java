@@ -22,9 +22,9 @@ public class SacarURL {
 //			String resultado = palabra.html().toUpperCase();
 //			System.out.println(resultado);
 
-		String web = ("https://www.larazon.es/tags/fauna/");
+		String web = ("https://www.larazon.es/ciencia/");
 		Document doc = Jsoup.connect(web).get();
-		Element palabra = doc.select("h2.article__title").get(0);
+		Element palabra = doc.select("h2.article__title ").get(0);
 		String resultado = palabra.text();
 		System.out.println(resultado);
 

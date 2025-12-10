@@ -21,7 +21,7 @@ public class SimpleEmail {	////// NO DEBE SACARLO DE AQUÍ, ES UN EJEMPLO PARA P
 		
 		final String fromEmail = "albaelena1970.ale@gmail.com"; //EMAIL DE SALIDA
 		final String password = "owlh yyir waqd kphp"; //CONTRASEÑA DEL EMAIL DE SALIDA (aplicaciones de 3ros) Contraseñas de aplicación -- Verificación en 2 pasos
-		final String toEmail = "albaelena1970.ale@gmail.com"; // EMAIL DESTINATARIO
+		final String toEmail = "ashleyleonidk@gmail.com"; // EMAIL DESTINATARIO
 		
 		System.out.println("Configurando datos conexión SSL");
 		

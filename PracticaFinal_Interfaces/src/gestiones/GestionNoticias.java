@@ -47,12 +47,14 @@ public class GestionNoticias {
 		cargarFuentes();
 		cargarTitulares();
 	}
+	
+	
 //////////////////	
 	
 
 	public Fuentes leerFuente(String linea) {
 		 
-			String[] partes = linea.split(";");
+			String[] partes = linea.trim().split(";");
 
 			if (partes.length < 4) {
 		        return null;
