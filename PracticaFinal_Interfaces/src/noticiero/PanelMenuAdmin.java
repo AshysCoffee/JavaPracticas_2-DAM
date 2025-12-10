@@ -50,6 +50,9 @@ public class PanelMenuAdmin {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
+		JPanel panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, "name_17778804144800");
+		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, "name_17778785980100");
 		panel.setLayout(null);
@@ -83,8 +86,5 @@ public class PanelMenuAdmin {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(136, 35, 151, 23);
 		panel.add(lblNewLabel);
-		
-		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, "name_17778804144800");
 	}
 }

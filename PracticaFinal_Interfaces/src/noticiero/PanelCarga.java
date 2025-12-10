@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
@@ -16,7 +17,7 @@ import javax.swing.event.ChangeListener;
 
 import gestiones.ControlErrores;
 
-public class PanelCarga extends JFrame{
+public class PanelCarga extends JPanel{
 
 	private JFrame frame;
 	Timer tiempo, carga;
