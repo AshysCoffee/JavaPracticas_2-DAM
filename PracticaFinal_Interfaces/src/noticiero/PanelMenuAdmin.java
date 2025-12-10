@@ -3,6 +3,16 @@ package noticiero;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.CardLayout;
+import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+import gestiones.GestionNoticias;
 
 public class PanelMenuAdmin {
 
@@ -38,7 +48,43 @@ public class PanelMenuAdmin {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		frame.getContentPane().add(panel, "name_17778785980100");
+		panel.setLayout(null);
+		
+		JButton btnTestNoticias = new JButton("Test de noticias");
+		btnTestNoticias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GestionNoticias gn = new GestionNoticias ();
+				
+				gn.iniciarNoticias();
+				
+				
+			}
+		});
+		btnTestNoticias.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
+		btnTestNoticias.setBounds(114, 116, 191, 36);
+		panel.add(btnTestNoticias);
+		
+		JButton btnGestionUsuarios = new JButton("Gestión de usuarios");
+		btnGestionUsuarios.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
+		btnGestionUsuarios.setBounds(114, 69, 191, 36);
+		panel.add(btnGestionUsuarios);
+		
+		JButton btnModificarEnvoDel = new JButton("Modificar envío del email");
+		btnModificarEnvoDel.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
+		btnModificarEnvoDel.setBounds(114, 163, 191, 36);
+		panel.add(btnModificarEnvoDel);
+		
+		JLabel lblNewLabel = new JLabel("Menu Administrador");
+		lblNewLabel.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 17));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(136, 35, 151, 23);
+		panel.add(lblNewLabel);
+		
+		JPanel panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, "name_17778804144800");
 	}
-
 }
