@@ -2,6 +2,7 @@ package noticiero;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame{
 	
 	public VentanaPrincipal() {
@@ -12,8 +13,9 @@ public class VentanaPrincipal extends JFrame{
 		
 		PanelLogin login = new PanelLogin();
 		PanelMenuAdmin menuAdmin = new PanelMenuAdmin();
-		PanelCarga carga = new PanelCarga();
-		PanelMenuUser menuUser = new PanelMenuUser();
+		PanelCarga carga = new PanelCarga(login);
+		
+		PanelPreferencias menuUser = new PanelPreferencias();
 		
 		add(login);
 		add(menuAdmin);

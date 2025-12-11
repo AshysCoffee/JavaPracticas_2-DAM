@@ -21,7 +21,7 @@ public class Main {
 			public void run() {
 				try {
 					VentanaPrincipal main = new VentanaPrincipal();
-					main.setVisible(true);
+						
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,7 +41,7 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		gu.cargarUsuarios();
+		GestionUsuarios.cargarUsuarios();
 		gn.cargarTitulares();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);

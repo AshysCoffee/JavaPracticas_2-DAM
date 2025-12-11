@@ -120,6 +120,7 @@ public class GestionNoticias {
 		try {
 
 			for (Fuentes f : listaNoticias) {
+				
 				String web = (f.getUrl());
 				Document doc = Jsoup.connect(web).get();
 				Element palabra = doc.select(f.getCss()).get(0);
@@ -140,16 +141,5 @@ public class GestionNoticias {
 
 ///////////////////
 
-	public static void main(String[] args) throws IOException {
-
-		GestionNoticias gn = new GestionNoticias();
-
-		gn.iniciarNoticias();
-
-		for (String s : gn.titulares) {
-			System.out.println(s);
-		}
-
-	}
 
 }

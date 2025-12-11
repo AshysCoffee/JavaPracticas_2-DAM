@@ -27,6 +27,11 @@ public class GestionEmail {
 	}
 
 
+	public GestionEmail() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -91,9 +96,5 @@ public class GestionEmail {
 	}
 
 ////////////////
-	
-	public static void main(String[] args) {
-
-	}
 
 }

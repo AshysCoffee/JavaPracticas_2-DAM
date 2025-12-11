@@ -8,11 +8,11 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 
-public class PanelMenuUser extends JPanel{
+public class PanelPreferencias extends JPanel{
 
 	JCheckBox [] listaPreferencias = new JCheckBox[18];
 	
-	public PanelMenuUser() {
+	public PanelPreferencias() {
 		
 		setLayout(null);
 		

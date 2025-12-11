@@ -13,24 +13,31 @@ import modelos.Usuario;
 
 public class GestionUsuarios {
 
-	private List<Usuario> listaUsuario;
+	public static List<Usuario> listaUsuario;
+	
 
 	public GestionUsuarios() {
 		super();
-		this.listaUsuario = new ArrayList<>();
+		GestionUsuarios.listaUsuario = new ArrayList<>();
 	}
 
-	public List<Usuario> getListaUsuario() {
+	
+	
+	///////////////
+
+	public static List<Usuario> getListaUsuario() {
 		return listaUsuario;
 	}
 
-	public void setListaUsuario(List<Usuario> listaUsuario) {
-		this.listaUsuario = listaUsuario;
+
+
+	public static void setListaUsuario(List<Usuario> listaUsuario) {
+		GestionUsuarios.listaUsuario = listaUsuario;
 	}
 
-///////////////
+//////////////
 
-	public Usuario leerLinea(String linea) {
+	public static Usuario leerLinea(String linea) {
 
 		boolean esAdmin = false;
 
@@ -55,7 +62,7 @@ public class GestionUsuarios {
 		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
 	}
 
-	public List<Usuario> cargarUsuarios() {
+	public static List<Usuario> cargarUsuarios() {
 
 		BufferedReader bf = null;
 
@@ -70,7 +77,7 @@ public class GestionUsuarios {
 				return null;
 			}
 
-			bf = new BufferedReader(new FileReader("data/usuarios.txt"));
+			bf = new BufferedReader(new FileReader(f));
 			String linea = bf.readLine();
 
 			while (linea != null) {
@@ -106,9 +113,9 @@ public class GestionUsuarios {
 
 /////////////////
 
-	public Usuario buscarUsuario(String nick) {
+	public static Usuario buscarUsuario(String nick) {
 
-		if (listaUsuario == null || listaUsuario.isEmpty()) {
+		if (GestionUsuarios.listaUsuario == null || GestionUsuarios.listaUsuario.isEmpty()) {
 			return null;
 		}
 
@@ -116,7 +123,7 @@ public class GestionUsuarios {
 			return null;
 		}
 
-		for (Usuario u : listaUsuario) {
+		for (Usuario u : GestionUsuarios.listaUsuario) {
 			if (u.getUsuario().equals(nick.trim())) {
 				return u;
 			}
@@ -124,8 +131,8 @@ public class GestionUsuarios {
 		return null;
 	}
 
-	public Usuario validarLogin(String nick, String contraseña) {
-
+	public static Usuario validarLogin(String nick, String contraseña) {
+		
 		if (nick == null || nick.isEmpty()) {
 			return null;
 		}
@@ -134,7 +141,7 @@ public class GestionUsuarios {
 			return null;
 		}
 
-		if (listaUsuario == null || listaUsuario.isEmpty()) {
+		if (GestionUsuarios.listaUsuario == null || GestionUsuarios.listaUsuario.isEmpty()) {
 			return null;
 		}
 
@@ -153,8 +160,8 @@ public class GestionUsuarios {
 		return u;
 	}
 
-	public boolean guardarUsuarios() {
-
+	public static boolean guardarUsuarios() {
+		
 		BufferedWriter bw = null;
 
 		try {
@@ -163,7 +170,7 @@ public class GestionUsuarios {
 
 			bw = new BufferedWriter(new FileWriter(f));
 
-			for (Usuario u : listaUsuario) {
+			for (Usuario u : GestionUsuarios.listaUsuario) {
 
 				if (u.isEsAdmin() == true) {
 					bw.write(u.toStringAdmin());
@@ -190,7 +197,8 @@ public class GestionUsuarios {
 
 	}
 
-	public boolean eliminarUsuario(String nick) {
+	public static boolean eliminarUsuario(String nick) {
+
 
 		if (nick == null || nick.isEmpty()) {
 			return false;
@@ -201,7 +209,7 @@ public class GestionUsuarios {
 		if (u == null) {
 			return false;
 		} else {
-			listaUsuario.remove(u);
+			GestionUsuarios.listaUsuario.remove(u);
 			guardarUsuarios();
 			return true;
 		}
@@ -261,7 +269,9 @@ public class GestionUsuarios {
 
 	public static void main(String[] args) {
 
-		// ComprobarUsuario cu = new ComprobarUsuario();
+		GestionUsuarios.cargarUsuarios();
+		
+		
 
 	}
 
