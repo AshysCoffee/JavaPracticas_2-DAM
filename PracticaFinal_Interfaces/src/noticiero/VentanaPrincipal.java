@@ -13,9 +13,12 @@ public class VentanaPrincipal extends JFrame{
 		PanelLogin login = new PanelLogin();
 		PanelMenuAdmin menuAdmin = new PanelMenuAdmin();
 		PanelCarga carga = new PanelCarga();
-		PanelMenuUsuario menuUser = new PanelMenuUsuario();
+		PanelMenuUser menuUser = new PanelMenuUser();
 		
 		add(login);
+		add(menuAdmin);
+		add(carga);
+		add(menuUser);
 		
 	}
 	

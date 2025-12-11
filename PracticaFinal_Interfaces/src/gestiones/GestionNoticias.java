@@ -24,8 +24,7 @@ public class GestionNoticias {
 		this.listaNoticias = new ArrayList<>();
 		this.titulares = new ArrayList<>();
 	}
-	
-	
+
 	public List<Fuentes> getListaNoticias() {
 		return listaNoticias;
 	}
@@ -41,35 +40,31 @@ public class GestionNoticias {
 	public void setTitulares(List<String> titulares) {
 		this.titulares = titulares;
 	}
-	
-	
+
 	public void iniciarNoticias() {
 		cargarFuentes();
 		cargarTitulares();
 	}
-	
-	
+
 //////////////////	
-	
 
 	public Fuentes leerFuente(String linea) {
-		 
-			String[] partes = linea.trim().split(";");
 
-			if (partes.length < 4) {
-		        return null;
-		    }
-			
-			String categoria = partes[0];
-			String periodico = partes[1];
-			String url = partes[2];
-			String css = partes[3];
-			
-			return new Fuentes(Categorias.valueOf(categoria),periodico, url, css);
+		String[] partes = linea.trim().split(";");
 
-    } 
-	
-	
+		if (partes.length < 4) {
+			return null;
+		}
+
+		String categoria = partes[0];
+		String periodico = partes[1];
+		String url = partes[2];
+		String css = partes[3];
+
+		return new Fuentes(Categorias.valueOf(categoria), periodico, url, css);
+
+	}
+
 	public List<Fuentes> cargarFuentes() {
 
 		BufferedReader bf = null;
@@ -82,25 +77,23 @@ public class GestionNoticias {
 				return listaNoticias;
 			}
 
-			
-				bf = new BufferedReader(new FileReader("data/fuentes.txt"));
-				String linea = bf.readLine();
+			bf = new BufferedReader(new FileReader("data/fuentes.txt"));
+			String linea = bf.readLine();
 
-				while (linea != null) {
-					if (!linea.trim().isEmpty()) {
-						Fuentes u = leerFuente(linea);
-						if (u != null) {
-							listaNoticias.add(u);
-						}
+			while (linea != null) {
+				if (!linea.trim().isEmpty()) {
+					Fuentes u = leerFuente(linea);
+					if (u != null) {
+						listaNoticias.add(u);
 					}
-
-					linea = bf.readLine();
-
 				}
 
-				return listaNoticias;
+				linea = bf.readLine();
 
-			
+			}
+
+			return listaNoticias;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -117,14 +110,13 @@ public class GestionNoticias {
 		return null;
 
 	}
-	
-	
+
 	public List<String> cargarTitulares() {
-		
+
 		if (listaNoticias == null || listaNoticias.isEmpty()) {
 			return null;
 		}
-		
+
 		try {
 
 			for (Fuentes f : listaNoticias) {
@@ -148,17 +140,16 @@ public class GestionNoticias {
 
 ///////////////////
 
-	public static void main (String[] args) throws IOException {
-		
+	public static void main(String[] args) throws IOException {
+
 		GestionNoticias gn = new GestionNoticias();
 
 		gn.iniciarNoticias();
-		
+
 		for (String s : gn.titulares) {
 			System.out.println(s);
 		}
-		
+
 	}
-	
-	
+
 }

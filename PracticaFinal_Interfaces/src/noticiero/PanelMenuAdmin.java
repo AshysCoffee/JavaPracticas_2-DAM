@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 
 import gestiones.GestionNoticias;
 
-public class PanelMenuAdmin {
+public class PanelMenuAdmin extends JPanel{
 
 	private JFrame frame;
 
@@ -50,9 +50,6 @@ public class PanelMenuAdmin {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
-		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, "name_17778804144800");
-		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, "name_17778785980100");
 		panel.setLayout(null);
@@ -75,11 +72,6 @@ public class PanelMenuAdmin {
 		btnGestionUsuarios.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
 		btnGestionUsuarios.setBounds(114, 69, 191, 36);
 		panel.add(btnGestionUsuarios);
-		
-		JButton btnModificarEnvoDel = new JButton("Modificar envío del email");
-		btnModificarEnvoDel.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
-		btnModificarEnvoDel.setBounds(114, 163, 191, 36);
-		panel.add(btnModificarEnvoDel);
 		
 		JLabel lblNewLabel = new JLabel("Menu Administrador");
 		lblNewLabel.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 17));
