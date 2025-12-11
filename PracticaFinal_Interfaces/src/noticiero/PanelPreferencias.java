@@ -5,14 +5,30 @@ import javax.swing.JPanel;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import gestiones.GestionEmail;
+import gestiones.GestionNoticias;
+import gestiones.GestionUsuarios;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 
 public class PanelPreferencias extends JPanel{
 
 	JCheckBox [] listaPreferencias = new JCheckBox[18];
+	private VentanaPrincipal v;
+	private GestionUsuarios gu;
+	private GestionNoticias gn;
+	private GestionEmail ge;
 	
-	public PanelPreferencias() {
+	public PanelPreferencias(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionNoticias gn) {
+		
+		this.gn=gn;
+		this.gu=gu;
+		this.v = ventanaPrincipal;
 		
 		setLayout(null);
 		
@@ -139,9 +155,24 @@ public class PanelPreferencias extends JPanel{
 		add(titulo);
 		
 		JButton btnNewButton = new JButton("Guardar preferencias");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
 		btnNewButton.setBounds(243, 452, 164, 23);
 		add(btnNewButton);
 		
+		JButton salir = new JButton("Salir");
+		salir.setBounds(527, 452, 113, 23);
+		salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		add(salir);
 		
 	}
 }

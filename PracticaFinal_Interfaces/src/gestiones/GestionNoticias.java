@@ -43,7 +43,6 @@ public class GestionNoticias {
 
 	public void iniciarNoticias() {
 		cargarFuentes();
-		cargarTitulares();
 	}
 
 //////////////////	
@@ -111,15 +110,15 @@ public class GestionNoticias {
 
 	}
 
-	public List<String> cargarTitulares() {
+	public List<String> cargarTitulares(List <Fuentes> pref) {
 
-		if (listaNoticias == null || listaNoticias.isEmpty()) {
+		if (pref == null || pref.isEmpty()) {
 			return null;
 		}
 
 		try {
 
-			for (Fuentes f : listaNoticias) {
+			for (Fuentes f : pref) {
 				
 				String web = (f.getUrl());
 				Document doc = Jsoup.connect(web).get();

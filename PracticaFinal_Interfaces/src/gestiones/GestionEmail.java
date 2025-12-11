@@ -13,8 +13,8 @@ import modelos.Usuario;
 
 public class GestionEmail {
 
-	final String fromEmail = "albaelena1970.ale@gmail.com"; // EMAIL DE SALIDA
-	final String password = "owlh yyir waqd kphp";
+	final static String fromEmail = "albaelena1970.ale@gmail.com"; // EMAIL DE SALIDA
+	final static String password = "owlh yyir waqd kphp";
 
 	private Usuario usuario;
 	private GestionNoticias gn = new GestionNoticias();
@@ -42,7 +42,7 @@ public class GestionEmail {
 
 /////////////////////// -- TEST DE NOTICIAS HECHO, AHORA FALTA INTERFAZ
 
-	public boolean sendEmail(Session session, String toEmail, String subject, String body) {
+	public static boolean sendEmail(Session session, String toEmail, String subject, String body) {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
@@ -66,9 +66,38 @@ public class GestionEmail {
 
 	}
 
+	public boolean testCorreoAdmin() {
+
+		String usuarioMail = fromEmail;
+
+		gn.iniciarNoticias(); 
+		String texto = "";
+		
+		for (String s : gn.cargarTitulares(gn.cargarFuentes())) {
+			texto += s + "\n";
+		}
+
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP de GMAIL en este caso
+		props.put("mail.smtp.socketFactory.port", "465"); // PUERTO SSL
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // SSL Factory Class
+		props.put("mail.smtp.auth", "true"); // ACTIVAR SMTP AUTENTIFICACI�N
+		props.put("mail.smtp.port", "465"); // SMTP Port
+		Authenticator auth = new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(fromEmail, password);
+			}
+		};
+		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
+		System.out.println("Sesión Creada");
+
+		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
+
+	}
+
 	public boolean testCorreoAdmin(Usuario usuario) {
 
-		String usuarioMail = usuario.getCorreo();
+		String usuarioMail = usuario.getCorreo().trim();
 
 		gn.iniciarNoticias(); 
 		String texto = "";
@@ -94,7 +123,7 @@ public class GestionEmail {
 		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
 
 	}
-
+	
 ////////////////
 
 }

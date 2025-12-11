@@ -1,8 +1,5 @@
 package noticiero;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -13,12 +10,22 @@ import javax.swing.SwingConstants;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
+import gestiones.GestionUsuarios;
 
 public class PanelMenuAdmin extends JPanel{
 
+	private VentanaPrincipal v;
+	private GestionUsuarios gu;
+	private GestionNoticias gn;
+	private GestionEmail ge;
+	
+	public PanelMenuAdmin(VentanaPrincipal ventanaPrincipal,GestionUsuarios gu, GestionNoticias gn, GestionEmail ge) {
 
-	public PanelMenuAdmin() {
-
+		this.gn=gn;
+		this.gu=gu;
+		this.ge=ge;
+		this.v = ventanaPrincipal;
+		
 		setLayout(null);
 
 		JButton btnTestNoticias = new JButton("Test de noticias");
@@ -33,6 +40,13 @@ public class PanelMenuAdmin extends JPanel{
 		add(btnTestNoticias);
 
 		JButton btnGestionUsuarios = new JButton("Gestión de usuarios");
+		btnGestionUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ge.testCorreoAdmin(gu.buscarUsuario("admin"));
+				
+			}
+		});
 		btnGestionUsuarios.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
 		btnGestionUsuarios.setBounds(121, 94, 191, 36);
 		add(btnGestionUsuarios);
@@ -42,5 +56,16 @@ public class PanelMenuAdmin extends JPanel{
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(141, 60, 151, 23);
 		add(lblNewLabel);
+		
+		JButton salir = new JButton("Salir");
+		salir.setBounds(510, 438, 113, 23);
+		salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		add(salir);
 	}
+
+	
 }

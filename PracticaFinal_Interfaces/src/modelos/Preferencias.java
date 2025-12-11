@@ -22,6 +22,10 @@ public class Preferencias {
 	}
 	
 	
-	
+	public boolean guardarPreferencias(List<Fuentes>pref, Usuario u) {
+		
+		
+		return false;
+	}
 	
 }

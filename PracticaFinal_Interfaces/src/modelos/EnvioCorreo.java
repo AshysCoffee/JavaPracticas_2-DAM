@@ -2,16 +2,15 @@ package modelos;
 
 public class EnvioCorreo {
 
-	private String horaEnvio;
+	private String horaEnvio = "7:00";
     private String emailSalida;
     private String pwdEmailSalida;
     private final String smtp_host = "smtp.gmail.com";
     private final int smtp_port = 587;
 	
     
-    public EnvioCorreo(String horaEnvio, String emailSalida, String pwdEmailSalida) {
+    public EnvioCorreo(String emailSalida, String pwdEmailSalida) {
 		super();
-		this.horaEnvio = horaEnvio;
 		this.emailSalida = emailSalida;
 		this.pwdEmailSalida = pwdEmailSalida;
 	}

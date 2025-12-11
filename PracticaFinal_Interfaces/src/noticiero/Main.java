@@ -1,16 +1,17 @@
 package noticiero;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
 import gestiones.GestionUsuarios;
 
 public class Main {
 
 	private JFrame frame;
-	private GestionUsuarios gu;
 	private GestionNoticias gn;
 
 	/**
@@ -20,8 +21,15 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaPrincipal main = new VentanaPrincipal();
-						
+					GestionUsuarios gu = new GestionUsuarios();
+					GestionNoticias gn = new GestionNoticias();
+					GestionEmail ge = new GestionEmail();
+					
+					gu.cargarUsuarios();
+
+					VentanaPrincipal frame = new VentanaPrincipal(gu,gn, ge);
+					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -29,8 +37,10 @@ public class Main {
 		});
 	}
 
+
 	/**
 	 * Create the application.
+	 * 
 	 * @wbp.parser.entryPoint
 	 */
 	public Main() {
@@ -41,11 +51,10 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		GestionUsuarios.cargarUsuarios();
-		gn.cargarTitulares();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("iu/raccoon_lg.png"));
 	}
 
 }

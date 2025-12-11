@@ -13,31 +13,28 @@ import modelos.Usuario;
 
 public class GestionUsuarios {
 
-	public static List<Usuario> listaUsuario;
+	public List<Usuario> listaUsuario= new ArrayList<>();
 	
 
 	public GestionUsuarios() {
-		super();
-		GestionUsuarios.listaUsuario = new ArrayList<>();
-	}
 
-	
+	}
 	
 	///////////////
 
-	public static List<Usuario> getListaUsuario() {
+	public List<Usuario> getListaUsuario() {
 		return listaUsuario;
 	}
 
 
 
-	public static void setListaUsuario(List<Usuario> listaUsuario) {
-		GestionUsuarios.listaUsuario = listaUsuario;
+	public void setListaUsuario(List<Usuario> listaUsuario) {
+		this.listaUsuario = listaUsuario;
 	}
 
 //////////////
 
-	public static Usuario leerLinea(String linea) {
+	public  Usuario leerLinea(String linea) {
 
 		boolean esAdmin = false;
 
@@ -62,12 +59,12 @@ public class GestionUsuarios {
 		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
 	}
 
-	public static List<Usuario> cargarUsuarios() {
+	public  List<Usuario> cargarUsuarios() {
 
 		BufferedReader bf = null;
-
+		
 		listaUsuario.clear();
-
+		
 		File f = new File("data/usuarios.txt");
 
 		try {
@@ -113,9 +110,9 @@ public class GestionUsuarios {
 
 /////////////////
 
-	public static Usuario buscarUsuario(String nick) {
+	public  Usuario buscarUsuario(String nick) {
 
-		if (GestionUsuarios.listaUsuario == null || GestionUsuarios.listaUsuario.isEmpty()) {
+		if (listaUsuario == null || listaUsuario.isEmpty()) {
 			return null;
 		}
 
@@ -123,7 +120,7 @@ public class GestionUsuarios {
 			return null;
 		}
 
-		for (Usuario u : GestionUsuarios.listaUsuario) {
+		for (Usuario u : listaUsuario) {
 			if (u.getUsuario().equals(nick.trim())) {
 				return u;
 			}
@@ -131,7 +128,7 @@ public class GestionUsuarios {
 		return null;
 	}
 
-	public static Usuario validarLogin(String nick, String contraseña) {
+	public  Usuario validarLogin(String nick, String contraseña) {
 		
 		if (nick == null || nick.isEmpty()) {
 			return null;
@@ -141,7 +138,7 @@ public class GestionUsuarios {
 			return null;
 		}
 
-		if (GestionUsuarios.listaUsuario == null || GestionUsuarios.listaUsuario.isEmpty()) {
+		if (listaUsuario == null || listaUsuario.isEmpty()) {
 			return null;
 		}
 
@@ -156,11 +153,10 @@ public class GestionUsuarios {
 		}
 
 		u.setVisitas(u.getVisitas() + 1);
-		guardarUsuarios();
 		return u;
 	}
 
-	public static boolean guardarUsuarios() {
+	public  boolean guardarUsuarios() {
 		
 		BufferedWriter bw = null;
 
@@ -170,7 +166,7 @@ public class GestionUsuarios {
 
 			bw = new BufferedWriter(new FileWriter(f));
 
-			for (Usuario u : GestionUsuarios.listaUsuario) {
+			for (Usuario u : listaUsuario) {
 
 				if (u.isEsAdmin() == true) {
 					bw.write(u.toStringAdmin());
@@ -197,7 +193,7 @@ public class GestionUsuarios {
 
 	}
 
-	public static boolean eliminarUsuario(String nick) {
+	public  boolean eliminarUsuario(String nick) {
 
 
 		if (nick == null || nick.isEmpty()) {
@@ -209,7 +205,7 @@ public class GestionUsuarios {
 		if (u == null) {
 			return false;
 		} else {
-			GestionUsuarios.listaUsuario.remove(u);
+			listaUsuario.remove(u);
 			guardarUsuarios();
 			return true;
 		}
@@ -267,12 +263,5 @@ public class GestionUsuarios {
 
 	}
 
-	public static void main(String[] args) {
-
-		GestionUsuarios.cargarUsuarios();
-		
-		
-
-	}
 
 }
