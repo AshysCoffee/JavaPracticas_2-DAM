@@ -43,7 +43,7 @@ public class PanelMenuAdmin extends JPanel{
 		btnGestionUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ge.testCorreoAdmin(gu.buscarUsuario("admin"));
+				ge.testCorreoAdmin();
 				
 			}
 		});

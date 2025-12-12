@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
+import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 
 public class Main {
@@ -23,10 +24,11 @@ public class Main {
 					GestionUsuarios gu = new GestionUsuarios();
 					GestionNoticias gn = new GestionNoticias();
 					GestionEmail ge = new GestionEmail();
+					GestionPreferencias gp = new GestionPreferencias();
 					
 					gu.cargarUsuarios();
 
-					VentanaPrincipal frame = new VentanaPrincipal(gu,gn, ge);
+					VentanaPrincipal frame = new VentanaPrincipal(gu,gn, ge, gp);
 					frame.setVisible(true);
 
 				} catch (Exception e) {

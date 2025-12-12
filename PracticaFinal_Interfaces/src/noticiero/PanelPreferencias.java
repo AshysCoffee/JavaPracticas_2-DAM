@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
+import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 
 import java.awt.Font;
@@ -23,6 +24,7 @@ public class PanelPreferencias extends JPanel{
 	private GestionUsuarios gu;
 	private GestionNoticias gn;
 	private GestionEmail ge;
+	private GestionPreferencias gp;
 	
 	
 	
@@ -38,8 +40,9 @@ public class PanelPreferencias extends JPanel{
 
 
 
-	public PanelPreferencias(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionNoticias gn) {
+	public PanelPreferencias(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionNoticias gn, GestionPreferencias gp) {
 		
+		this.gp=gp;
 		this.gn=gn;
 		this.gu=gu;
 		this.v = ventanaPrincipal;
@@ -139,6 +142,7 @@ public class PanelPreferencias extends JPanel{
 //-----------------------------
 		
 		JLabel lblEconomia = new JLabel("Economia");
+		lblEconomia = gp.obtenerPreferencias(TOOL_TIP_TEXT_KEY)
 		lblEconomia.setBounds(48, 92, 68, 22);
 		add(lblEconomia);
 		
@@ -174,6 +178,7 @@ public class PanelPreferencias extends JPanel{
 				
 				
 				
+				v.cambiarPantalla("MENU_USUARIO");
 				
 			}
 		});

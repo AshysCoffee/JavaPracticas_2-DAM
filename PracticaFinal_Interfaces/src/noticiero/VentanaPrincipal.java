@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
+import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 
 @SuppressWarnings("serial")
@@ -19,12 +20,14 @@ public class VentanaPrincipal extends JFrame {
 	private GestionUsuarios gu;
 	private GestionNoticias gn;
 	private GestionEmail ge;
+	private GestionPreferencias gp;
 
-	public VentanaPrincipal(GestionUsuarios gu, GestionNoticias gn, GestionEmail ge) {
+	public VentanaPrincipal(GestionUsuarios gu, GestionNoticias gn, GestionEmail ge, GestionPreferencias gp) {
 		
 		this.gu = gu;
 		this.gn = gn;
 		this.ge = ge;
+		this.gn = gn;
 		
 		gu.cargarUsuarios();
 		gn.cargarFuentes();
@@ -45,8 +48,8 @@ public class VentanaPrincipal extends JFrame {
 		PanelGestionAdmin gestionAdmin = new PanelGestionAdmin(this, gu);
 		PanelLogin login = new PanelLogin(this, gu);
 		PanelMenuAdmin menuAdmin = new PanelMenuAdmin(this, gu, gn, ge);
-		PanelMenuUsuario menuUser = new PanelMenuUsuario(this, gn);
-		PanelPreferencias preferencias = new PanelPreferencias(this, gu, gn);
+		PanelMenuUsuario menuUser = new PanelMenuUsuario(this, gn, gp);
+		PanelPreferencias preferencias = new PanelPreferencias(this, gu, gn, gp);
 		
 
 		panelContenedor.add(carga, "CARGA");

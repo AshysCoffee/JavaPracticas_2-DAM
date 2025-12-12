@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
+import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 
 import java.awt.event.ActionEvent;
@@ -15,14 +16,16 @@ import javax.swing.JLabel;
 public class PanelMenuUsuario  extends JPanel{
 	
 	private VentanaPrincipal v;
-	private GestionUsuarios gu;
 	private GestionNoticias gn;
-	private GestionEmail ge;
+	private GestionPreferencias gp;
 	
-	public PanelMenuUsuario(VentanaPrincipal ventanaPrincipal, GestionNoticias gn) {
+	public PanelMenuUsuario(VentanaPrincipal ventanaPrincipal, GestionNoticias gn, GestionPreferencias gp) {
 		
+		this.gp = gp;
 		this.gn = gn;
 		this.v = ventanaPrincipal;
+		
+		List<Fuentes>titulares = gp.
 		
 		setLayout(null);
 		
@@ -56,25 +59,25 @@ public class PanelMenuUsuario  extends JPanel{
 		noticiasEcon.setBounds(35, 40, 542, 50);
 		add(noticiasEcon);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("New label");
-		lblNewLabel_1_1.setBounds(35, 114, 542, 50);
-		add(lblNewLabel_1_1);
+		JLabel noticiasDeportes = new JLabel("New label");
+		noticiasDeportes.setBounds(35, 114, 542, 50);
+		add(noticiasDeportes);
 		
-		JLabel lblNewLabel_1_2 = new JLabel("New label");
-		lblNewLabel_1_2.setBounds(35, 188, 542, 50);
-		add(lblNewLabel_1_2);
+		JLabel noticiasNacio = new JLabel("New label");
+		noticiasNacio.setBounds(35, 188, 542, 50);
+		add(noticiasNacio);
 		
-		JLabel lblNewLabel_1_3 = new JLabel("New label");
-		lblNewLabel_1_3.setBounds(35, 262, 542, 50);
-		add(lblNewLabel_1_3);
+		JLabel noticiasInter = new JLabel("New label");
+		noticiasInter.setBounds(35, 262, 542, 50);
+		add(noticiasInter);
 		
-		JLabel lblNewLabel_1_4 = new JLabel("New label");
-		lblNewLabel_1_4.setBounds(35, 336, 542, 50);
-		add(lblNewLabel_1_4);
+		JLabel noticiasCiencias = new JLabel("New label");
+		noticiasCiencias.setBounds(35, 336, 542, 50);
+		add(noticiasCiencias);
 		
-		JLabel lblNewLabel_1_5 = new JLabel("New label");
-		lblNewLabel_1_5.setBounds(35, 413, 542, 50);
-		add(lblNewLabel_1_5);
+		JLabel noticiasFauna = new JLabel("New label");
+		noticiasFauna.setBounds(35, 413, 542, 50);
+		add(noticiasFauna);
 		
 		
 		JButton salir = new JButton("Salir");
