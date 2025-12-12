@@ -39,6 +39,7 @@ public class PanelLogin extends JPanel {
 
 		setLayout(null);
 		
+		
 
 		titulo = new JLabel("Bienvenido a Noticias Mapaches");
 		titulo.setBounds(-58, 46, 768, 54);

@@ -55,6 +55,7 @@ public class PanelCarga extends JPanel{
 		add(buscarImagen());
 		
 		
+		
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(10, 24, 617, 36);

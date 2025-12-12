@@ -35,7 +35,7 @@ public class VentanaPrincipal extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(cardLayout);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("iu/raccoon_lg.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("ui/raccoon_icons.jpg"));
 		
 		cardLayout = new CardLayout();
 		panelContenedor = new JPanel(cardLayout);
@@ -58,7 +58,6 @@ public class VentanaPrincipal extends JFrame {
 
 		cardLayout.show(panelContenedor, "CARGA");
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage("iu/raccoon_lg.png"));
 	}
 
 	public void cambiarPantalla(String nombrePantalla) {

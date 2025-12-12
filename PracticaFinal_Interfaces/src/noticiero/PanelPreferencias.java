@@ -24,6 +24,20 @@ public class PanelPreferencias extends JPanel{
 	private GestionNoticias gn;
 	private GestionEmail ge;
 	
+	
+	
+	public JCheckBox[] getListaPreferencias() {
+		return listaPreferencias;
+	}
+
+
+
+	public void setListaPreferencias(JCheckBox[] listaPreferencias) {
+		this.listaPreferencias = listaPreferencias;
+	}
+
+
+
 	public PanelPreferencias(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionNoticias gn) {
 		
 		this.gn=gn;
@@ -157,6 +171,7 @@ public class PanelPreferencias extends JPanel{
 		JButton btnNewButton = new JButton("Guardar preferencias");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				
 				
 				

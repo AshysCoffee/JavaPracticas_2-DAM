@@ -1,7 +1,6 @@
 package noticiero;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;

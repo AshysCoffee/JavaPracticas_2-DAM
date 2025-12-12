@@ -59,7 +59,7 @@ public class GestionUsuarios {
 		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
 	}
 
-	public  List<Usuario> cargarUsuarios() {
+	public List<Usuario> cargarUsuarios() {
 
 		BufferedReader bf = null;
 		
