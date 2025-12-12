@@ -1,0 +1,23 @@
+ECONOMIA;El País;https://elpais.com/economia/;h2 a
+ECONOMIA;El Mundo;https://www.elmundo.es/economia/;h2.ue-c-cover-content__headline
+ECONOMIA;El Español;https://www.elespanol.com/economia/;h2.art__title
+
+DEPORTES;El País;https://elpais.com/deportes/;h2.c_t a
+DEPORTES;El Mundo;https://www.elmundo.es/deportes/;h2.ue-c-cover-content__headline
+DEPORTES;El Español;https://www.elespanol.com/deportes/;h2.art__title
+
+NACIONAL;El País;https://elpais.com/;h2 a
+NACIONAL;El Mundo;https://www.elmundo.es/;div.ue-l-cg__unit h2.ue-c-cover-content__headline
+NACIONAL;RTVE España;https://www.rtve.es/noticias/espana/;span.maintitle
+
+INTERNACIONAL;BBC Mundo;https://www.bbc.com/mundo;h3 a
+INTERNACIONAL;EuropaPress;https://www.europapress.es/internacional/;h2.articulo-titulo a
+INTERNACIONAL;El País;https://elpais.com/internacional/;main#main-content h2.c_t a
+
+CIENCIAS;Xataka Ciencia;https://www.xataka.com/tag/ciencia;h2.abstract-title a
+CIENCIAS;El Mundo;https://www.elmundo.es/ciencia-y-salud/ciencia.html;h2.ue-c-cover-content__headline
+CIENCIAS;La Razón;https://www.larazon.es/ciencia/;h2.article__title
+
+FAUNA;El País;https://elpais.com/noticias/fauna/;h2.c_t a
+FAUNA;El Diario;https://www.eldiario.es/temas/fauna/;h2.ni-title
+FAUNA;AnimaNaturalis;https://www.larazon.es/tags/fauna/;h2.article__title

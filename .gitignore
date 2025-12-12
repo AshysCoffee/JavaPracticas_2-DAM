@@ -32,7 +32,6 @@ Thumbs.db
 # Archivos de backup o temporales
 *.bak
 *.swp
-*.txt
 *.bin
 *.ser
 *.dat
