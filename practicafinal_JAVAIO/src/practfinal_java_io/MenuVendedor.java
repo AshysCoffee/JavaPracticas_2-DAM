@@ -66,7 +66,7 @@ public class MenuVendedor {
 					+ "0. Cerrar sesión");
 			System.out.println("Elige una opción: ");
 
-			input = sc.nextLine();
+			input = sc.next();
 			opcion = ControlErrores.leerEntero(input);
 
 			switch (opcion) {
@@ -86,17 +86,17 @@ public class MenuVendedor {
 				do {
 					
 					System.out.println("\nCódigo planta (1000 para terminar):");
-					input = sc.nextLine();
+					input = sc.next();
 					id_planta = ControlErrores.leerEntero(input);
 
 					System.out.println("Cantidad (1000 para terminar):");
-					input = sc.nextLine();
+					input = sc.next();
 					cantidad = ControlErrores.leerEntero(input);
 
 					// Si el usuario quiere terminar la compra
 					if (id_planta == 1000 && cantidad == 1000) {
 						System.out.println("Cesta cerrada.");
-						break; // <--- este break está permitido, porque rompe solo el bucle principal
+						break;
 					}
 
 					v.agregarProducto(id_planta, cantidad);
@@ -108,7 +108,7 @@ public class MenuVendedor {
 
 				System.out.println("¿Desea continuar con la compra? [Y/N]");
 
-				input = sc.nextLine();
+				input = sc.next();
 				String resp = ControlErrores.leerTexto(input);
 
 				if (resp.equalsIgnoreCase("Y")) {
@@ -123,7 +123,7 @@ public class MenuVendedor {
 			case 3:
 
 				System.out.print("Introduce el número del ticket a buscar: ");
-				input = sc.nextLine();
+				input = sc.next();
 				int num = ControlErrores.leerEntero(input);
 
 				GestorTickets gt = new GestorTickets();
@@ -135,11 +135,11 @@ public class MenuVendedor {
 				System.out.println(contenido);
 
 				System.out.print("Introduce el ID de la planta a devolver: ");
-				input = sc.nextLine();
+				input = sc.next();
 				int id = ControlErrores.leerEntero(input);
 
 				System.out.print("Introduce la cantidad a devolver: ");
-				input = sc.nextLine();
+				input = sc.next();
 				int cantidad_d = ControlErrores.leerEntero(input);
 
 				Planta p = gestor_p.buscarPlanta(getGestor_p().getPlantasAlta(), id);
