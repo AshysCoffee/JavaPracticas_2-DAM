@@ -99,14 +99,10 @@ public class Venta implements Serializable {
 					if (num > max)
 						max = num; // si el num es mayor que max, max se asigna ese valor
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
 					System.out.println("Error al leer el ticket: " + e.getMessage());
-					// Ignorar archivos que no sean tickets
 				}
 			}
 
-//	        Este se ejecuta normalmente al inicio del programa,
-//	        y su trabajo es leer el último número de ticket generado desde un archivo
 		}
 		ultimoTicket = max;
 	} // PROBARLO++ ---- LEE EL ULTIMO NUMERO GUARDADO
@@ -255,20 +251,22 @@ public class Venta implements Serializable {
 				System.out.println("Ticket " + numeroTicket + " guardado correctamente en /TICKETS");
 
 				for (LineaTicket l : lista_prod) {
-				    Planta p = l.getPlanta();
-				    int cantidad = l.getCantidad();
 
-				    int nuevoStock = (p.getStock() - cantidad);
-				    
-				    if (nuevoStock < 0) {
-				        throw new DatosInvalidosException("Stock no puede ser negativo");
-				    }else{
-				    	p.setStock(nuevoStock);
-				    }
-				    
-				    gestor.actualizarStockDat(p.getCodigo(), p.getStock());
+					Planta p = l.getPlanta();
+
+					int cantidad = l.getCantidad();
+
+					int nuevoStock = (p.getStock() - cantidad);
+
+					if (nuevoStock < 1) {
+						throw new DatosInvalidosException("Stock no puede menor de 1");
+					} else {
+						p.setStock(nuevoStock);
+					}
+
+					gestor.actualizarStockDat(p.getCodigo(), p.getStock());
 				}
-				
+
 			}
 		} catch (IOException | DatosInvalidosException e) {
 			System.out.println("Error al guardar ticket: " + e.getMessage());
@@ -343,8 +341,10 @@ public class Venta implements Serializable {
 	@Override
 	public String toString() {
 
+		String idCompleto = String.format("%04d", getEmpleado());
+		
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
-				+ "\nEmpleado que ha atendido: " + empleado.getId_empleado() + "\nNombre del empleado: "
+				+ "\nEmpleado que ha atendido: " + idCompleto + "\nNombre del empleado: "
 				+ empleado.getNombre() + "\n" + "Fecha: " + fecha
 				+ "\nCodigoProducto\tProducto\tCantidad\tPrecioUnitario\n" + leerLineas() + "\n"
 				+ "-------------------------------\nTotal: " + total;

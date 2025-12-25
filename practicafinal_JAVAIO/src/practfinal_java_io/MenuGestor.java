@@ -81,14 +81,14 @@ public class MenuGestor {
 					System.out.println("3. Modificar ambos");
 					System.out.println("0. Volver al menú principal");
 					System.out.print("Elige una opción: ");
-					input = sc.nextLine();
+					input = sc.next();
 					opcion = ControlErrores.leerEntero(input);
 
 					switch (opcion) {
 						case 1:
 							System.out.print("Introduce el nuevo precio: ");
 
-							input = sc.nextLine();
+							input = sc.next();
 							float nuevoPrecio = ControlErrores.leerFloat(input);
 
 							if (nuevoPrecio >= 0) {
@@ -106,7 +106,7 @@ public class MenuGestor {
 
 						case 2:
 							System.out.print("Introduce el nuevo stock: ");
-							input = sc.nextLine();
+							input = sc.next();
 
 							int nuevoStock = ControlErrores.leerEntero(input);
 
@@ -126,12 +126,12 @@ public class MenuGestor {
 						case 3:
 							System.out.print("Introduce el nuevo precio: ");
 
-							input = sc.nextLine();
+							input = sc.next();
 
 							float precioAmbos = ControlErrores.leerFloat(input);
 							System.out.print("Introduce el nuevo stock: ");
 
-							input = sc.nextLine();
+							input = sc.next();
 							int stockAmbos = ControlErrores.leerEntero(input);
 
 							if (precioAmbos >= 0 && stockAmbos >= 0) {
@@ -248,6 +248,8 @@ public class MenuGestor {
 					int codigo = ControlErrores.leerEntero(input);
 
 					modificarPlanta(codigo);
+					
+					break;
 
 
 				case 4:
@@ -267,7 +269,7 @@ public class MenuGestor {
 					String contraseña = sc.next();
 
 					System.out.print("Cargo del empleado (1. VENDEDOR, 2. ENCARGADO): ");
-					input = sc.nextLine();
+					input = sc.next();
 					int cargoInt = ControlErrores.leerEntero(input);
 
 					Cargo cargo;

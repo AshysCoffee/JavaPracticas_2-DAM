@@ -83,39 +83,61 @@ public class MenuVendedor {
 				int id_planta = 0;
 				int cantidad = 0;
 
+				boolean existePlanta = true;
+				boolean hayStock = true;
+
 				do {
-					
+
 					System.out.println("\nCódigo planta (1000 para terminar):");
 					input = sc.next();
 					id_planta = ControlErrores.leerEntero(input);
 
-					System.out.println("Cantidad (1000 para terminar):");
+					if (id_planta == 1000) {
+						System.out.println("Cesta cerrada.");
+						break;
+					}
+
+					if (gestor_p.buscarPlanta(gestor_p.getPlantasAlta(), id_planta) == null) {
+						System.err.println("No existe dicha planta");
+						existePlanta = false;
+						break;
+					}
+
+					System.out.println("Cantidad:");
 					input = sc.next();
 					cantidad = ControlErrores.leerEntero(input);
 
-					// Si el usuario quiere terminar la compra
-					if (id_planta == 1000 && cantidad == 1000) {
-						System.out.println("Cesta cerrada.");
+					if (gestor_p.buscarPlanta(gestor_p.getPlantasAlta(), id_planta).getStock() < cantidad) {
+						System.err.println("La cantidad soliciada supera a la existente");
+						hayStock = false;
 						break;
 					}
 
 					v.agregarProducto(id_planta, cantidad);
 
-				} while (true);
+				} while (id_planta != 1000);
 
-				System.out.println("Esta es su cesta:===========");
-				System.out.println(v.toString());
+				if (existePlanta && hayStock) {
+					System.out.println("Esta es su cesta:===========");
+					System.out.println(v.toString());
 
-				System.out.println("¿Desea continuar con la compra? [Y/N]");
+					System.out.println("¿Desea continuar con la compra? [Y/N]");
 
-				input = sc.next();
-				String resp = ControlErrores.leerTexto(input);
+					input = sc.next();
+					String resp = ControlErrores.leerTexto(input);
 
-				if (resp.equalsIgnoreCase("Y")) {
-					v.generarTicket();
-					System.out.println("Se genero el ticket correctamente");
-				} else if (resp.equalsIgnoreCase("N")) {
-					System.out.println("NO se pudo continuar la compra");
+					if (resp.equalsIgnoreCase("Y")) {
+						v.generarTicket();
+						System.out.println("Se genero el ticket correctamente");
+					} else if (resp.equalsIgnoreCase("N")) {
+						System.out.println("NO se pudo continuar la compra");
+					}
+
+				} else {
+
+					System.out.println("Compra interrumpida");
+					break;
+
 				}
 
 				break;
@@ -130,13 +152,24 @@ public class MenuVendedor {
 				String contenido = gt.buscarTicketPorNumero(num);
 
 				if (contenido == null) {
-					System.out.println("Ticket no encontrado");
+					System.out.println("Ticket no encontrado\n");
+					break;
 				}
+				
 				System.out.println(contenido);
 
 				System.out.print("Introduce el ID de la planta a devolver: ");
 				input = sc.next();
 				int id = ControlErrores.leerEntero(input);
+				
+
+				if (gestor_p.buscarPlanta(gestor_p.getPlantasAlta(), id) == null) {
+					System.err.println("No existe dicha planta");
+					existePlanta = false;
+					break;
+				}
+				
+				
 
 				System.out.print("Introduce la cantidad a devolver: ");
 				input = sc.next();
@@ -149,13 +182,11 @@ public class MenuVendedor {
 					lineasDevolucion
 							.add(p.getNombre() + " x" + cantidad_d + " -> -" + p.getPrecio() * cantidad_d + "€");
 
-					// Añadimos al archivo existente:
 					gt.agregarDevolucionATicket(num, lineasDevolucion);
 
-					// Actualizamos el stock (si quieres reflejarlo en el sistema):
 					p.setStock(p.getStock() + cantidad_d);
 					System.out.println("Devolución procesada correctamente.");
-					
+
 				} else {
 					System.out.println("Planta no encontrada.");
 				}

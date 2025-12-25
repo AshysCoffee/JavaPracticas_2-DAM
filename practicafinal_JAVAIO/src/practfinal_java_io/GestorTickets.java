@@ -55,7 +55,7 @@ public class GestorTickets {
 			
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 			System.out.println("Error al escribir devoluciones: " + e.getMessage());
 		}
 	
@@ -68,7 +68,7 @@ public class GestorTickets {
 			Files.move(origen, destino, StandardCopyOption.REPLACE_EXISTING);
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Error al mover el ticket a DEVOLUCIONES: " + e.getMessage());
 		}
 		
 

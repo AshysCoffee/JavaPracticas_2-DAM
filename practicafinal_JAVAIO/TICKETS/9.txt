@@ -1,0 +1,13 @@
+===== TICKET DE VENTA Nº 9 =====
+Fecha: 2025-12-25
+
+Empleado que ha atendido: 8331
+Nombre del empleado: Federico
+
+CódigoProducto	Producto	Cantidad	PrecioUnitario
+9		4		40.0		10.0
+
+
+------------------------------------
+TOTAL: 40.0 €
+====================================

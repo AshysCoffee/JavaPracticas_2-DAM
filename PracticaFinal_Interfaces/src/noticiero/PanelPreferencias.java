@@ -142,7 +142,6 @@ public class PanelPreferencias extends JPanel{
 //-----------------------------
 		
 		JLabel lblEconomia = new JLabel("Economia");
-		lblEconomia = gp.obtenerPreferencias(TOOL_TIP_TEXT_KEY)
 		lblEconomia.setBounds(48, 92, 68, 22);
 		add(lblEconomia);
 		

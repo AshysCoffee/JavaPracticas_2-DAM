@@ -43,7 +43,7 @@ public class GestorEmpleados implements Serializable {
 		this.empleadosBajas = empleadosBajas;
 	}
 
-	public void inicializarGestores() throws DatosInvalidosException, IOException {
+	public void inicializar() {
 		escribirArchivoAlta();
 		leerEmpleadosAlta();
 		leerEmpleadosBaja();
@@ -65,9 +65,9 @@ public class GestorEmpleados implements Serializable {
 
 			ObjectOutputStream escritura = new ObjectOutputStream(new FileOutputStream(f));
 
-			Empleado empleado1 = new Empleado(6202, "Gabriela", "p2s5mXw", Cargo.VENDEDOR);
+			Empleado empleado1 = new Empleado(57, "Gabriela", "p2s5mXw", Cargo.VENDEDOR);
 			Empleado empleado2 = new Empleado(8331, "Federico", "0fM123", Cargo.VENDEDOR);
-			Empleado empleado3 = new Empleado(0002, "Maria Jose", "JkS67", Cargo.ENCARGADO);
+			Empleado empleado3 = new Empleado(504, "Maria Jose", "JkS67", Cargo.ENCARGADO);
 			Empleado empleado4 = new Empleado(1500, "Pablo", "02IndOO", Cargo.ENCARGADO);
 
 			empleadosAltas.add(empleado1);
@@ -80,7 +80,6 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Objetos escritos correctamente en empleado.dat\n");
 
 		} catch (IOException | DatosInvalidosException i) {
-			i.printStackTrace();
 			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
 	} //TERMINADO --
@@ -93,7 +92,7 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Objetos leídos correctamente desde " + ruta+"");
 
 		}catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			
 			System.out.println("Error al leer archivo: " + e.getMessage());
 
 		}
@@ -122,7 +121,7 @@ public class GestorEmpleados implements Serializable {
 			}
 			
 		}catch (Exception e){
-			e.printStackTrace();
+			
 		}
 	}  //TERMINADO --
 
@@ -270,7 +269,7 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Empleado guardado correctamente.");
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
 
@@ -348,5 +347,5 @@ public class GestorEmpleados implements Serializable {
 
 	} //PROBARLO ++
 
-
+	
 }

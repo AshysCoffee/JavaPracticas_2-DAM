@@ -15,11 +15,13 @@ public class Devolucion implements Serializable{
 	private ArrayList<LineaDevolucion> lineas;
 	private double total;
 	private LocalDate fecha;
+	private GestorPlantas gestor_p;
 
-	public Devolucion() {
+	public Devolucion(GestorPlantas gestor_p) {
 		this.codDevolucion = ++ultimoCodigo;
 		this.lineas = new ArrayList<>();
 		this.fecha = LocalDate.now();
+		this.gestor_p = gestor_p;
 	}
 
 
@@ -88,10 +90,12 @@ public class Devolucion implements Serializable{
 
 	public void generarTicketDevolucion() {
 		try {
+			
 			File carpeta = new File("DEVOLUCIONES");
 			if (!carpeta.exists()) carpeta.mkdirs();
 
 			File f = new File("DEVOLUCIONES/" + codDevolucion + ".txt");
+			
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
 				bw.write("===== TICKET DE DEVOLUCIÓN Nº " + codDevolucion + " =====\n");
 				bw.write("Fecha: " + fecha + "\n\n");
@@ -106,8 +110,24 @@ public class Devolucion implements Serializable{
 
 			System.out.println("Devolución Nº " + codDevolucion + " registrada correctamente");
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			for (LineaDevolucion l : lineas) {
+
+				Planta p = l.getPlanta();
+
+				int cantidad = l.getCantidad();
+
+				int nuevoStock = (p.getStock() + cantidad);
+
+				if (nuevoStock < 1) {
+					throw new DatosInvalidosException("Stock no puede menor de 1");
+				} else {
+					p.setStock(nuevoStock);
+				}
+
+				gestor_p.actualizarStockDat(p.getCodigo(), p.getStock());
+			}
+			
+		} catch (IOException | DatosInvalidosException e) {
 			System.out.println("Error al guardar ticket de devolución: " + e.getMessage());
 		}
 	}

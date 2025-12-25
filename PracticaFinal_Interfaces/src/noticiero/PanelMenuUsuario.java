@@ -25,10 +25,6 @@ public class PanelMenuUsuario  extends JPanel{
 		this.gn = gn;
 		this.v = ventanaPrincipal;
 		
-		List<Fuentes>titulares = gp.
-		
-		setLayout(null);
-		
 		JLabel lblNewLabel = new JLabel("Economia");
 		lblNewLabel.setBounds(25, 26, 54, 13);
 		add(lblNewLabel);

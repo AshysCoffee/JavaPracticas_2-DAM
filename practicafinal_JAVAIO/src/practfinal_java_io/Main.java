@@ -11,7 +11,7 @@ public class Main {
 
 
 			GestorEmpleados ge = new GestorEmpleados();
-			ge.inicializarGestores();
+			ge.inicializar();
 
 
 			ControlErrores ce = new ControlErrores();
