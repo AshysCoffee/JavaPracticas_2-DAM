@@ -11,7 +11,6 @@ public class LineaDevolucion implements Serializable {
 	public LineaDevolucion(Planta planta, int cantidad) {
 		this.planta = planta;
 		this.cantidad = cantidad;
-		this.subtotal = planta.getPrecio() * cantidad;
 	}
 
 	
@@ -30,7 +29,7 @@ public class LineaDevolucion implements Serializable {
 
 	@Override
 	public String toString() {
-		return planta.getNombre() + " x" + cantidad + " → -" + subtotal + "€";
+		return planta.getNombre() + " x" + cantidad + " → -" + planta.getPrecio() * cantidad + "€";
 	}
 }
 

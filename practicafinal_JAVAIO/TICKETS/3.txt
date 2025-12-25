@@ -1,11 +1,11 @@
-===== TICKET DE VENTA Nº 9 =====
+===== TICKET DE VENTA Nº 3 =====
 Fecha: 2025-12-25
 
-Empleado que ha atendido: 8331
-Nombre del empleado: Federico
+Empleado que ha atendido: 0057
+Nombre del empleado: Gabriela
 
 CódigoProducto	Producto	Cantidad	PrecioUnitario
-9		4		40.0		10.0
+8		4		40.0		10.0
 
 
 ------------------------------------

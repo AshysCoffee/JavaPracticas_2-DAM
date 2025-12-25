@@ -48,22 +48,8 @@ public class MenuGestor {
 		this.ce = ce;
 	}
 
-	///////// METODOS DEL MENU <---- los hacemos aparte para hacer codigo más limpio
-
-	// public void altaPlanta(); //Opcion 1
-	//
-	// public void bajaPlanta(int codigo); //Opcion 2
-	//
-	// public void modificarPlanta(int codigo); //Opcion 3
-	//
-	// public void altaEmpleado(); //Opcion 4
-	//
-	// public void bajaEmpleado(int id); //Opcion 5
-	//
-	// public void recontratarEmpleado(int id); //Opcion 6
-	//
-	// public void mostrarEstadisticas(); //Opcion 7
-
+	
+	
 	public void modificarPlanta(int codigo) {
 		Scanner sc = new Scanner(System.in);
 		boolean encontrada = false;

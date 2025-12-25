@@ -1,0 +1,13 @@
+===== TICKET DE VENTA Nº 2 =====
+Fecha: 2025-12-25
+
+Empleado que ha atendido: 0057
+Nombre del empleado: Gabriela
+
+CódigoProducto	Producto	Cantidad	PrecioUnitario
+5		5		50.0		10.0
+
+
+------------------------------------
+TOTAL: 50.0 €
+====================================

@@ -15,7 +15,7 @@ import java.time.*;
 @SuppressWarnings("serial")
 public class Venta implements Serializable {
 
-	private static int ultimoTicket = 1;
+	private static int ultimoTicket = 0;
 	private Empleado empleado;
 	private double total;
 	private LocalDate fecha;
@@ -220,6 +220,9 @@ public class Venta implements Serializable {
 	///// METODOS DE LECTURA Y ESCRITURA
 
 	public void generarTicket() {
+		
+		String idCompleto = String.format("%04d", empleado.getId_empleado());
+		
 		try {
 	
 			File carpeta = new File("TICKETS");
@@ -227,7 +230,7 @@ public class Venta implements Serializable {
 				carpeta.mkdirs();
 			}
 			
-			int numeroTicket = generarNuevoTicket();
+			int numeroTicket = ultimoTicket;
 			
 			File f = new File("TICKETS/" + numeroTicket + ".txt");
 
@@ -235,7 +238,7 @@ public class Venta implements Serializable {
 
 				buffer_w.write("===== TICKET DE VENTA Nº " + numeroTicket + " =====\n");
 				buffer_w.write("Fecha: " + java.time.LocalDate.now() + "\n\n");
-				buffer_w.write("Empleado que ha atendido: " + empleado.getId_empleado() + "\n");
+				buffer_w.write("Empleado que ha atendido: " + idCompleto + "\n");
 				buffer_w.write("Nombre del empleado: " + empleado.getNombre() + "\n\n");
 				buffer_w.write("CódigoProducto\tProducto\tCantidad\tPrecioUnitario\n");
 
@@ -341,7 +344,7 @@ public class Venta implements Serializable {
 	@Override
 	public String toString() {
 
-		String idCompleto = String.format("%04d", getEmpleado());
+		String idCompleto = String.format("%04d", empleado.getId_empleado());
 		
 		return "Número Ticket:" + cod_ticket + "\n——————————————//———————————------------------------\n"
 				+ "\nEmpleado que ha atendido: " + idCompleto + "\nNombre del empleado: "

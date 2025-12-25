@@ -76,16 +76,18 @@ public class Devolucion implements Serializable{
 
 
 	public void agregarLineaDev(Planta p, int cantidad) {
-		LineaDevolucion linea = new LineaDevolucion(p, cantidad);
-		lineas.add(linea);
-		total += linea.getSubtotal();
+	
 		try {
+
+			LineaDevolucion linea = new LineaDevolucion(p, cantidad);
+			lineas.add(linea);
+			total += linea.getSubtotal();
+
 			p.setStock(p.getStock() + cantidad);
-			
+		
 		} catch (DatosInvalidosException e) {
-			e.printStackTrace();
 			System.out.println("Error al actualizar el stock de la planta durante la devolución: " + e.getMessage());
-		} // se devuelve al stock
+		}
 	}
 
 	public void generarTicketDevolucion() {
@@ -110,24 +112,8 @@ public class Devolucion implements Serializable{
 
 			System.out.println("Devolución Nº " + codDevolucion + " registrada correctamente");
 
-			for (LineaDevolucion l : lineas) {
-
-				Planta p = l.getPlanta();
-
-				int cantidad = l.getCantidad();
-
-				int nuevoStock = (p.getStock() + cantidad);
-
-				if (nuevoStock < 1) {
-					throw new DatosInvalidosException("Stock no puede menor de 1");
-				} else {
-					p.setStock(nuevoStock);
-				}
-
-				gestor_p.actualizarStockDat(p.getCodigo(), p.getStock());
-			}
 			
-		} catch (IOException | DatosInvalidosException e) {
+		} catch (IOException e) {
 			System.out.println("Error al guardar ticket de devolución: " + e.getMessage());
 		}
 	}
