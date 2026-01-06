@@ -4,16 +4,20 @@ import java.sql.Connection;
 import java.util.List;
 
 import modelosBases.Juguete;
+import modelosBases.Stock;
 import queriesJDBC.GestionJuguetes;
+import queriesJDBC.GestionStocks;
 
 public class Inventario {
 
 	private Connection conexion;
 	private GestionJuguetes gj;
+	private GestionStocks gs;
 
 	public Inventario(Connection conexion) {
 		this.conexion = conexion;
 		this.gj = new GestionJuguetes(conexion);
+		this.gs = new GestionStocks(conexion);
 		System.out.println("Conexión recibida en Inventario.");
 	}
 
@@ -25,16 +29,12 @@ public class Inventario {
 		this.conexion = conexion;
 	}
 
-	//////////// MENU DE JUGUETES 
+	//////////// MENU DE JUGUETES
 
 	// Crear Juguete - Opcion 1
-	public boolean crearJuguete(int id, String nombre, String descripcion, double precio, int cantidad) {
+	public boolean crearJuguete(String nombre, String descripcion, double precio, int cantidad, String categoria,
+			int zona_id, int stand_id) {
 
-		if (id <= 0) {
-			System.err.println("Error: el precio no puede ser negativo.");
-			return false;
-		}
-		
 		if (nombre == null || nombre.isEmpty()) {
 			System.err.println("Error: el nombre es obligatorio");
 			return false;
@@ -55,15 +55,51 @@ public class Inventario {
 			return false;
 		}
 
-		Juguete juguete = new Juguete(id, nombre, descripcion, precio, cantidad);
+		if (stand_id <= 0) {
+			System.err.println("Error: El ID del Stand no es valido.");
+			return false;
+		}
+
+		if (zona_id <= 0) {
+			System.err.println("Error: El ID de la Zona no es valido.");
+			return false;
+		}
+
+		Juguete juguete = new Juguete(nombre, descripcion, precio, cantidad, categoria);
 
 		boolean creado = gj.insertarJuguete(juguete);
 
-		return creado;
+		if (creado) {
+
+			int idGenerado = gj.obtenerUltimoId();
+
+			if (idGenerado != 0) {
+
+				Stock nuevoStock = new Stock(stand_id, zona_id, idGenerado, cantidad);
+
+				boolean stockCreado = gs.insertarStock(nuevoStock);
+
+				if (stockCreado) {
+					System.out.println("Juguete creado con éxito (ID: " + idGenerado + ") y ubicado en Stand " + stand_id + ".");
+					return true;
+				} else {
+					System.err.println("El juguete se creó, pero hubo un error al asignarlo al Stand (Stock).");
+					return true;
+				}
+			} else {
+				System.err.println("Error crítico: No se pudo recuperar el ID del juguete recién creado.");
+				return false;
+			}
+		} else {
+			System.err.println("Error al insertar el juguete en la base de datos.");
+			return false;
+		}
+
 
 	}
 
-	// Buscar Juguete - Opcion 2
+	
+
 	public Juguete buscarJuguete(int id) {
 
 		if (id <= 0) {
@@ -79,10 +115,10 @@ public class Inventario {
 		} else {
 			System.out.println("Juguete encontrado: " + juguete);
 			return juguete;
+
 		}
 	}
 
-	// Listar Juguetes - Opcion 3
 	public void listarJuguetes() {
 		List<Juguete> listado = gj.listarJuguetes();
 
@@ -97,7 +133,6 @@ public class Inventario {
 
 	}
 
-	// Modificar Precio - Opcion 4
 	public boolean modificarPrecio(int id, double precio) {
 
 		if (precio < 0) {
@@ -121,7 +156,6 @@ public class Inventario {
 
 	}
 
-	// Modificar Stock - Opcion 5
 	public boolean modificarStock(int id, int stock) {
 
 		if (stock < 0) {
@@ -144,7 +178,6 @@ public class Inventario {
 		return actualizar;
 	}
 
-	// Eliminar Juguete - Opcion 6
 	public boolean eliminarJuguete(int id) {
 
 		if (id <= 0) {
@@ -160,6 +193,71 @@ public class Inventario {
 		boolean eliminar = gj.eliminarJuguete(id);
 
 		return eliminar;
+	}
+
+	public void obtenerJuguetesEnStand(int id) {
+
+		List<String> lista = gj.obtenerJuguetesEnStand(id);
+
+		if (lista == null || lista.isEmpty()) {
+			System.out.println("No se encontraron juguetes en el stand con ID: " + id);
+		} else {
+			for (String juguete : lista) {
+				System.out.println(juguete);
+			}
+		}
+
+	}
+
+	public void buscarPorCategoria(String categoria) {
+		List<Juguete> lista = gj.buscarJuguetesPorCategoria(categoria);
+
+		if (lista == null || lista.isEmpty()) {
+			System.out.println("No se encontraron juguetes de la categoría: " + categoria);
+		} else {
+			for (Juguete j : lista) {
+				System.out.println(j);
+			}
+		}
+
+	}
+
+	public boolean moverMercancia(int idJuguete, int cant, int stOrigen, int zOrigen, int stDestino, int zDestino) {
+
+		Stock origen = gs.obtenerStockdelStand(stOrigen, zOrigen, idJuguete);
+
+		if (origen == null) {
+			System.out.println("Error: Ese juguete no existe en el Stand de origen.");
+			return false;
+		}
+
+		if (origen.getCantidad_disponible() < cant) {
+			System.out.println(
+					"Error: No hay suficiente cantidad en el origen (Hay: " + origen.getCantidad_disponible() + ")");
+			return false;
+		}
+
+		Stock destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
+
+		boolean exitoDestino;
+		if (destino == null) {
+			exitoDestino = false;
+			System.out.println("No existe el stand al que se quiere transferir");
+			return false;
+		} else {
+			int nuevaCant = destino.getCantidad_disponible() + cant;
+			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
+		}
+
+		if (exitoDestino) {
+			int resta = origen.getCantidad_disponible() - cant;
+			gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
+			System.out.println("¡Transferencia realizada con éxito!");
+			return true;
+		} else {
+			System.out.println("Error al actualizar el stand de destino.");
+			return false;
+		}
 	}
 
 }

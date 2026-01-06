@@ -33,6 +33,8 @@ public class GestorTickets {
 
 		return contenido.toString();
 	}
+	
+		
 
 	
 	public void agregarDevolucionATicket(int numTicket, ArrayList<String> lineasDevolucion) {

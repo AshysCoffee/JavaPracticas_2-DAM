@@ -23,16 +23,20 @@ public class GestionVentas {
 	////////CRUD//////////	
 	
 	public boolean registrarVenta(Venta v) {
-		String sql = "INSERT INTO venta (monto, tipo_pago, empleado_id, stand_id, zona_id, juguete_id) VALUES ( ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO venta (fecha ,monto, tipo_pago, empleado_id, stand_id, zona_id, juguete_id, cantidad, cliente)"+
+	"VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			
-			ps.setDouble(1, v.getImporte());
-			ps.setString(2, v.getTipoPago().name());
-			ps.setInt(3, v.getId_empleado());
-			ps.setInt(4, v.getId_stand());
-			ps.setInt(5, v.getId_zona());
-			ps.setInt(6, v.getId_juguete());
+			ps.setDate(1, Date.valueOf(v.getFecha()));
+			ps.setDouble(2, v.getImporte());
+			ps.setString(3, v.getTipoPago().name());
+			ps.setInt(4, v.getId_empleado());
+			ps.setInt(5, v.getId_stand());
+			ps.setInt(6, v.getId_zona());
+			ps.setInt(7, v.getId_juguete());
+			ps.setInt(8, v.getCantidad());
+			ps.setString(9, v.getCliente());
 
 			if (ps.executeUpdate()==0) {
 				return false;
@@ -58,15 +62,13 @@ public class GestionVentas {
 			return false;
 		}
 	}
-	
-	
+		
 	public boolean eliminarVentasDeJuguete(int jugueteId) {
 		
-		String sql = "DELETE FROM venta WHERE juguete_id_nuevo = ? OR juguete_id_original = ?";
+		String sql = "DELETE FROM venta WHERE juguete_id= ?";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, jugueteId);
-			ps.setInt(2, jugueteId);
 			if (ps.executeUpdate()==0) {
 				return false;
 			}else {
@@ -79,8 +81,7 @@ public class GestionVentas {
 			return false;
 		}
 	}
-	
-	
+		
 	public boolean eliminarVentasDeEmpleado(int empleadoId) {
 		String sql = "DELETE FROM venta WHERE empleado_id = ?";
 
@@ -97,11 +98,10 @@ public class GestionVentas {
 			System.out.println("Hubo un error :"+e.getMessage());
 			return false;
 		}
-	}
-	
+	}	
 	
 	public boolean actualizarVenta(Venta v) {
-		String sql = "UPDATE venta SET fecha = ?, monto = ?, tipo_pago = ?, empleado_id = ?, stand_id = ?, zona_id = ?, juguete_id = ? WHERE id_venta = ?";
+		String sql = "UPDATE venta SET fecha = ?, monto = ?, tipo_pago = ?, empleado_id = ?, stand_id = ?, zona_id = ?, juguete_id = ?, cantidad = ?, cliente = ? WHERE id_venta = ?";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setDate(1, Date.valueOf(v.getFecha()));
@@ -111,7 +111,9 @@ public class GestionVentas {
 			ps.setInt(5, v.getId_stand());
 			ps.setInt(6, v.getId_zona());
 			ps.setInt(7, v.getId_juguete());
-			ps.setInt(8, v.getId_venta());
+			ps.setInt(8, v.getCantidad());
+			ps.setString(9, v.getCliente());
+			
 
 			return ps.executeUpdate() > 0;
 
@@ -139,6 +141,8 @@ public class GestionVentas {
 				v.setId_stand(rs.getInt("stand_id"));
 				v.setId_zona(rs.getInt("zona_id"));
 				v.setId_juguete(rs.getInt("juguete_id"));
+				v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
 			}
 
 		} catch (SQLException e) {
@@ -166,6 +170,8 @@ public class GestionVentas {
 				v.setId_stand(rs.getInt("stand_id"));
 				v.setId_zona(rs.getInt("zona_id"));
 				v.setId_juguete(rs.getInt("juguete_id"));
+				v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
 			}
 
 		} catch (SQLException e) {
@@ -209,6 +215,8 @@ public class GestionVentas {
 	            v.setId_stand(rs.getInt("stand_id"));
 	            v.setId_zona(rs.getInt("zona_id"));
 	            v.setId_juguete(rs.getInt("juguete_id"));
+	            v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
 
 	            ventas.add(v);
 	        }
@@ -238,6 +246,8 @@ public class GestionVentas {
 				v.setId_stand(rs.getInt("stand_id"));
 				v.setId_zona(rs.getInt("zona_id"));
 				v.setId_juguete(rs.getInt("juguete_id"));
+				v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
 
 				ventas.add(v);
 			}
@@ -249,6 +259,7 @@ public class GestionVentas {
 		return ventas;
 	}
 
+	
 	public List<Venta> VentasPorMes(int mes) {
 		List<Venta> ventas = new ArrayList<>();
 		String sql = "SELECT * FROM venta WHERE MONTH(fecha) = ?";
@@ -265,6 +276,9 @@ public class GestionVentas {
 				v.setId_stand(rs.getInt("stand_id"));
 				v.setId_zona(rs.getInt("zona_id"));
 				v.setId_juguete(rs.getInt("juguete_id"));
+				v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
+				
 				ventas.add(v);
 			}
 		} catch (SQLException e) {
@@ -273,6 +287,7 @@ public class GestionVentas {
 		return ventas;
 	}
 
+	
 	public List<String> top5JuguetesMasVendidos() {
 	    List<String> ranking = new ArrayList<>();
 	    
@@ -332,5 +347,37 @@ public class GestionVentas {
 	    
 	    return ranking;
 	}
+	
+	public List<Venta> ventasEmpleadoEnMes(int idEmpleado, int mes) {
+	    List<Venta> lista = new ArrayList<>();
+	    String sql = "SELECT * FROM venta WHERE empleado_id = ? AND MONTH(fecha) = ?";
+	    
+	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setInt(1, idEmpleado);
+	        ps.setInt(2, mes);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while(rs.next()){
+	        	Venta v = new Venta();
+				v.setId_venta(rs.getInt("id_venta"));
+				v.setFecha(rs.getDate("fecha").toLocalDate());
+				v.setImporte(rs.getDouble("monto"));
+				v.setTipoPago(TipoPago.valueOf(rs.getString("tipo_pago")));
+				v.setId_empleado(rs.getInt("empleado_id"));
+				v.setId_stand(rs.getInt("stand_id"));
+				v.setId_zona(rs.getInt("zona_id"));
+				v.setId_juguete(rs.getInt("juguete_id"));
+				v.setCantidad(rs.getInt("cantidad"));
+				v.setCliente(rs.getString("cliente"));
+
+				lista.add(v);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return lista;
+	}
+
+	
 }	
 

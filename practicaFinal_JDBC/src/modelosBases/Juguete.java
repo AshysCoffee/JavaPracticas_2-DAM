@@ -7,20 +7,23 @@ public class Juguete {
 	private String descripcion;
 	private double precio;
 	private int cantidad_stock;
+	private String categoria;
 	
-	public Juguete(int id_juguete, String nombre, String descripcion, double precio, int cantidad_stock) {
+	public Juguete(int id_juguete, String nombre, String descripcion, double precio, int cantidad_stock, String categoria) {
 		this.id_juguete = id_juguete;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.cantidad_stock = cantidad_stock;
+		this.categoria = categoria;
 	}
 
-	public Juguete(String nombre, String descripcion, double precio, int cantidad_stock) {
+	public Juguete(String nombre, String descripcion, double precio, int cantidad_stock, String categoria) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.cantidad_stock = cantidad_stock;
+		this.categoria = categoria;
 	}
 	
 	public int getId_juguete() {
@@ -61,6 +64,14 @@ public class Juguete {
 
 	public void setCantidad_stock(int cantidad_stock) {
 		this.cantidad_stock = cantidad_stock;
+	}
+	
+	public String getCategoria() {
+		return categoria;
+	}
+	
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override

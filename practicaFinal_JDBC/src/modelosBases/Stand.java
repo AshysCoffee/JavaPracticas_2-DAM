@@ -8,8 +8,18 @@ public class Stand {
 	private String descripcion;
 	
 	
-	public Stand(int id_stand, String nombre, String descripcion, int id_zona) {
+	
+	
+	public Stand(int id_stand, int id_zona, String nombre, String descripcion) {
+		super();
 		this.id_stand = id_stand;
+		this.id_zona = id_zona;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
+
+	public Stand(String nombre, String descripcion, int id_zona) {
 		this.id_zona = id_zona;
 		this.nombre = nombre;
 		this.descripcion = descripcion;

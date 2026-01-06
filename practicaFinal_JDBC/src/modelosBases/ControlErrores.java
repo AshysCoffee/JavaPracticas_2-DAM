@@ -22,9 +22,9 @@ public class ControlErrores {
 
 	public static String leerTexto(String mensaje) {
 		String texto;
-		String patronLetras = "[a-zA-Z]+";
+		String patronLetras = "^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\\s]+$";
 
-		texto = mensaje;
+		texto = mensaje.trim();
 
 		if (!texto.matches(patronLetras)) {
 			System.err.println("Por favor, introduzca solo letras.");

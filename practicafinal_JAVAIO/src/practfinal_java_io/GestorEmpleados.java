@@ -10,8 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//PONER UN SYSO EN LOS ERORRES PARA QUE SEA MAS VISUAL CON EL USUARIO
-
+@SuppressWarnings("serial")
 public class GestorEmpleados implements Serializable {
 
 	private ArrayList <Empleado> empleadosAltas;
@@ -82,7 +81,7 @@ public class GestorEmpleados implements Serializable {
 		} catch (IOException | DatosInvalidosException i) {
 			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
-	} //TERMINADO --
+	}
 
 	public void leerArchivo(ArrayList<Empleado> lista, String ruta) {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
@@ -100,7 +99,7 @@ public class GestorEmpleados implements Serializable {
 
 	public void leerEmpleadosAlta() {
 		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
-	}  //TERMINADO --
+	} 
 	
 	public void leerEmpleadosBaja() {
 		
@@ -121,9 +120,9 @@ public class GestorEmpleados implements Serializable {
 			}
 			
 		}catch (Exception e){
-			
+			System.out.println("Error al leer archivo de empleados de baja: " + e.getMessage());
 		}
-	}  //TERMINADO --
+	} 
 
 
 
@@ -134,17 +133,17 @@ public class GestorEmpleados implements Serializable {
 			}
 		}
 		return null;
-	} //TERMINADO --
+	}
 
 
 	public Empleado buscarEmpleadoPorIdAlta(int id) {
 		return buscarEmpleadoPorId(empleadosAltas, id);
-	} //TERMINADO --
+	}
 	
 	
 	public Empleado buscarEmpleadoPorIdBaja(int id) {
 		return buscarEmpleadoPorId(empleadosBajas, id);
-	} //TERMINADO --
+	}
 	
 
 	
@@ -166,7 +165,7 @@ public class GestorEmpleados implements Serializable {
 		return null;
 	}
 
-	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) {
+	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) throws DatosInvalidosException {
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -195,7 +194,6 @@ public class GestorEmpleados implements Serializable {
 						new MenuVendedor(gp,e).mostrarMenu();
 					} catch (Exception ex) {
 						System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
-						ex.printStackTrace();
 					}
 					break;
 
@@ -204,7 +202,7 @@ public class GestorEmpleados implements Serializable {
 						new MenuGestor(e, this, gp).mostrarMenu();
 					} catch (Exception ex) {
 						System.err.println("Error al mostrar menú gestor: " + ex.getMessage());
-						ex.printStackTrace();
+						
 					}
 					break;
 
@@ -229,7 +227,7 @@ public class GestorEmpleados implements Serializable {
 	}
 
 
-	/////////////OPCIONES PARA EL GESTOR	
+/////////////OPCIONES PARA EL GESTOR	
 
 	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo){
 
@@ -250,7 +248,7 @@ public class GestorEmpleados implements Serializable {
 		}
 
 		System.out.println("No se encontró el empleado en activos.");
-	} //PROBARLO ++
+	}
 
 	public void guardarEmpleadoEnAlta() {
 
@@ -273,7 +271,7 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
 
-	} //PROBARLO ++
+	}
 
 	public void darBajaEmpleado(int id){
 
@@ -300,7 +298,7 @@ public class GestorEmpleados implements Serializable {
 			return;
 		}
 
-	} //PROBARLO ++
+	}
 
 	public void guardarEmpleadoEnBaja() {
 
@@ -322,7 +320,7 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
 
-	} //PROBARLO ++
+	}
 
 	public void recuperarEmpleado(int id) {
 
@@ -345,7 +343,7 @@ public class GestorEmpleados implements Serializable {
 
 		}
 
-	} //PROBARLO ++
+	}
 
 	
 }

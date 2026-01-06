@@ -24,11 +24,10 @@ public class Main {
 			}
 
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			System.err.println("Error al cargar el controlador JDBC: " + e.getMessage());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("Error al conectar con la base de datos: " + e.getMessage());
 		}
-		
 
 		Menu menu = new Menu();
 		menu.mostrarMenuPrincipal();

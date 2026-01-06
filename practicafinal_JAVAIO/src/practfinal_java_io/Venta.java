@@ -206,7 +206,7 @@ public class Venta implements Serializable {
 				lineaAEliminar.getPlanta()
 						.setStock(lineaAEliminar.getPlanta().getStock() + lineaAEliminar.getCantidad());
 			} catch (DatosInvalidosException e) {
-				e.printStackTrace();
+				
 				System.out.println("Error al actualizar stock: " + e.getMessage());
 			}
 			gestor.actualizarStockDat(id, lineaAEliminar.getPlanta().getStock());
@@ -298,7 +298,6 @@ public class Venta implements Serializable {
 			buffer_r.close();
 
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Error al leer ticket: " + e.getMessage());
 
 		}
@@ -306,6 +305,7 @@ public class Venta implements Serializable {
 	}
 
 	public void buscarTicketPorNumero(int numTicket) {
+		
 		try {
 			// 1.️ Carpeta donde están los tickets
 			File carpeta = new File("TICKETS");

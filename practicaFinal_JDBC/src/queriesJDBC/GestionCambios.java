@@ -106,8 +106,8 @@ public class GestionCambios {
 
 			var rs = ps.executeQuery();
 			if (rs.next()) {
-				return new Cambio(rs.getInt("id_cambio"), rs.getString("motivo"), rs.getDate("fecha").toLocalDate(),
-						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getInt("juguete_id_original"),
+				return new Cambio(rs.getInt("id_cambio"), rs.getInt("juguete_id_original"), rs.getDate("fecha").toLocalDate(),
+						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getString("motivo"),
 						rs.getInt("stand_id_nuevo"), rs.getInt("zona_id_nuevo"), rs.getInt("juguete_id_nuevo"),
 						rs.getInt("empleado_id"));
 			}
@@ -129,8 +129,8 @@ public class GestionCambios {
 
 			var rs = ps.executeQuery();
 			while (rs.next()) {
-				Cambio c = new Cambio(rs.getInt("id_cambio"), rs.getString("motivo"), rs.getDate("fecha").toLocalDate(),
-						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getInt("juguete_id_original"),
+				Cambio c = new Cambio(rs.getInt("id_cambio"), rs.getInt("juguete_id_original"), rs.getDate("fecha").toLocalDate(),
+						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getString("motivo"),
 						rs.getInt("stand_id_nuevo"), rs.getInt("zona_id_nuevo"), rs.getInt("juguete_id_nuevo"),
 						rs.getInt("empleado_id"));
 				cambios.add(c);
@@ -152,8 +152,8 @@ public class GestionCambios {
 
 			var rs = ps.executeQuery();
 			while (rs.next()) {
-				Cambio c = new Cambio(rs.getInt("id_cambio"), rs.getString("motivo"), rs.getDate("fecha").toLocalDate(),
-						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getInt("juguete_id_original"),
+				Cambio c = new Cambio(rs.getInt("id_cambio"), rs.getInt("juguete_id_original"), rs.getDate("fecha").toLocalDate(),
+						rs.getInt("stand_id_original"), rs.getInt("zona_id_original"), rs.getString("motivo"),
 						rs.getInt("stand_id_nuevo"), rs.getInt("zona_id_nuevo"), rs.getInt("juguete_id_nuevo"),
 						rs.getInt("empleado_id"));
 				cambios.add(c);

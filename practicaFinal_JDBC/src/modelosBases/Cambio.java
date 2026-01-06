@@ -17,15 +17,14 @@ public class Cambio {
     private int zonaDestino;
 	
     
-    public Cambio(int id_cambio, String motivo, LocalDate fecha, int id_empleado, int jugueteOriginal, int jugueteNuevo,  
+    public Cambio(String motivo, int id_empleado, int jugueteOriginal, int jugueteNuevo,  
 			int standOrigen, int zonaOrigen, int standDestino, int zonaDestino) {
 		super();
-		this.id_cambio = id_cambio;
 		this.id_empleado = id_empleado;
 		this.jugueteOriginal = jugueteOriginal;
 		this.jugueteNuevo = jugueteNuevo;
 		this.motivo = motivo;
-		this.fecha = fecha;
+		this.fecha = LocalDate.now();
 		this.standOrigen = standOrigen;
 		this.zonaOrigen = zonaOrigen;
 		this.standDestino = standDestino;
@@ -46,8 +45,26 @@ public class Cambio {
 		this.standDestino = standDestino;
 		this.zonaDestino = zonaDestino;
 	}
+   
     
-    
+
+
+	public Cambio(int id_cambio, int id_empleado, LocalDate fecha, int jugueteOriginal, int jugueteNuevo, String motivo,
+			int standOrigen, int zonaOrigen, int standDestino, int zonaDestino) {
+		super();
+		this.id_cambio = id_cambio;
+		this.id_empleado = id_empleado;
+		this.jugueteOriginal = jugueteOriginal;
+		this.jugueteNuevo = jugueteNuevo;
+		this.motivo = motivo;
+		this.fecha = fecha;
+		this.standOrigen = standOrigen;
+		this.zonaOrigen = zonaOrigen;
+		this.standDestino = standDestino;
+		this.zonaDestino = zonaDestino;
+	}
+
+
 	public int getId_cambio() {
 		return id_cambio;
 	}

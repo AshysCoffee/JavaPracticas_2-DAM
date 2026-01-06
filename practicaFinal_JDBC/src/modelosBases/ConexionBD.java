@@ -11,7 +11,6 @@ public class ConexionBD {
 	
 	
 	public ConexionBD() {
-		// Constructor vacío
 	}
 	
 	

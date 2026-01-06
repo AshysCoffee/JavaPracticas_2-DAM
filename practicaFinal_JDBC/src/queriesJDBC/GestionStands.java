@@ -19,16 +19,14 @@ public class GestionStands {
 
 	
 	public boolean insertarStand(Stand s) {
-		String sql = "INSERT INTO stand (id_stand, nombre, descripcion, zona_id"+
-				"VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO stand (nombre, descripcion, zona_id) VALUES (?, ?, ?)";
 
 		
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			ps.setInt(1, s.getId_stand());
-			ps.setString(2, s.getNombre());
-			ps.setString(3, s.getDescripcion());
-			ps.setInt(4, s.getId_zona());
+			ps.setString(1, s.getNombre());
+			ps.setString(2, s.getDescripcion());
+			ps.setInt(3, s.getId_zona());
 	
 			if (ps.executeUpdate() == 0) {
 				return false;
@@ -53,7 +51,7 @@ public class GestionStands {
 				ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
-				lista.add(new Stand(rs.getInt("id_stand"), rs.getString("nombre"), rs.getString("descripcion"), rs.getInt("zona_id")));
+				lista.add(new Stand(rs.getInt("id_stand"), rs.getInt("zona_id"), rs.getString("nombre"), rs.getString("descripcion")));
 			}
 
 		} catch (Exception e) {
@@ -69,7 +67,7 @@ public class GestionStands {
 				var rs = ps.executeQuery()) {
 
 			while (rs.next()) {
-				lista.add(new Stand(rs.getInt("id_stand"), rs.getString("nombre"), rs.getString("descripcion"), rs.getInt("zona_id")));
+				lista.add(new Stand(rs.getString("nombre"), rs.getString("descripcion"), rs.getInt("zona_id")));
 			}
 
 		} catch (Exception e) {
@@ -79,17 +77,16 @@ public class GestionStands {
 		
 	}
 
-	
 	public Stand StandporId(int id) {
 		Stand stand = null;
-		String sql = "SELECT * FROM stand WHERE id=?";
+		String sql = "SELECT * FROM stand WHERE id_stand=?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ps.setInt(1, id); 
 
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
-					stand = new Stand(rs.getInt("id_stand"), rs.getString("nombre"), rs.getString("descripcion"), rs.getInt("zona_id"));
+					stand = new Stand(rs.getString("nombre"), rs.getString("descripcion"), rs.getInt("zona_id"));
 				}
 			}
 

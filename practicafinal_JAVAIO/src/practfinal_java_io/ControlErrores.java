@@ -80,10 +80,10 @@ public class ControlErrores {
 	
 ////////METODOS DE CONTROL DE ERRORES	
 	
-	public static int leerEntero(String mensaje) {
+	public static int leerEntero(String mensaje) throws DatosInvalidosException {
 		int numero = 0;
 		String input;
-		String patronNumero = "\\d+"; // Solo dígitos
+		String patronNumero = "^\\d+$"; // Solo dígitos
 
 		
 			input = mensaje;
@@ -91,29 +91,29 @@ public class ControlErrores {
 			if (input.matches(patronNumero)) {
 				numero = Integer.parseInt(input);
 			} else {
-				System.err.println("Por favor, introduzca un valor válido (solo números).");
+				throw new DatosInvalidosException("El valor '" + mensaje + "' no es un número válido.");
 			}
 
 
 		return numero;
 	}
 
-	public static String leerTexto(String mensaje) {
+	public static String leerTexto(String mensaje) throws DatosInvalidosException {
 		String texto;
-		String patronLetras = "[a-zA-Z]+";
+		String patronLetras = "^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\\s]+$";
 
 		
 			texto = mensaje;
 
 			if (!texto.matches(patronLetras)) {
-				System.err.println("Por favor, introduzca solo letras.");
+				throw new DatosInvalidosException("El valor '" + mensaje + "' no es un número válido.");
 			}
 		
 
 		return texto;
 	}
 
-	public static float leerFloat(String mensaje) {
+	public static float leerFloat(String mensaje) throws DatosInvalidosException {
 		float numero = 0;
 		String input;
 		String patronFloat = "\\d+(\\.\\d+)?"; // Digitos con opcional decimal
@@ -124,7 +124,7 @@ public class ControlErrores {
 			if (input.matches(patronFloat)) {
 				numero = Float.parseFloat(input);
 			} else {
-				System.err.println("Por favor, introduzca un valor válido (número decimal).");
+				throw new DatosInvalidosException("El valor '" + mensaje + "' no es un número válido.");
 			}
 		
 

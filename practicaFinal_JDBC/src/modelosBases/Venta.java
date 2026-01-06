@@ -12,10 +12,12 @@ public class Venta {
 	private TipoPago tipoPago;
 	private LocalDate fecha;
 	private double importe;
+	private String cliente;
+	private int cantidad;
 
 
-	public Venta(int id_venta,LocalDate fecha, TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona
-			 ) {
+	public Venta(int id_venta,LocalDate fecha, TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, 
+			int id_zona, int cantidad, String cliente) {
 
 		this.id_venta = id_venta;
 		this.id_empleado = id_empleado;
@@ -25,9 +27,11 @@ public class Venta {
 		this.tipoPago = tipoPago;
 		this.fecha = LocalDate.now();
 		this.importe = importe;
+		this.cantidad = cantidad;
 	}
 
-	public Venta(TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona) {
+	public Venta(TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona,
+			 int cantidad, String cliente) {
 		super();
 		this.id_empleado = id_empleado;
 		this.id_juguete = id_juguete;
@@ -36,6 +40,7 @@ public class Venta {
 		this.tipoPago = tipoPago;
 		this.fecha = LocalDate.now();
 		this.importe = importe;
+		this.cantidad = cantidad;
 	}
 	
 	
@@ -124,6 +129,22 @@ public class Venta {
 		this.importe = importe;
 	}
 
+
+	public String getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
+	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
 
 	@Override
 	public String toString() {

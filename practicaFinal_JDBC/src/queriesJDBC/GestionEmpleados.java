@@ -11,6 +11,7 @@ import java.util.List;
 
 import modelosBases.Cargo;
 import modelosBases.Empleado;
+import modelosBases.Venta;
 
 public class GestionEmpleados {
 
@@ -157,6 +158,7 @@ public class GestionEmpleados {
 		}
 		return lista;
 	}
-	
+
+
 	
 }

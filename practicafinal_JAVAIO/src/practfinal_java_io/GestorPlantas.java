@@ -1,6 +1,8 @@
 package practfinal_java_io;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -64,7 +66,7 @@ public class GestorPlantas {
 		} catch (Exception e) {
 			System.out.println("Hubo un error en los archivos");
 		}
-	} // Carga todo de una + PROBARLO ++
+	}
 
 	///////////// METODOS DEL .XML
 
@@ -117,7 +119,7 @@ public class GestorPlantas {
 		this.plantasAlta = listaTemporal; // actualiza el atributo
 		return this.plantasAlta;
 
-	} // TERMINADO --
+	}
 
 	public ArrayList<Planta> cargarPlantasBaja() {
 
@@ -165,7 +167,7 @@ public class GestorPlantas {
 		}
 		return plantasBaja;
 
-	} // PROBARLO ++
+	}
 
 	public boolean reescribirPlantas(ArrayList<Planta> p, String rutaFile) {
 
@@ -235,7 +237,7 @@ public class GestorPlantas {
 			return false;
 		}
 
-	} // PROBARLO ++
+	}
 
 	public void reescribirPlantas() {
 		if (reescribirPlantas(plantasAlta, "PLANTAS/plantas.xml")) {
@@ -244,7 +246,7 @@ public class GestorPlantas {
 			System.out.println("Error al guardar");
 		}
 
-	} // PROBARLO ++
+	} 
 
 	public void reescribirplantasBorradas() {
 		if (reescribirPlantas(plantasBaja, "PLANTAS/plantasBajas.xml")) {
@@ -253,7 +255,7 @@ public class GestorPlantas {
 			System.out.println("Error al guardar");
 		}
 
-	} // PROBARLO ++
+	} 
 
 	///////////////// METODOS .DAT
 
@@ -288,7 +290,7 @@ public class GestorPlantas {
 		} catch (IOException e) {
 			System.err.println("Error al crear el archivo plantas.dat: " + e.getMessage());
 		}
-	} // CREAR Y PROBADOR ++
+	}
 
 	public void cargarPlantaDat() {
 
@@ -328,13 +330,12 @@ public class GestorPlantas {
 			System.err.println("Error al cargar el archivo plantas.dat: " + e.getMessage());
 		}
 
-	} // PROBARLO ++
+	} 
 
 	public String leerPlantaDatPorCodigo(int codigo) {
 
 		try {
 
-			plantasAlta = cargarPlantasAlta(); // Esto debe llenarte la lista
 
 			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r");
 			final int TAM_REGISTRO = 12;
@@ -389,7 +390,7 @@ public class GestorPlantas {
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
 
-	} // PROBARLO ++
+	} 
 
 	public void actualizarPrecioDat(int codigo, float nuevoPrecio) {
 
@@ -417,7 +418,7 @@ public class GestorPlantas {
 
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
-	} // PROBARLO ++
+	} 
 
 	public void darDeBajaEnDat(int codigo) {
 
@@ -442,21 +443,16 @@ public class GestorPlantas {
 
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
-	} // PROBARLO ++
+	} 
 
 	/////////////// METODOS GENERALES
 
-	public void dardeAltaPlanta(int id, String nombre, String foto, String descripcion, int stock, float precio) {
+	public void dardeAltaPlanta(String nombre, String foto, String descripcion, int stock, float precio) {
 
 		try {
-
-			if (id < 1 || id > 20)
-				throw new DatosInvalidosException("ID fuera del rango (1-20).");
-
-			// Validar que no exista ya
-			if (buscarPlanta(plantasAlta, id) != null)
-				throw new DatosInvalidosException("ID ya existe, elige otro.");
-
+			
+			int id = plantasAlta.size() + plantasBaja.size() + 1; // Nuevo ID secuencial
+			
 			Planta p = new Planta(id, nombre, foto, descripcion);
 
 			plantasAlta.add(p);
@@ -484,7 +480,7 @@ public class GestorPlantas {
 			;
 		}
 
-	} // PROBARLO ++
+	} 
 
 	public void darDeBajaPlanta(int codigo) {
 
@@ -499,8 +495,8 @@ public class GestorPlantas {
 
 			plantasBaja = cargarPlantasBaja(); // 2. Cargar plantas de baja existentes (si las hay)
 
-			if (!plantasBaja.contains(plantaBaja)) {// 3.a Se comprueba que no este duplicado
-				plantasBaja.add(plantaBaja);// 3. Añadir la nueva planta a la lista de borradas
+			if (!plantasBaja.contains(plantaBaja)) {// Se comprueba que no este duplicado
+				plantasBaja.add(plantaBaja);//Añadir la nueva planta a la lista de borradas
 			} else {
 				System.out.println("La planta ya está dada de baja.");
 				return;
@@ -522,7 +518,7 @@ public class GestorPlantas {
 			System.out.println("Error al dar de baja planta");
 		}
 
-	} // PROBARLO ++
+	} 
 
 	public void recuperarPlanta(int codigo, float precio, int stock) {
 
@@ -564,7 +560,7 @@ public class GestorPlantas {
 			System.out.println("Error al cargar las plantas");
 		}
 
-	} // PROBARLO ++ Esto es una función solo para gestores
+	}
 
 	public Planta buscarPlanta(ArrayList<Planta> a, int codigo) {
 		for (Planta p : a) {
@@ -573,12 +569,28 @@ public class GestorPlantas {
 			}
 		}
 		return null;
-	} // PROBARLO ++
+	} 
 
 	public String mostrarPlantas() {
 		StringBuilder sb = new StringBuilder();
 
 		for (Planta p : plantasAlta) {
+			sb.append("Nombre: ").append(p.getNombre()).append("\n");
+			sb.append("Foto: ").append(p.getFoto()).append("\n");
+			sb.append("Descripción: ").append(p.getDescripcion()).append("\n");
+
+			sb.append(leerPlantaDatPorCodigo(p.getCodigo())).append("\n");
+
+			sb.append("-----------------------------\n");
+		}
+
+		return sb.toString();
+	}
+	
+	public String mostrarPlantasBaja() {
+		StringBuilder sb = new StringBuilder();
+
+		for (Planta p : plantasBaja) {
 			sb.append("Nombre: ").append(p.getNombre()).append("\n");
 			sb.append("Foto: ").append(p.getFoto()).append("\n");
 			sb.append("Descripción: ").append(p.getDescripcion()).append("\n");
@@ -599,5 +611,92 @@ public class GestorPlantas {
 		System.out.println("Plantas dadas de baja: " + plantasBaja.size());
 
 	}
+	
+	public void calcularEstadisticasAvanzadas() {
+	    double recaudacionTotal = 0;
+	    ArrayList<AuxEstadistica> ranking = new ArrayList<>();
+
+	    try {
+	        File carpeta = new File("TICKETS");
+	        File[] archivos = carpeta.listFiles();
+
+	        if (archivos != null) {
+	            for (int i = 0; i < archivos.length; i++) {
+	                File f = archivos[i];
+	                
+	                if (f.isFile() && f.getName().endsWith(".txt")) {
+	                    BufferedReader br = new BufferedReader(new FileReader(f));
+	                    String linea;
+	                    boolean esSeccionProductos = false;
+
+	                    while ((linea = br.readLine()) != null) {
+	                        
+	                        if (linea.contains("TOTAL:")) {
+	                            String limpia = linea.replace("TOTAL:", "").replace("€", "").trim();
+	                            recaudacionTotal += Double.parseDouble(limpia);
+	                        }
+
+	                        if (linea.contains("CódigoProducto")) {
+	                            esSeccionProductos = true;
+	                            continue; 
+	                        }
+	                        if (linea.contains("---")) {
+	                            esSeccionProductos = false;
+	                        }
+
+	                        if (esSeccionProductos && !linea.trim().isEmpty()) {
+	                            String[] partes = linea.split("\t+");
+	                            if (partes.length >= 2) {
+	                                int id = Integer.parseInt(partes[0].trim());
+	                                int cant = Integer.parseInt(partes[1].trim());
+
+	                                boolean encontrada = false;
+	                                for (int j = 0; j < ranking.size(); j++) {
+	                                    if (ranking.get(j).getId() == id) {
+	                                        ranking.get(j).cantidadTotal += cant;
+	                                        encontrada = true;
+	                                        break;
+	                                    }
+	                                }
+	                                // Si no estaba, la añadimos a la lista
+	                                if (!encontrada) {
+	                                    ranking.add(new AuxEstadistica(id, cant));
+	                                }
+	                            }
+	                        }
+	                    }
+	                    br.close();
+	                }
+	            }
+	        }
+
+	        for (int i = 0; i < ranking.size() - 1; i++) {
+	            for (int j = 0; j < ranking.size() - i - 1; j++) {
+	                if (ranking.get(j).getCantidadTotal() < ranking.get(j + 1).getCantidadTotal()) {
+	                    // Intercambiamos
+	                    AuxEstadistica temp = ranking.get(j);
+	                    ranking.set(j, ranking.get(j + 1));
+	                    ranking.set(j + 1, temp);
+	                }
+	            }
+	        }
+
+	 
+	        System.out.println("\n===== ESTADÍSTICAS FINALES =====");
+	        System.out.println("Recaudación Total de todos los tickets: " + recaudacionTotal + " €");
+	        System.out.println("Ranking de productos más vendidos:");
+	        for (int i = 0; i < ranking.size(); i++) {
+	            AuxEstadistica aux = ranking.get(i);
+	            Planta p = buscarPlanta(plantasAlta, aux.id);
+	            String nombre = (p != null) ? p.getNombre() : "Desconocido";
+	            System.out.println((i + 1) + ". " + nombre + " (ID: " + aux.id + ") - " + aux.cantidadTotal + " unidades");
+	        }
+
+	    } catch (Exception e) {
+	        System.out.println("Error al calcular estadísticas: " + e.getMessage());
+	    }
+	}
+	
+	
 
 }

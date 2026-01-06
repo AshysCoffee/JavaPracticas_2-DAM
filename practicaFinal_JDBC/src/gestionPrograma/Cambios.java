@@ -30,19 +30,11 @@ public class Cambios {
 	}
 
 	
-	//EN LA BASE DE DATOS SI ME FUNCIONA LA QUERIE PERO AQUI POR MÁS QUE LO CAMBIO O INVESTIGO NO ME DEJA :(
-		
-		//ME DA EL SIGUIENTE ERROR ==>
-	//Cannot add or update a child row: a foreign key constraint fails (`jugueteria`.`cambio`, CONSTRAINT `fk_cambio_stock_original` 
-	//FOREIGN KEY (`stand_id_original`, `zona_id_original`, `juguete_id_original`) REFERENCES `stock` (`stand_id`, `zona_id`, `juguete_id)
 	
-	public boolean ingresarCambio(int id_cambio, String motivo, int stand_id_original, int zona_id_original,
+	public boolean ingresarCambio(String motivo, int stand_id_original, int zona_id_original,
 			int juguete_id_original, int stand_id_nuevo, int zona_id_nuevo, int juguete_id_nuevo, int empleado_id) {
 
-		if (id_cambio <= 0) {
-			System.out.println("No puede ser negativo el ID");
-			return false;
-		}
+	
 
 		if (motivo == null || motivo.isEmpty()) {
 			System.out.println("Tiene que rellenar este espacio");
@@ -90,7 +82,7 @@ public class Cambios {
 		gs.actualizarStock(stand_id_original, zona_id_original, juguete_id_original,
 				stockOriginal.getCantidad_disponible() + 1);
 
-		Cambio cambio = new Cambio(id_cambio, motivo, stand_id_original, zona_id_original, juguete_id_original,
+		Cambio cambio = new Cambio(motivo, stand_id_original, zona_id_original, juguete_id_original,
 				stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo, empleado_id);
 
 		boolean cambiado = gc.insertarCambio(cambio);

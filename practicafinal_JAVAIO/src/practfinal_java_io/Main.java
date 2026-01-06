@@ -25,7 +25,7 @@ public class Main {
 			  
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Error inesperado: " + e.getMessage());
 		}
 
 	}

@@ -93,10 +93,9 @@ public class MenuVendedor {
 					id_planta = ControlErrores.leerEntero(input);
 
 					if (id_planta == 1000) {
-						System.out.println("Cesta cerrada.");
 						break;
 					}
-
+					
 					if (gestor_p.buscarPlanta(gestor_p.getPlantasAlta(), id_planta) == null) {
 						System.err.println("No existe dicha planta");
 						existePlanta = false;
@@ -135,7 +134,7 @@ public class MenuVendedor {
 
 				} else {
 
-					System.out.println("Compra interrumpida");
+					System.err.println("Compra interrumpida");
 					break;
 
 				}
@@ -152,24 +151,29 @@ public class MenuVendedor {
 				String contenido = gt.buscarTicketPorNumero(num);
 
 				if (contenido == null) {
-					System.out.println("Ticket no encontrado\n");
+					System.err.println("Ticket no encontrado\n");
 					break;
 				}
-				
+
 				System.out.println(contenido);
 
 				System.out.print("Introduce el ID de la planta a devolver: ");
 				input = sc.next();
 				int id = ControlErrores.leerEntero(input);
-				
 
+			    String idABuscar = String.valueOf(id); 
+
+			    if (!contenido.contains(idABuscar+"\t\t")) {
+			        System.err.println("Error: Esta planta no figura en el ticket seleccionado.");
+			        break;
+			    }
+			   
+				
 				if (gestor_p.buscarPlanta(gestor_p.getPlantasAlta(), id) == null) {
 					System.err.println("No existe dicha planta");
 					existePlanta = false;
 					break;
 				}
-				
-				
 
 				System.out.print("Introduce la cantidad a devolver: ");
 				input = sc.next();
@@ -183,17 +187,28 @@ public class MenuVendedor {
 							.add(p.getNombre() + " x" + cantidad_d + " -> -" + p.getPrecio() * cantidad_d + "€");
 
 					gt.agregarDevolucionATicket(num, lineasDevolucion);
+					
+					int nuevoStock = p.getStock() + cantidad_d;
 
-					p.setStock(p.getStock() + cantidad_d);
+					gestor_p.actualizarStockDat(p.getCodigo(), nuevoStock);
+
 					System.out.println("Devolución procesada correctamente.");
 
 				} else {
+					
 					System.out.println("Planta no encontrada.");
 				}
 				break;
 
+			
+				
+			case 0:
+				System.out.println("Cerrando sesión. ¡Hasta luego!");
+				break;
+
 			default:
-				System.out.println("No existe esa opción, por favor eliga alguna de las siguientes");
+				System.err.println("No existe esa opción, por favor eliga alguna de las siguientes");
+				break;
 
 			}
 		} while (opcion != 0);

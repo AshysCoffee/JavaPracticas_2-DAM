@@ -13,12 +13,13 @@ public class GestionStocks {
 
 	private Connection conn;
 
+	
 	public GestionStocks(Connection conn) {
 		this.conn = conn;
 	}
 
 	public boolean insertarStock(Stock s) {
-		String sql = "INSERT INTO cambio (stand_id, zona_id, juguete_id, cantidad"+
+		String sql = "INSERT INTO stock (stand_id, zona_id, juguete_id, cantidad)"+
 				"VALUES (?, ?, ?, ?)";
 
 		
@@ -43,7 +44,6 @@ public class GestionStocks {
 		}
 	}
 	
-	
 	public Stock obtenerStockdelStand(int stand, int zona, int juguete) {
 		String sql = "SELECT * FROM stock WHERE stand_id=? AND zona_id=? AND juguete_id=?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class GestionStocks {
 	}
 
 	
-	public List<Stock> StockJuguete(int id) {
+	public List<Stock> stockJuguete(int id) {
 
 		List<Stock> lista = new ArrayList<>();
 		String sql = "SELECT * FROM stock WHERE juguete_id=?";
@@ -109,7 +109,30 @@ public class GestionStocks {
 		
 		return false;
 	}
-	
+
+	public List<String> obtenerJuguetesEnStand(int id) {
+		   
+		List<String> inventario = new ArrayList<>();
+	    
+	    String sql = "SELECT j.nombre, s.cantidad FROM stock s " +
+	                 "JOIN juguete j ON s.juguete_id = j.id_juguete " + 
+	                 "WHERE s.stand_id = ?"; 
+	    
+	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setInt(1, id);
+	        
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                String nombre = rs.getString("nombre");
+	                int cantidad = rs.getInt("cantidad");
+	                inventario.add(nombre + " - Stock: " + cantidad);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al buscar en stand: " + e.getMessage());
+	    }
+	    return inventario;
+	}
 	
 	
 }
