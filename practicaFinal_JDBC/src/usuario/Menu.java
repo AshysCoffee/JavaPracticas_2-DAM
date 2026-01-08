@@ -11,7 +11,9 @@ import gestionPrograma.RRHH;
 import gestionPrograma.Ventas;
 import modelosBases.ConexionBD;
 import modelosBases.ControlErrores;
+import modelosBases.DatosInvalidosException;
 import modelosBases.Juguete;
+import modelosBases.Venta;
 
 public class Menu {
 
@@ -44,6 +46,10 @@ public class Menu {
 		int opcion = -1;
 
 		do {
+			
+			try {
+				
+			
 			System.out.println("================================");
 			System.out.println("          MENÚ PRINCIPAL        ");
 			System.out.println("================================");
@@ -86,15 +92,20 @@ public class Menu {
 				break;
 			}
 
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
 		} while (opcion != 0);
 	}
 
-	public void mostrarMenuJuguetes() {
+	public void mostrarMenuJuguetes(){
 
 		int opcion = -1;
 
 		do {
 
+			try {
+			
 			System.out.println("=== MENU JUGUETES ===");
 			System.out.println("1. Crear Juguete");
 			System.out.println("2. Buscar Juguete");
@@ -114,7 +125,7 @@ public class Menu {
 
 				System.out.println("Por favor ingrese los siguientes datos:");
 
-				sc.nextLine(); // Limpiar el buffer
+				sc.nextLine();
 
 				System.out.print("Nombre: ");
 				input = sc.nextLine();
@@ -143,12 +154,12 @@ public class Menu {
 				input = sc.next();
 				int zona = ControlErrores.leerEntero(input);
 				sc.nextLine();
-				
+
 				System.out.print("ID del Stand donde se ubicará: ");
 				input = sc.next();
 				int stand = ControlErrores.leerEntero(input);
 				sc.nextLine();
-				
+
 				boolean creado = inv.crearJuguete(nombre, descripcion, precio, stock, categoria, zona, stand);
 
 				if (creado) {
@@ -258,6 +269,10 @@ public class Menu {
 				System.out.println("Opción inválida");
 				break;
 			}
+			
+		} catch (DatosInvalidosException e) {
+			System.err.println("Error: " + e.getMessage());
+		}
 
 		} while (opcion != 0);
 	}
@@ -267,6 +282,7 @@ public class Menu {
 		int opcion = -1;
 		do {
 
+			try {
 			System.out.println("================================");
 			System.out.println("       MENÚ DE EMPLEADOS        ");
 			System.out.println("================================");
@@ -368,6 +384,10 @@ public class Menu {
 				break;
 			}
 
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 
 	}
@@ -377,6 +397,9 @@ public class Menu {
 		int opcion = -1;
 		do {
 
+			try {
+				
+			
 			System.out.println("================================");
 			System.out.println("         MENÚ DE VENTAS         ");
 			System.out.println("================================");
@@ -394,7 +417,7 @@ public class Menu {
 			switch (opcion) {
 
 			case 1:
-				
+
 				System.out.println("=== NUEVA COMPRA (CARRITO) ===");
 
 				System.out.print("ID del Empleado que atiende: ");
@@ -415,7 +438,7 @@ public class Menu {
 				double totalCompra = 0;
 
 				while (seguirComprando) {
-					
+
 					System.out.println("\n--- Añadir producto al carrito ---");
 					System.out.print("ID del Juguete: ");
 					int idJug = ControlErrores.leerEntero(sc.next());
@@ -487,16 +510,22 @@ public class Menu {
 				break;
 
 			}
+			
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
 
 		} while (opcion != 0);
 
 	}
 
-	public void mostrarMenuCambios() {
+	public void mostrarMenuCambios(){
 
 		int opcion = -1;
 		do {
 
+			try {
+			
 			System.out.println("================================");
 			System.out.println("        MENÚ DE CAMBIOS         ");
 			System.out.println("================================");
@@ -513,50 +542,58 @@ public class Menu {
 			Cambios cambios = new Cambios(conn);
 
 			switch (opcion) {
+
 			case 1:
 
-				System.out.print("Motivo:");
-				input = sc.next();
-				String motivo = ControlErrores.leerTexto(input);
+			    System.out.println("\n--- NUEVA DEVOLUCIÓN ---");
+			    
+			    System.out.print("Introduzca el ID de la VENTA (Ticket): ");
+			    int idVenta = ControlErrores.leerEntero(sc.next());
 
-				System.out.print("ID del stand del juguete a devolver: ");
-				input = sc.next();
-				int stand_id_original = ControlErrores.leerEntero(input);
+			    Venta ventaOriginal = ventas.buscarVentasPorId(idVenta);
+			    
+			    if (ventaOriginal == null) {
+			        System.err.println("Error: No existe ninguna venta con ese ID.");
+			        break;
+			    }
 
-				System.out.print("ID de la zona del juguete a devolver: ");
-				input = sc.next();
-				int zona_id_original = ControlErrores.leerEntero(input);
+			    System.out.println("Venta encontrada: Juguete ID " + ventaOriginal.getId_juguete() 
+			                     + " (Comprado en Stand " + ventaOriginal.getId_stand() + ")");
 
-				System.out.print("ID del juguete a devolver: ");
-				input = sc.next();
-				int juguete_id_original = ControlErrores.leerEntero(input);
+			    System.out.println("\n--- PRODUCTO A LLEVARSE (CAMBIO) ---");
+			    
+			    System.out.print("ID del Nuevo Juguete: ");
+			    int idJugueteNuevo = ControlErrores.leerEntero(sc.next());
 
-				System.out.print("ID Stand del nuevo juguete: ");
-				input = sc.next();
-				int stand_id_nuevo = ControlErrores.leerEntero(input);
+			    System.out.print("ID Stand del Nuevo Juguete: ");
+			    int idStandNuevo = ControlErrores.leerEntero(sc.next());
 
-				System.out.print("ID Zona del nuevo juguete: ");
-				input = sc.next();
-				int zona_id_nuevo = ControlErrores.leerEntero(input);
+			    System.out.print("ID Zona del Nuevo Juguete: ");
+			    int idZonaNuevo = ControlErrores.leerEntero(sc.next());
 
-				System.out.print("ID del nuevo juguete: ");
-				input = sc.next();
-				int juguete_id_nuevo = ControlErrores.leerEntero(input);
+			    System.out.print("Motivo del cambio: ");
+			    sc.nextLine();
+			    String motivo = ControlErrores.leerTexto(sc.nextLine());
 
-				System.out.print("ID del Empleado: ");
-				input = sc.next();
-				int empleado_id = ControlErrores.leerEntero(input);
+			    
+			    boolean registrado = cambios.ingresarCambio(
+			            motivo, 
+			            ventaOriginal.getId_stand(),
+			            ventaOriginal.getId_zona(),
+			            ventaOriginal.getId_juguete(),
+			            idStandNuevo, 
+			            idZonaNuevo, 
+			            idJugueteNuevo, 
+			            ventaOriginal.getId_empleado()
+			    );
 
-				boolean registrado = cambios.ingresarCambio(motivo, stand_id_original, zona_id_original,
-						juguete_id_original, stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo, empleado_id);
-
-				if (registrado) {
-					System.out.println("Se pudo crear y guardar el cambio!!");
-				} else {
-					System.out.println("No se pudo registrar el cambio.");
-				}
-
-				break;
+			    if (registrado) {
+			        System.out.println("¡Cambio realizado con éxito!");
+			    } else {
+			        System.out.println("Error al registrar el cambio.");
+			    }
+			    break;
+			    
 			case 2:
 				cambios.listasTodosCambios();
 				break;
@@ -587,15 +624,22 @@ public class Menu {
 				break;
 			}
 
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 
 	}
 
-	public void mostrarMenuConsultas() {
+	public void mostrarMenuConsultas(){
 
 		int opcion = -1;
 		do {
 
+			try {
+				
+			
 			System.out.println("================================");
 			System.out.println("     MENÚ DE CONSULTAS TIENDA   ");
 			System.out.println("================================");
@@ -603,6 +647,7 @@ public class Menu {
 			System.out.println("2. Juguetes de mayor a menor precio");
 			System.out.println("3. Juguetes por rango de precio");
 			System.out.println("4. Buscar juguetes por categoría");
+			System.out.println("5. Buscar stock y posición de un juguete");
 			System.out.println("0. Volver");
 			System.out.print("Seleccione una opción: ");
 
@@ -641,14 +686,31 @@ public class Menu {
 				inv.buscarPorCategoria(categoria);
 				break;
 
+			case 5:
+				System.out.println("Introduzca el ID del juguete a buscar: ");
+				input = sc.next();
+				int id = ControlErrores.leerEntero(input);
+				
+				System.out.println("--- INFORMACIÓN DEL JUGUETE ---");
+				inv.buscarJuguete(id);
+				System.out.println("\n--- POSICIÓN EN TIENDA ---");
+				consultas.posicionJuguete(id);
+				
+				break;
+				
 			case 0:
 				System.out.println("Saliendo...");
 				break;
+				
 			default:
 				System.out.println("Opción inválida");
 				break;
 			}
 
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 
 	}

@@ -246,7 +246,7 @@ public class GestorPlantas {
 			System.out.println("Error al guardar");
 		}
 
-	} 
+	}
 
 	public void reescribirplantasBorradas() {
 		if (reescribirPlantas(plantasBaja, "PLANTAS/plantasBajas.xml")) {
@@ -255,7 +255,7 @@ public class GestorPlantas {
 			System.out.println("Error al guardar");
 		}
 
-	} 
+	}
 
 	///////////////// METODOS .DAT
 
@@ -295,11 +295,11 @@ public class GestorPlantas {
 	public void cargarPlantaDat() {
 
 		File f = new File("PLANTAS/plantas.dat");
-		
+
 		if (!f.exists()) {
 			crearPlantasDat();
 		}
-		
+
 		try {
 
 			int posicion = 0;
@@ -324,18 +324,17 @@ public class GestorPlantas {
 			}
 
 			System.out.println("Se ha podido cargar el archivo plantas.dat correctamente");
-			
+
 		} catch (IOException | DatosInvalidosException e) {
 
 			System.err.println("Error al cargar el archivo plantas.dat: " + e.getMessage());
 		}
 
-	} 
+	}
 
 	public String leerPlantaDatPorCodigo(int codigo) {
 
 		try {
-
 
 			RandomAccessFile raf = new RandomAccessFile("PLANTAS/plantas.dat", "r");
 			final int TAM_REGISTRO = 12;
@@ -390,7 +389,7 @@ public class GestorPlantas {
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
 
-	} 
+	}
 
 	public void actualizarPrecioDat(int codigo, float nuevoPrecio) {
 
@@ -418,7 +417,7 @@ public class GestorPlantas {
 
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
-	} 
+	}
 
 	public void darDeBajaEnDat(int codigo) {
 
@@ -443,16 +442,108 @@ public class GestorPlantas {
 
 			System.err.println("Error al actualizar el stock en plantas.dat: " + e.getMessage());
 		}
-	} 
+	}
+
+	////////////// METODOS .BAJAS.DAT
+	
+	public void guardarEnBajasDat(int codigo, float precio, int stock) {
+		
+		File f = new File("PLANTAS/plantasbaja.dat");
+
+		try {
+
+			if (!f.exists()) {
+				f.createNewFile();
+			}
+
+			final int TAM_REGISTRO = 12;
+			long posicion = (codigo - 1) * TAM_REGISTRO;
+
+			RandomAccessFile raf = new RandomAccessFile(f, "rw");
+			raf.seek(raf.length());
+
+			raf.writeInt(codigo);
+			raf.writeFloat(precio);
+			raf.writeInt(stock);
+
+			raf.close();
+
+			System.out.println("Datos guardados en plantasbaja.dat.");
+		} catch (IOException e) {
+			System.err.println("Error al escribir en plantasbaja.dat: " + e.getMessage());
+		}
+	}
+
+	public float obtenerPrecioDesdeBajas(int codigo) {
+
+		File f = new File("PLANTAS/plantasbaja.dat");
+
+		if (!f.exists()) {
+			return 0.0f;
+		}
+
+		try (RandomAccessFile raf = new RandomAccessFile(f, "r")) {
+			while (raf.getFilePointer() < raf.length()) {
+				int codLeido = raf.readInt();
+				float precioLeido = raf.readFloat();
+				int stockLeido = raf.readInt();
+
+				if (codLeido == codigo) {
+					return precioLeido;
+				}
+			}
+		} catch (IOException e) {
+			System.err.println("Error al leer precio de bajas: " + e.getMessage());
+		}
+		return 0.0f;
+	}
+
+	public void eliminarDeBajasDat(int codigo) {
+		File f = new File("PLANTAS/plantasbaja.dat");
+		if (!f.exists())
+			return;
+
+		try (RandomAccessFile raf = new RandomAccessFile(f, "rw")) {
+			long numRegistros = raf.length() / 12;
+
+			for (int i = 0; i < numRegistros; i++) {
+				raf.seek(i * 12);
+				int codLeido = raf.readInt();
+
+				if (codLeido == codigo) {
+
+					if (numRegistros > 1 && i < numRegistros - 1) {
+				
+						raf.seek((numRegistros - 1) * 12);
+						int ultimoCod = raf.readInt();
+						float ultimoPre = raf.readFloat();
+						int ultimoSto = raf.readInt();
+
+						
+						raf.seek(i * 12);
+						raf.writeInt(ultimoCod);
+						raf.writeFloat(ultimoPre);
+						raf.writeInt(ultimoSto);
+					}
+
+					raf.setLength((numRegistros - 1) * 12);
+					System.out.println("Registro eliminado y fichero recortado.");
+					return;
+				}
+			}
+		} catch (IOException e) {
+			System.err.println("Error al borrar sin temporal: " + e.getMessage());
+		}
+	}
 
 	/////////////// METODOS GENERALES
 
 	public void dardeAltaPlanta(String nombre, String foto, String descripcion, int stock, float precio) {
 
 		try {
-			
+
 			int id = plantasAlta.size() + plantasBaja.size() + 1; // Nuevo ID secuencial
-			
+
 			Planta p = new Planta(id, nombre, foto, descripcion);
 
 			plantasAlta.add(p);
@@ -480,7 +571,7 @@ public class GestorPlantas {
 			;
 		}
 
-	} 
+	}
 
 	public void darDeBajaPlanta(int codigo) {
 
@@ -496,13 +587,16 @@ public class GestorPlantas {
 			plantasBaja = cargarPlantasBaja(); // 2. Cargar plantas de baja existentes (si las hay)
 
 			if (!plantasBaja.contains(plantaBaja)) {// Se comprueba que no este duplicado
-				plantasBaja.add(plantaBaja);//Añadir la nueva planta a la lista de borradas
+				plantasBaja.add(plantaBaja);// Añadir la nueva planta a la lista de borradas
 			} else {
 				System.out.println("La planta ya está dada de baja.");
 				return;
 			}
 
 			reescribirplantasBorradas();// 4. Guardar en plantasBaja.xml
+			
+			// 4.1 Guardar precio y stock actuales en plantasbaja.dat
+			guardarEnBajasDat(codigo, plantaBaja.getPrecio(), plantaBaja.getStock());
 
 			darDeBajaEnDat(codigo); // 5. Poner precio y stock a 0 en plantas.dat
 
@@ -518,7 +612,7 @@ public class GestorPlantas {
 			System.out.println("Error al dar de baja planta");
 		}
 
-	} 
+	}
 
 	public void recuperarPlanta(int codigo, float precio, int stock) {
 
@@ -569,7 +663,7 @@ public class GestorPlantas {
 			}
 		}
 		return null;
-	} 
+	}
 
 	public String mostrarPlantas() {
 		StringBuilder sb = new StringBuilder();
@@ -586,7 +680,7 @@ public class GestorPlantas {
 
 		return sb.toString();
 	}
-	
+
 	public String mostrarPlantasBaja() {
 		StringBuilder sb = new StringBuilder();
 
@@ -603,100 +697,90 @@ public class GestorPlantas {
 		return sb.toString();
 	}
 
-	public void mostrarEstadisticas() {
 
-		int totalPlantas = plantasAlta.size() + plantasBaja.size();
-		System.out.println("Total de plantas (activas + bajas): " + totalPlantas);
-		System.out.println("Plantas activas: " + plantasAlta.size());
-		System.out.println("Plantas dadas de baja: " + plantasBaja.size());
-
-	}
-	
 	public void calcularEstadisticasAvanzadas() {
-	    double recaudacionTotal = 0;
-	    ArrayList<AuxEstadistica> ranking = new ArrayList<>();
+		double recaudacionTotal = 0;
+		ArrayList<AuxEstadistica> ranking = new ArrayList<>();
 
-	    try {
-	        File carpeta = new File("TICKETS");
-	        File[] archivos = carpeta.listFiles();
+		try {
+			File carpeta = new File("TICKETS");
+			File[] archivos = carpeta.listFiles();
 
-	        if (archivos != null) {
-	            for (int i = 0; i < archivos.length; i++) {
-	                File f = archivos[i];
-	                
-	                if (f.isFile() && f.getName().endsWith(".txt")) {
-	                    BufferedReader br = new BufferedReader(new FileReader(f));
-	                    String linea;
-	                    boolean esSeccionProductos = false;
+			if (archivos != null) {
+				for (int i = 0; i < archivos.length; i++) {
+					File f = archivos[i];
 
-	                    while ((linea = br.readLine()) != null) {
-	                        
-	                        if (linea.contains("TOTAL:")) {
-	                            String limpia = linea.replace("TOTAL:", "").replace("€", "").trim();
-	                            recaudacionTotal += Double.parseDouble(limpia);
-	                        }
+					if (f.isFile() && f.getName().endsWith(".txt")) {
+						BufferedReader br = new BufferedReader(new FileReader(f));
+						String linea;
+						boolean esSeccionProductos = false;
 
-	                        if (linea.contains("CódigoProducto")) {
-	                            esSeccionProductos = true;
-	                            continue; 
-	                        }
-	                        if (linea.contains("---")) {
-	                            esSeccionProductos = false;
-	                        }
+						while ((linea = br.readLine()) != null) {
 
-	                        if (esSeccionProductos && !linea.trim().isEmpty()) {
-	                            String[] partes = linea.split("\t+");
-	                            if (partes.length >= 2) {
-	                                int id = Integer.parseInt(partes[0].trim());
-	                                int cant = Integer.parseInt(partes[1].trim());
+							if (linea.contains("TOTAL:")) {
+								String limpia = linea.replace("TOTAL:", "").replace("€", "").trim();
+								recaudacionTotal += Double.parseDouble(limpia);
+							}
 
-	                                boolean encontrada = false;
-	                                for (int j = 0; j < ranking.size(); j++) {
-	                                    if (ranking.get(j).getId() == id) {
-	                                        ranking.get(j).cantidadTotal += cant;
-	                                        encontrada = true;
-	                                        break;
-	                                    }
-	                                }
-	                                // Si no estaba, la añadimos a la lista
-	                                if (!encontrada) {
-	                                    ranking.add(new AuxEstadistica(id, cant));
-	                                }
-	                            }
-	                        }
-	                    }
-	                    br.close();
-	                }
-	            }
-	        }
+							if (linea.contains("CódigoProducto")) {
+								esSeccionProductos = true;
+								continue;
+							}
+							if (linea.contains("---")) {
+								esSeccionProductos = false;
+							}
 
-	        for (int i = 0; i < ranking.size() - 1; i++) {
-	            for (int j = 0; j < ranking.size() - i - 1; j++) {
-	                if (ranking.get(j).getCantidadTotal() < ranking.get(j + 1).getCantidadTotal()) {
-	                    // Intercambiamos
-	                    AuxEstadistica temp = ranking.get(j);
-	                    ranking.set(j, ranking.get(j + 1));
-	                    ranking.set(j + 1, temp);
-	                }
-	            }
-	        }
+							if (esSeccionProductos && !linea.trim().isEmpty()) {
+								String[] partes = linea.split("\t+");
+								if (partes.length >= 2) {
+									int id = Integer.parseInt(partes[0].trim());
+									int cant = Integer.parseInt(partes[1].trim());
 
-	 
-	        System.out.println("\n===== ESTADÍSTICAS FINALES =====");
-	        System.out.println("Recaudación Total de todos los tickets: " + recaudacionTotal + " €");
-	        System.out.println("Ranking de productos más vendidos:");
-	        for (int i = 0; i < ranking.size(); i++) {
-	            AuxEstadistica aux = ranking.get(i);
-	            Planta p = buscarPlanta(plantasAlta, aux.id);
-	            String nombre = (p != null) ? p.getNombre() : "Desconocido";
-	            System.out.println((i + 1) + ". " + nombre + " (ID: " + aux.id + ") - " + aux.cantidadTotal + " unidades");
-	        }
+									boolean encontrada = false;
+									for (int j = 0; j < ranking.size(); j++) {
+										if (ranking.get(j).getId() == id) {
+											ranking.get(j).cantidadTotal += cant;
+											encontrada = true;
+											break;
+										}
+									}
+									// Si no estaba, la añadimos a la lista
+									if (!encontrada) {
+										ranking.add(new AuxEstadistica(id, cant));
+									}
+								}
+							}
+						}
+						br.close();
+					}
+				}
+			}
 
-	    } catch (Exception e) {
-	        System.out.println("Error al calcular estadísticas: " + e.getMessage());
-	    }
+			for (int i = 0; i < ranking.size() - 1; i++) {
+				for (int j = 0; j < ranking.size() - i - 1; j++) {
+					if (ranking.get(j).getCantidadTotal() < ranking.get(j + 1).getCantidadTotal()) {
+						// Intercambiamos
+						AuxEstadistica temp = ranking.get(j);
+						ranking.set(j, ranking.get(j + 1));
+						ranking.set(j + 1, temp);
+					}
+				}
+			}
+
+			System.out.println("\n===== ESTADÍSTICAS FINALES =====");
+			System.out.println("Recaudación Total de todos los tickets: " + recaudacionTotal + " €");
+			System.out.println("Ranking de productos más vendidos:");
+			for (int i = 0; i < ranking.size(); i++) {
+				AuxEstadistica aux = ranking.get(i);
+				Planta p = buscarPlanta(plantasAlta, aux.id);
+				String nombre = (p != null) ? p.getNombre() : "Desconocido";
+				System.out.println(
+						(i + 1) + ". " + nombre + " (ID: " + aux.id + ") - " + aux.cantidadTotal + " unidades");
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error al calcular estadísticas: " + e.getMessage());
+		}
 	}
-	
-	
 
 }

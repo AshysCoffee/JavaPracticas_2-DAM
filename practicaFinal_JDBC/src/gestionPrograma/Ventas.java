@@ -209,5 +209,24 @@ public class Ventas {
 		}
 
 	}
+	
+	public Venta buscarVentasPorId(int idVenta) {
+
+		if (idVenta <= 0) {
+			System.out.println("El ID no puede ser negativo o cero.");
+			return null;
+		}
+
+		Venta venta = gv.obtenerVentaPorId(idVenta);
+
+		if (venta == null) {
+			System.out.println("No existe una venta con ese ID.");
+			return null;
+		} else {
+			System.out.println(venta);
+			return venta;
+		}
+
+	}
 
 }

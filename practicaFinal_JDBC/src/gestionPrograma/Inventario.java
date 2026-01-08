@@ -98,8 +98,6 @@ public class Inventario {
 
 	}
 
-	
-
 	public Juguete buscarJuguete(int id) {
 
 		if (id <= 0) {
@@ -193,20 +191,6 @@ public class Inventario {
 		boolean eliminar = gj.eliminarJuguete(id);
 
 		return eliminar;
-	}
-
-	public void obtenerJuguetesEnStand(int id) {
-
-		List<String> lista = gj.obtenerJuguetesEnStand(id);
-
-		if (lista == null || lista.isEmpty()) {
-			System.out.println("No se encontraron juguetes en el stand con ID: " + id);
-		} else {
-			for (String juguete : lista) {
-				System.out.println(juguete);
-			}
-		}
-
 	}
 
 	public void buscarPorCategoria(String categoria) {

@@ -50,17 +50,19 @@ public class MenuVendedor {
 
 	///////////////// MOSTRAR MENU
 
-	public void mostrarMenu() throws DatosInvalidosException {
+	public void mostrarMenu() {
 
 		String input;
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("Bienvenido al sistema, " + empleado.getNombre() + "\n");
 
-		int opcion;
+		int opcion = -1;
 
 		do {
 
+			try {
+			
 			System.out.println("=== MENÚ VENDEDOR ===");
 			System.out.println("1. Visualizar catálogo de plantas\n" + "2. Generar venta\n" + "3. Generar devolución\n"
 					+ "0. Cerrar sesión");
@@ -211,6 +213,12 @@ public class MenuVendedor {
 				break;
 
 			}
+			
+			
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 
 		sc.close();

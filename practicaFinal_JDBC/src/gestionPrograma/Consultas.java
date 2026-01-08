@@ -77,5 +77,27 @@ public class Consultas {
 		}
 
 	}
+	
+	
+	public void posicionJuguete(int id) {
+
+		if (id < 0) {
+			System.out.println("ID inválido.");
+			return;
+		}
+		
+		List<String> infoJuguete = gj.obtenerInfoJuguete(id);
+
+		if (infoJuguete==null||infoJuguete.isEmpty()) {
+			System.out.println("No existe un juguete con ese ID.");
+		} else {
+
+			for (String info : infoJuguete) {
+				System.out.println(info);
+			}
+
+		}
+
+	}
     
 }

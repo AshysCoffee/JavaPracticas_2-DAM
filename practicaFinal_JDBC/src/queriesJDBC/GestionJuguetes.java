@@ -129,9 +129,6 @@ public class GestionJuguetes {
 		}
 	}
 
-	
-	// En queriesJDBC/GestionJuguetes.java
-
 	public int obtenerUltimoId() {
 		String sql = "SELECT MAX(id_juguete) FROM juguete";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -230,20 +227,24 @@ public class GestionJuguetes {
 		return lista;
 	}
 
-	public List<String> obtenerJuguetesEnStand(int id) {
+	public List<String> obtenerInfoJuguete(int id) {
 		List<String> inventario = new ArrayList<>();
 
-		String sql = "SELECT j.nombre, s.cantidad FROM stock s " + "JOIN juguete j ON s.juguete_id = j.id_juguete "
-				+ "WHERE s.stand_id = ?";
+		String sql = "SELECT * FROM stock where juguete_id = ?";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, id);
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					String nombre = rs.getString("nombre");
-					int cantidad = rs.getInt("cantidad");
-					inventario.add(nombre + " - Stock: " + cantidad);
+					rs.getInt("juguete_id");
+					rs.getInt("stand_id");
+					rs.getInt("zona_id");
+					rs.getInt("cantidad");
+					
+					inventario.add("Juguete ID: " + rs.getInt("juguete_id") + ", Stand ID: " + rs.getInt("stand_id")
+							+ ", Zona ID: " + rs.getInt("zona_id") + ", Cantidad: " + rs.getInt("cantidad") );
+					
 				}
 			}
 		} catch (SQLException e) {

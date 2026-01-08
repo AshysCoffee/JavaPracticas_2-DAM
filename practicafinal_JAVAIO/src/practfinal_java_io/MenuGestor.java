@@ -50,123 +50,131 @@ public class MenuGestor {
 		this.ce = ce;
 	}
 
-	public void modificarPlanta(int codigo) throws DatosInvalidosException {
+	public void modificarPlanta(int codigo) {
 
 		boolean encontrada = false;
 		String input;
+		int opcion = -1;
 
 		for (Planta p : gestor_p.getPlantasAlta()) {
 			if (p.getCodigo() == codigo) {
 				encontrada = true;
 
-				int opcion;
 				do {
-					System.out.println("\n--- MODIFICAR PLANTA ---");
-					System.out.println("1. Modificar precio");
-					System.out.println("2. Modificar stock");
-					System.out.println("3. Modificar ambos");
-					System.out.println("0. Volver al menú principal");
-					System.out.print("Elige una opción: ");
-					input = sc.next();
-					opcion = ControlErrores.leerEntero(input);
 
-					switch (opcion) {
+					try {
 
-					case 1:
-						System.out.print("Introduce el nuevo precio: ");
-
+						System.out.println("\n--- MODIFICAR PLANTA ---");
+						System.out.println("1. Modificar precio");
+						System.out.println("2. Modificar stock");
+						System.out.println("3. Modificar ambos");
+						System.out.println("0. Volver al menú principal");
+						System.out.print("Elige una opción: ");
 						input = sc.next();
-						float nuevoPrecio = ControlErrores.leerFloat(input);
+						opcion = ControlErrores.leerEntero(input);
 
-						if (nuevoPrecio >= 0) {
+						switch (opcion) {
 
-							try {
-								p.setPrecio(nuevoPrecio);
-								gestor_p.actualizarPrecioDat(codigo, nuevoPrecio);
+						case 1:
+							System.out.print("Introduce el nuevo precio: ");
 
-							} catch (DatosInvalidosException e) {
+							input = sc.next();
+							float nuevoPrecio = ControlErrores.leerFloat(input);
 
-								System.out.println("Error al actualizar el precio: " + e.getMessage());
+							if (nuevoPrecio >= 0) {
+
+								try {
+									p.setPrecio(nuevoPrecio);
+									gestor_p.actualizarPrecioDat(codigo, nuevoPrecio);
+								} catch (DatosInvalidosException e) {
+									System.out.println("Error al actualizar el precio: " + e.getMessage());
+								}
+								System.out.println("Precio actualizado correctamente.");
+							} else {
+								System.err.println("El precio no puede ser negativo.");
 							}
-							System.out.println("Precio actualizado correctamente.");
-						} else {
-							System.err.println("El precio no puede ser negativo.");
-						}
-						break;
+							break;
 
-					case 2:
-						System.out.print("Introduce el nuevo stock: ");
-						input = sc.next();
+						case 2:
+							System.out.print("Introduce el nuevo stock: ");
+							input = sc.next();
 
-						int nuevoStock = ControlErrores.leerEntero(input);
+							int nuevoStock = ControlErrores.leerEntero(input);
 
-						if (nuevoStock >= 0) {
-							try {
-								p.setStock(nuevoStock);
-								gestor_p.actualizarStockDat(codigo, nuevoStock);
-							} catch (DatosInvalidosException e) {
+							if (nuevoStock >= 0) {
+								try {
+									p.setStock(nuevoStock);
+									gestor_p.actualizarStockDat(codigo, nuevoStock);
+								} catch (DatosInvalidosException e) {
 
-								System.out.println("Error al actualizar el stock: " + e.getMessage());
+									System.out.println("Error al actualizar el stock: " + e.getMessage());
+								}
+								System.out.println("Stock actualizado correctamente.");
+							} else {
+								System.err.println("El stock no puede ser negativo.");
 							}
-							System.out.println("Stock actualizado correctamente.");
-						} else {
-							System.err.println("El stock no puede ser negativo.");
-						}
-						break;
+							break;
 
-					case 3:
-						System.out.print("Introduce el nuevo precio: ");
+						case 3:
+							System.out.print("Introduce el nuevo precio: ");
 
-						input = sc.next();
+							input = sc.next();
 
-						float precioAmbos = ControlErrores.leerFloat(input);
-						System.out.print("Introduce el nuevo stock: ");
+							float precioAmbos = ControlErrores.leerFloat(input);
+							System.out.print("Introduce el nuevo stock: ");
 
-						input = sc.next();
-						int stockAmbos = ControlErrores.leerEntero(input);
+							input = sc.next();
+							int stockAmbos = ControlErrores.leerEntero(input);
 
-						if (precioAmbos >= 0 && stockAmbos >= 0) {
-							try {
-								p.setPrecio(precioAmbos);
-								p.setStock(stockAmbos);
+							if (precioAmbos >= 0 && stockAmbos >= 0) {
+								try {
+									p.setPrecio(precioAmbos);
+									p.setStock(stockAmbos);
 
-								gestor_p.actualizarPrecioDat(codigo, precioAmbos);
-								gestor_p.actualizarStockDat(codigo, stockAmbos);
+									gestor_p.actualizarPrecioDat(codigo, precioAmbos);
+									gestor_p.actualizarStockDat(codigo, stockAmbos);
 
-							} catch (DatosInvalidosException e) {
-
-								System.out.println("Error al actualizar los valores: " + e.getMessage());
+								} catch (DatosInvalidosException e) {
+									System.out.println("Error al actualizar los valores: " + e.getMessage());
+								}
+								System.out.println("Precio y stock actualizados correctamente.");
+							} else {
+								System.err.println("Los valores no pueden ser negativos.");
 							}
-							System.out.println("Precio y stock actualizados correctamente.");
-						} else {
-							System.err.println("Los valores no pueden ser negativos.");
+							break;
+
+						case 0:
+							System.out.println("Volviendo al menú principal...");
+							break;
+
+						default:
+							System.out.println("Opción no válida.");
+							break;
+
 						}
-						break;
 
-					case 0:
-						System.out.println("Volviendo al menú principal...");
-						break;
-
-					default:
-						System.out.println("Opción no válida.");
-						break;
+					} catch (DatosInvalidosException e) {
+						System.out.println("Error al mostrar los detalles de la planta: " + e.getMessage());
 					}
 
 				} while (opcion != 0);
 
-				break;
 			}
+
 		}
 
 		if (!encontrada) {
 			System.out.println("No se encontró ninguna planta con ese código.");
 		}
+
 	}
 
-	public void mostrarOpcionesPlantas() throws DatosInvalidosException {
+	public void mostrarOpcionesPlantas() {
 		int opcion = -1;
 
 		do {
+			
+			try {
 
 			System.out.println("Bienvenido " + empleado.getNombre());
 			System.out.println("=== MENÚ GESTOR ===\n" + "1. Alta de plantas\n" + "2. Baja de plantas\n"
@@ -182,8 +190,6 @@ public class MenuGestor {
 			case 1:
 
 				boolean valido = true;
-
-				try {
 
 					System.out.println("Dando de alta una nueva planta...");
 
@@ -211,14 +217,11 @@ public class MenuGestor {
 						gestor_p.dardeAltaPlanta(nombre, foto, descripcion, stock, precio);
 						System.out.println("Se ha podido crear la planta correctamente");
 					} else {
-						System.out.println("No se ha podido crear la planta debido a errores en los datos.");
+						System.err.println("No se ha podido crear la planta debido a errores en los datos.");
 						break;
 					}
 
-				} catch (DatosInvalidosException e) {
-					System.out.println("Error al dar de alta la planta: " + e.getMessage());
-					valido = false;
-				}
+				
 				break;
 
 			case 2:
@@ -248,15 +251,12 @@ public class MenuGestor {
 				input = sc.next();
 				codigo = ControlErrores.leerEntero(input);
 
-				System.out.println("Precio asignado a la planta");
-				input = sc.next();
-				float precio = ControlErrores.leerFloat(input);
 
-				System.out.println("Introduzca el ID del producto que quiere modificar:");
+				System.out.println("Introduzca stock del producto:");
 				input = sc.next();
-				int stock = ControlErrores.leerEntero(input);
+				stock = ControlErrores.leerEntero(input);
 
-				gestor_p.recuperarPlanta(codigo, precio, stock);
+				gestor_p.recuperarPlanta(codigo, gestor_p.obtenerPrecioDesdeBajas(codigo), stock);
 
 				break;
 
@@ -269,15 +269,22 @@ public class MenuGestor {
 				break;
 
 			}
+			
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error al mostrar los detalles de la planta: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 	}
 
-	public void mostrarOpcionesEmpleado() throws DatosInvalidosException {
+	public void mostrarOpcionesEmpleado(){
 
 		int opcion = -1;
 
 		do {
 
+			try {
+			
 			System.out.println("Bienvenido " + empleado.getNombre());
 			System.out.println("=== MENÚ GESTOR ===\n" + "1. Alta de empleados\n" + "2. Baja de empleados\n"
 					+ "3. Recontratar empleado\n" + "0. Salir");
@@ -352,10 +359,15 @@ public class MenuGestor {
 				break;
 
 			}
+			
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error al mostrar los detalles del empleado: " + e.getMessage());
+			}
+			
 		} while (opcion != 0);
 	}
 
-	public void mostrarMenu() throws DatosInvalidosException {
+	public void mostrarMenu(){
 
 		String input;
 
@@ -364,6 +376,9 @@ public class MenuGestor {
 
 		do {
 
+			try {
+				
+			
 			System.out.println("Bienvenido " + empleado.getNombre());
 			System.out.println("=== MENÚ GESTOR ===\n" + "1. Gestionar plantas\n" + "2. Gestionar empleados\n"
 					+ "3. Consultar estadísticas\n" + "4. Mostrar plantas\n" + "0. Cerrar sesión");
@@ -379,7 +394,7 @@ public class MenuGestor {
 
 				mostrarOpcionesPlantas();
 				break;
-				
+
 			case 2:
 
 				mostrarOpcionesEmpleado();
@@ -408,6 +423,11 @@ public class MenuGestor {
 				break;
 
 			}
+			
+			} catch (DatosInvalidosException e) {
+				System.err.println("Error al mostrar los detalles de la opción: " + e.getMessage());
+			}
+
 		} while (opcion != 0);
 
 		sc.close();

@@ -30,64 +30,66 @@ public class Cambios {
 	}
 
 	
-	
+
 	public boolean ingresarCambio(String motivo, int stand_id_original, int zona_id_original,
-			int juguete_id_original, int stand_id_nuevo, int zona_id_nuevo, int juguete_id_nuevo, int empleado_id) {
+	        int juguete_id_original, int stand_id_nuevo, int zona_id_nuevo, int juguete_id_nuevo, int empleado_id) {
 
-	
+	    if (motivo == null || motivo.isEmpty()) {
+	        System.out.println("Tiene que rellenar este espacio");
+	        return false;
+	    }
 
-		if (motivo == null || motivo.isEmpty()) {
-			System.out.println("Tiene que rellenar este espacio");
-			return false;
-		}
+	    if (stand_id_original <= 0 || zona_id_original <= 0 || juguete_id_original <= 0 || stand_id_nuevo <= 0
+	            || zona_id_nuevo <= 0 || juguete_id_nuevo <= 0) {
+	        System.out.println("Los IDs no pueden ser negativos ni cero");
+	        return false;
+	    }
 
-		if (stand_id_original <= 0 || zona_id_original <= 0 || juguete_id_original <= 0 || stand_id_nuevo <= 0
-				|| zona_id_nuevo <= 0 || juguete_id_nuevo <= 0) {
-			System.out.println("Los IDs no pueden ser negativos ni cero");
-			return false;
-		}
+	    if (empleado_id <= 0) {
+	        System.out.println("El ID del empleado tiene que ser positivo");
+	        return false;
+	    }
 
-		if (empleado_id <= 0) {
-			System.out.println("El ID del empleado tiene que ser positivo");
-			return false;
-		}
+	    Stock stockOriginal = gs.obtenerStockdelStand(stand_id_original, zona_id_original, juguete_id_original);
 
-		Stock stockOriginal = gs.obtenerStockdelStand(stand_id_original, zona_id_original, juguete_id_original);
+	    if (stockOriginal == null) {
+	        System.out.println("El stock original no existe. Intentando crearlo...");
+	        Stock nuevoStock = new Stock(stand_id_original, zona_id_original, juguete_id_original, 0);
+	        
+	        boolean stockCreado = gs.insertarStock(nuevoStock);
 
-		if (stockOriginal == null) {
-			System.out.println("El Stock Original no existe. Intentando crearlo...");
+	        if (!stockCreado) {
+	            System.err.println("Error: No se pudo crear el Stock Original. Probablemente el Juguete o Stand indicados no existen.");
+	            return false;
+	        }
+	        stockOriginal = nuevoStock;
+	    }
 
-			Stock nuevoStock = new Stock(stand_id_original, zona_id_original, juguete_id_original, 0);
+	    Stock stockNuevo = gs.obtenerStockdelStand(stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo);
+	    
+	    if (stockNuevo == null || stockNuevo.getCantidad_disponible() < 1) {
+	        System.err.println("Error: No hay stock disponible del producto nuevo para entregar.");
+	        return false;
+	    }
 
-			boolean stockCreado = gs.insertarStock(nuevoStock);
+	    gs.actualizarStock(stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo, stockNuevo.getCantidad_disponible() - 1);
+	    
+	    gs.actualizarStock(stand_id_original, zona_id_original, juguete_id_original, stockOriginal.getCantidad_disponible() + 1);
 
-			if (!stockCreado) {
-				System.err.println("ERROR FATAL: No se pudo crear el Stock Original.");
-				System.err.println("CAUSA PROBABLE: El Juguete ID " + juguete_id_original + " o el Stand ID "
-						+ stand_id_original + " NO existen en la base de datos.");
-				return false;
-			}
+	    Cambio cambio = new Cambio(
+	            motivo, 
+	            empleado_id,           
+	            juguete_id_original,   
+	            juguete_id_nuevo, 
+	            stand_id_original, 
+	            zona_id_original, 
+	            stand_id_nuevo, 
+	            zona_id_nuevo
+	    );
 
-			System.out.println("Stock creado correctamente. Continuando con el cambio...");
-			stockOriginal = nuevoStock;
-		}
+	    boolean cambiado = gc.insertarCambio(cambio);
 
-		Stock stockNuevo = gs.obtenerStockdelStand(stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo);
-		if (stockNuevo == null || stockNuevo.getCantidad_disponible() < 1) {
-			System.err.println("Error: No hay stock disponible del producto nuevo para entregar.");
-			return false;
-		}
-
-		gs.actualizarStock(stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo, stockNuevo.getCantidad_disponible() - 1);
-		gs.actualizarStock(stand_id_original, zona_id_original, juguete_id_original,
-				stockOriginal.getCantidad_disponible() + 1);
-
-		Cambio cambio = new Cambio(motivo, stand_id_original, zona_id_original, juguete_id_original,
-				stand_id_nuevo, zona_id_nuevo, juguete_id_nuevo, empleado_id);
-
-		boolean cambiado = gc.insertarCambio(cambio);
-
-		return cambiado;
+	    return cambiado;
 	}
 
 	public void listasTodosCambios() {

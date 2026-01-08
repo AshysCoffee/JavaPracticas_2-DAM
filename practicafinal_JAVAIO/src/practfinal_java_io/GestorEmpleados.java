@@ -13,31 +13,27 @@ import java.util.Scanner;
 @SuppressWarnings("serial")
 public class GestorEmpleados implements Serializable {
 
-	private ArrayList <Empleado> empleadosAltas;
-	private ArrayList <Empleado> empleadosBajas;
+	private ArrayList<Empleado> empleadosAltas;
+	private ArrayList<Empleado> empleadosBajas;
 
-
-	public GestorEmpleados(  ) {
+	public GestorEmpleados() {
 		super();
-		this.empleadosAltas = new ArrayList <>();
-		this.empleadosBajas = new ArrayList <>();
+		this.empleadosAltas = new ArrayList<>();
+		this.empleadosBajas = new ArrayList<>();
 	}
-
 
 	public ArrayList<Empleado> getEmpleadosAltas() {
 		return empleadosAltas;
 	}
-	
+
 	public void setEmpleadosAltas(ArrayList<Empleado> empleadosAltas) {
 		this.empleadosAltas = empleadosAltas;
 	}
 
-	
 	public ArrayList<Empleado> getEmpleadosBajas() {
 		return empleadosBajas;
 	}
 
-	
 	public void setEmpleadosBajas(ArrayList<Empleado> empleadosBajas) {
 		this.empleadosBajas = empleadosBajas;
 	}
@@ -48,10 +44,9 @@ public class GestorEmpleados implements Serializable {
 		leerEmpleadosBaja();
 	}
 
-
 //////////ESCRITURA Y LECTURA DE EMPLEADOS
 
-	public void escribirArchivoAlta(){
+	public void escribirArchivoAlta() {
 
 		try {
 
@@ -79,19 +74,19 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Objetos escritos correctamente en empleado.dat\n");
 
 		} catch (IOException | DatosInvalidosException i) {
-			System.out.println ("No se ha podido escribir los objectos en el archivo empleado.dat");
+			System.out.println("No se ha podido escribir los objectos en el archivo empleado.dat");
 		}
 	}
 
 	public void leerArchivo(ArrayList<Empleado> lista, String ruta) {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
-			
+
 			lista.clear();
 			lista.addAll((ArrayList<Empleado>) ois.readObject());
-			System.out.println("Objetos leídos correctamente desde " + ruta+"");
+			System.out.println("Objetos leídos correctamente desde " + ruta + "");
 
-		}catch (IOException | ClassNotFoundException e) {
-			
+		} catch (IOException | ClassNotFoundException e) {
+
 			System.out.println("Error al leer archivo: " + e.getMessage());
 
 		}
@@ -99,34 +94,32 @@ public class GestorEmpleados implements Serializable {
 
 	public void leerEmpleadosAlta() {
 		leerArchivo(empleadosAltas, "EMPLEADOS/empleado.dat");
-	} 
-	
+	}
+
 	public void leerEmpleadosBaja() {
-		
+
 		try {
 
 			File f_baja = new File("EMPLEADOS/BAJAS/empleadoBaja.dat");
 
 			if (!f_baja.exists()) {
 				f_baja.getParentFile().mkdirs(); // crear carpeta si no existe
-				f_baja.createNewFile();          // crear archivo vacío
+				f_baja.createNewFile(); // crear archivo vacío
 				System.out.println("Archivo creado porque no existía");
 			}
 
-			if(empleadosBajas.isEmpty() || !f_baja.exists() || f_baja.length()==0) {
+			if (empleadosBajas.isEmpty() || !f_baja.exists() || f_baja.length() == 0) {
 				System.out.println("No existen empleados de baja en EMPLEADOS/BAJAS/empleadoBaja.dat\n");
-			}else{
+			} else {
 				leerArchivo(empleadosBajas, "EMPLEADOS/BAJAS/empleadoBaja.dat");
 			}
-			
-		}catch (Exception e){
+
+		} catch (Exception e) {
 			System.out.println("Error al leer archivo de empleados de baja: " + e.getMessage());
 		}
-	} 
+	}
 
-
-
-	public Empleado buscarEmpleadoPorId(ArrayList <Empleado> arraylist ,int id) {
+	public Empleado buscarEmpleadoPorId(ArrayList<Empleado> arraylist, int id) {
 		for (Empleado e : arraylist) {
 			if (e.getId_empleado() == id) {
 				return e;
@@ -135,28 +128,23 @@ public class GestorEmpleados implements Serializable {
 		return null;
 	}
 
-
 	public Empleado buscarEmpleadoPorIdAlta(int id) {
 		return buscarEmpleadoPorId(empleadosAltas, id);
 	}
-	
-	
+
 	public Empleado buscarEmpleadoPorIdBaja(int id) {
 		return buscarEmpleadoPorId(empleadosBajas, id);
 	}
-	
 
-	
 ////////////VALIDACIONES DE CREDENCIALES	
-	
-	
+
 	public Empleado validarLogin(int id, String contraseña) {
-		
-		if (empleadosAltas.isEmpty() || buscarEmpleadoPorIdAlta(id)==null) {
+
+		if (empleadosAltas.isEmpty() || buscarEmpleadoPorIdAlta(id) == null) {
 			System.out.println("No existen empleados para acceder al login");
 			return null;
 		}
-		
+
 		for (Empleado e : empleadosAltas) {
 			if (e.getId_empleado() == id && contraseña.equals(e.getContraseña())) {
 				return e;
@@ -166,13 +154,13 @@ public class GestorEmpleados implements Serializable {
 	}
 
 	public Empleado autenticarInteractivo(GestorPlantas gp, int intentosMaximos) throws DatosInvalidosException {
-		
+
 		Scanner sc = new Scanner(System.in);
-		
+
 		int intentos = 0;
 		while (intentos < intentosMaximos) {
 			intentos++;
-			
+
 			System.out.print("ID: ");
 
 			String input = sc.nextLine().trim();
@@ -191,7 +179,7 @@ public class GestorEmpleados implements Serializable {
 				case VENDEDOR:
 
 					try {
-						new MenuVendedor(gp,e).mostrarMenu();
+						new MenuVendedor(gp, e).mostrarMenu();
 					} catch (Exception ex) {
 						System.err.println("Error al mostrar menú vendedor: " + ex.getMessage());
 					}
@@ -202,7 +190,7 @@ public class GestorEmpleados implements Serializable {
 						new MenuGestor(e, this, gp).mostrarMenu();
 					} catch (Exception ex) {
 						System.err.println("Error al mostrar menú gestor: " + ex.getMessage());
-						
+
 					}
 					break;
 
@@ -211,10 +199,10 @@ public class GestorEmpleados implements Serializable {
 				}
 				return e;
 
-			}else{
-				
+			} else {
+
 				int restantes = intentosMaximos - intentos;
-				
+
 				if (restantes > 0) {
 					System.out.println("Credenciales incorrectas. Te quedan " + restantes + " intentos.");
 				} else {
@@ -226,39 +214,43 @@ public class GestorEmpleados implements Serializable {
 		return null;
 	}
 
-
 /////////////OPCIONES PARA EL GESTOR	
 
-	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo){
+	public void darAltaEmpleado(int id, String nombre, String contraseña, Cargo cargo) {
 
 		Empleado e_buscado = buscarEmpleadoPorId(empleadosAltas, id);
 
 		if (e_buscado == null) {
-			System.out.println("No se encontró el empleado en activos.");
 
-		}else if (e_buscado != null){
+			Empleado nuevoEmpleado;
 
-			empleadosAltas.add(e_buscado);
+			try {
+				nuevoEmpleado = new Empleado(id, nombre, contraseña, cargo);
+				empleadosAltas.add(nuevoEmpleado);
 
-			guardarEmpleadoEnAlta(); //Lo escribimos en empleadosAltas.dat
+				guardarEmpleadoEnAlta(); 
+				System.out.println("Empleado con ID " + nuevoEmpleado.getId_empleado() + " se ha dado de alta correctamente.");
 
-			System.out.println("Empleado con ID " + e_buscado.getId_empleado() + " se ha dado de alta correctamente.");
+			} catch (DatosInvalidosException e) {
+				System.out.println("Error al crear empleado: " + e.getMessage());
+			}
+
+		} else if (e_buscado != null) {
+
+			System.out.println("Empleado con ID " + e_buscado.getId_empleado() + " ya está en activos.");
 
 			return;
 		}
-
-		System.out.println("No se encontró el empleado en activos.");
 	}
 
 	public void guardarEmpleadoEnAlta() {
 
 		if (empleadosAltas.isEmpty()) {
-	        System.out.println("No hay empleados en alta para guardar.");
-	        return;
-	    }
-		
-		
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("empleado.dat"))) {
+			System.out.println("No hay empleados en alta para guardar.");
+			return;
+		}
+
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("EMPLEADOS/empleado.dat"))) {
 
 			for (Empleado e : empleadosAltas) {
 				oos.writeObject(e);
@@ -267,31 +259,31 @@ public class GestorEmpleados implements Serializable {
 			System.out.println("Empleado guardado correctamente.");
 
 		} catch (IOException e) {
-			
+
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
 
 	}
 
-	public void darBajaEmpleado(int id){
+	public void darBajaEmpleado(int id) {
 
-		Empleado e_buscado = buscarEmpleadoPorId(empleadosAltas,id);
+		Empleado e_buscado = buscarEmpleadoPorId(empleadosAltas, id);
 
 		if (empleadosBajas.contains(e_buscado)) {
-		    System.out.println("El empleado ya está dado de baja.");
-		    return;
+			System.out.println("El empleado ya está dado de baja.");
+			return;
 		}
-		
+
 		if (e_buscado == null) {
 			System.out.println("No se encontró el empleado en activos.");
 
-		}else if (e_buscado != null){
+		} else if (e_buscado != null) {
 
 			empleadosAltas.removeIf(e -> e.getId_empleado() == e_buscado.getId_empleado());
 			empleadosBajas.add(e_buscado);
 
 			// Guardar registro del empleado dado de baja
-			guardarEmpleadoEnBaja(); //Lo escribimos en empleadosBajas.dat
+			guardarEmpleadoEnBaja(); // Lo escribimos en empleadosBajas.dat
 
 			System.out.println("Empleado con ID " + e_buscado.getId_empleado() + " dado de baja correctamente.");
 
@@ -303,19 +295,17 @@ public class GestorEmpleados implements Serializable {
 	public void guardarEmpleadoEnBaja() {
 
 		if (empleadosBajas.isEmpty()) {
-	        System.out.println("No hay empleados en baja para guardar.");
-	        return;
-	    }
-		
-		
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("BAJA/empleadosBaja.dat"))) {
-			
+			System.out.println("No hay empleados en baja para guardar.");
+			return;
+		}
+
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("EMPLEADOS/BAJAS/empleadosBaja.dat"))) {
+
 			for (Empleado e : empleadosBajas) {
 				oos.writeObject(e);
 			}
 			System.out.println("Empleado guardado correctamente.");
 
-			
 		} catch (IOException e) {
 			System.out.println("Error al guardar empleado: " + e.getMessage());
 		}
@@ -324,7 +314,7 @@ public class GestorEmpleados implements Serializable {
 
 	public void recuperarEmpleado(int id) {
 
-		Empleado e_recupera = buscarEmpleadoPorId(empleadosBajas,id);
+		Empleado e_recupera = buscarEmpleadoPorId(empleadosBajas, id);
 
 		if (e_recupera == null) {
 			System.out.println("Empleado no encontrada en bajas");
@@ -332,18 +322,17 @@ public class GestorEmpleados implements Serializable {
 		}
 
 		if (e_recupera != null) {
-			
+
 			empleadosBajas.removeIf(e -> e.getId_empleado() == e_recupera.getId_empleado());
 			empleadosAltas.add(e_recupera);
 
 			guardarEmpleadoEnBaja();
 			guardarEmpleadoEnAlta();
 
-			System.out.println("El empleado con "+e_recupera.getId_empleado()+" fue reactivado correctamente");
+			System.out.println("El empleado con " + e_recupera.getId_empleado() + " fue reactivado correctamente");
 
 		}
 
 	}
 
-	
 }
