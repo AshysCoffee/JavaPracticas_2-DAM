@@ -141,28 +141,4 @@ public class GestionNoticias {
 
 ///////////////////
 
-	public static void main(String[] args) {
-
-		GestionNoticias gn = new GestionNoticias();
-
-		List<Fuentes> fuentestemp = new ArrayList<>();
-		List<String> titularestemp = new ArrayList<>();
-		
-		gn.iniciarNoticias();
-		
-		for(Fuentes f : gn.listaNoticias) {
-			System.out.println(f);
-			fuentestemp.add(f);
-		}
-		
-		List<String> titulares_temp = gn.cargarTitulares(gn.getListaNoticias());
-		
-		for (String s : titulares_temp) {
-			System.out.println(s);
-			
-		}
-
-
-	}
-
 }
