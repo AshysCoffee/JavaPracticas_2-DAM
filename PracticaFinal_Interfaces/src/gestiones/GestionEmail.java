@@ -13,7 +13,7 @@ import modelos.Usuario;
 
 public class GestionEmail {
 
-	final static String fromEmail = "albaelena1970.ale@gmail.com"; // EMAIL DE SALIDA
+	final static String fromEmail = "albaelena1970.ALE@gmail.com"; // EMAIL DE SALIDA
 	final static String password = "owlh yyir waqd kphp";
 
 	private Usuario usuario;
@@ -126,4 +126,12 @@ public class GestionEmail {
 	
 ////////////////
 
+	public static void main(String[] args) {
+		
+		GestionEmail ge = new GestionEmail();
+		
+		ge.testCorreoAdmin();
+		
+	}
+	
 }
