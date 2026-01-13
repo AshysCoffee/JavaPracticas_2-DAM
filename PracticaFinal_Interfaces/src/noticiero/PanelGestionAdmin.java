@@ -23,6 +23,7 @@ public class PanelGestionAdmin extends JPanel {
 		JButton btnNewButton = new JButton("Crear usuario");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		btnNewButton.setBounds(47, 83, 118, 23);
@@ -31,6 +32,7 @@ public class PanelGestionAdmin extends JPanel {
 		JButton btnNewButton_1 = new JButton("Eliminar usuario");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		btnNewButton_1.setBounds(47, 188, 118, 23);

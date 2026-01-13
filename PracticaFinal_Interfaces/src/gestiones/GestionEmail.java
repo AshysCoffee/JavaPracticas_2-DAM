@@ -8,6 +8,7 @@ import javax.mail.Message;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
 
 import modelos.Usuario;
 
@@ -42,7 +43,7 @@ public class GestionEmail {
 
 /////////////////////// -- TEST DE NOTICIAS HECHO, AHORA FALTA INTERFAZ
 
-	public static boolean sendEmail(Session session, String toEmail, String subject, String body) {
+	public boolean sendEmail(Session session, String toEmail, String subject, String body) {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
@@ -55,12 +56,10 @@ public class GestionEmail {
 			msg.setSubject(subject, "UTF-8");
 			msg.setText(body, "UTF-8");
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-			System.out.println("MENSAJE CREADO");
 			Transport.send(msg);
-			System.out.println("¡EMAIL ENVIADO!");// SI NO DA ERROR
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -89,7 +88,6 @@ public class GestionEmail {
 			}
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
-		System.out.println("Sesión Creada");
 
 		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
 
@@ -118,7 +116,6 @@ public class GestionEmail {
 			}
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
-		System.out.println("Sesión Creada");
 
 		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
 

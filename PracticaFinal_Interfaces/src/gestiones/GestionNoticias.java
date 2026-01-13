@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -94,7 +96,7 @@ public class GestionNoticias {
 			return listaNoticias;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
 
 		} finally {
 			if (bf != null) {
@@ -138,7 +140,5 @@ public class GestionNoticias {
 		return null;
 	}
 
-///////////////////
-
-
+	
 }

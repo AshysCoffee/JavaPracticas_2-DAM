@@ -9,24 +9,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import modelos.Usuario;
 
 public class GestionUsuarios {
 
-	public List<Usuario> listaUsuario= new ArrayList<>();
-	
+	private List<Usuario> listaUsuario = new ArrayList<>();
+	private GestionPreferencias gp = new GestionPreferencias();
 
 	public GestionUsuarios() {
-
 	}
-	
+
 	///////////////
 
 	public List<Usuario> getListaUsuario() {
 		return listaUsuario;
 	}
-
-
 
 	public void setListaUsuario(List<Usuario> listaUsuario) {
 		this.listaUsuario = listaUsuario;
@@ -34,7 +33,7 @@ public class GestionUsuarios {
 
 //////////////
 
-	public  Usuario leerLinea(String linea) {
+	public Usuario leerLinea(String linea) {
 
 		boolean esAdmin = false;
 
@@ -47,7 +46,7 @@ public class GestionUsuarios {
 
 		String[] partes = linea.split(";");
 
-		if (partes.length < 4) {
+		if (partes.length < 5) {
 			return null;
 		}
 
@@ -55,16 +54,17 @@ public class GestionUsuarios {
 		String password = partes[1];
 		String correo = partes[2];
 		int contadorEntradas = Integer.parseInt(partes[3]);
+		String preferencias = partes[4];
 
-		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
+		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas, preferencias);
 	}
 
 	public List<Usuario> cargarUsuarios() {
 
 		BufferedReader bf = null;
-		
+
 		listaUsuario.clear();
-		
+
 		File f = new File("data/usuarios.txt");
 
 		try {
@@ -92,7 +92,8 @@ public class GestionUsuarios {
 			return listaUsuario;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
 
 		} finally {
 			if (bf != null) {
@@ -110,7 +111,7 @@ public class GestionUsuarios {
 
 /////////////////
 
-	public  Usuario buscarUsuario(String nick) {
+	public Usuario buscarUsuario(String nick) {
 
 		if (listaUsuario == null || listaUsuario.isEmpty()) {
 			return null;
@@ -128,8 +129,8 @@ public class GestionUsuarios {
 		return null;
 	}
 
-	public  Usuario validarLogin(String nick, String contraseña) {
-		
+	public Usuario validarLogin(String nick, String contraseña) {
+
 		if (nick == null || nick.isEmpty()) {
 			return null;
 		}
@@ -156,8 +157,8 @@ public class GestionUsuarios {
 		return u;
 	}
 
-	public  boolean guardarUsuarios() {
-		
+	public boolean guardarUsuarios() {
+
 		BufferedWriter bw = null;
 
 		try {
@@ -179,7 +180,8 @@ public class GestionUsuarios {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
 			if (bw != null) {
@@ -193,8 +195,7 @@ public class GestionUsuarios {
 
 	}
 
-	public  boolean eliminarUsuario(String nick) {
-
+	public boolean eliminarUsuario(String nick) {
 
 		if (nick == null || nick.isEmpty()) {
 			return false;
@@ -262,6 +263,5 @@ public class GestionUsuarios {
 		}
 
 	}
-
 
 }

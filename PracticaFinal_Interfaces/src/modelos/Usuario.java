@@ -5,8 +5,19 @@ public class Usuario {
 	private String usuario, pwd, correo;
 	private boolean esAdmin;
 	private int visitas;
+	private String preferencias;
 
-	public Usuario(String usuario, String pwd, String correo, boolean esAdmin, int visitas) {
+	public Usuario(String usuario, String pwd, String correo, boolean esAdmin, int visitas, String preferencias) {	
+		super();
+		this.usuario = usuario;
+		this.pwd = pwd;
+		this.correo = correo;
+		this.esAdmin = esAdmin;
+		this.visitas = visitas;
+		this.preferencias = preferencias;
+	}
+
+	public Usuario(String usuario, String pwd, String correo, boolean esAdmin, int visitas) {	
 		super();
 		this.usuario = usuario;
 		this.pwd = pwd;
@@ -54,6 +65,15 @@ public class Usuario {
 	public void setVisitas(int visitas) {
 		this.visitas = visitas;
 	}
+	
+
+	public String getPreferencias() {
+		return preferencias;
+	}
+
+	public void setPreferencias(String preferencias) {
+		this.preferencias = preferencias;
+	}
 
 	public String toStringUsuario() {
 		return "//" + usuario + ";" + pwd + ";" + correo +";" +visitas+ "//";
@@ -67,7 +87,7 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [usuario=" + usuario + ", pwd=" + pwd + ", correo=" + correo + ", esAdmin=" + esAdmin
-				+ ", visitas=" + visitas + "]";
+				+ ", visitas=" + visitas + "preferencias=" + preferencias + "]";
 	}
 
 	

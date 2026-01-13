@@ -31,8 +31,7 @@ public class PanelMenuAdmin extends JPanel{
 		JButton btnTestNoticias = new JButton("Test de noticias");
 		btnTestNoticias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GestionEmail ge = new GestionEmail ();
-
+				ge.testCorreoAdmin();
 			}
 		});
 		btnTestNoticias.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
@@ -43,7 +42,7 @@ public class PanelMenuAdmin extends JPanel{
 		btnGestionUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ge.testCorreoAdmin();
+				
 				
 			}
 		});

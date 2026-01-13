@@ -1,15 +1,14 @@
 package gestiones;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import modelos.Fuentes;
 import modelos.Usuario;
@@ -22,10 +21,17 @@ public class GestionPreferencias {
 	private GestionUsuarios gu;
 
 	public GestionPreferencias() {
-
 		this.categoriasElegidas = new ArrayList<>();
-
 	}
+	
+	public JCheckBox[] getListaPreferencias() {
+		return listaPreferencias;
+	}
+ 
+	public void setListaPreferencias(JCheckBox[] listaPreferencias) {
+		this.listaPreferencias = listaPreferencias;
+	}
+
 
 	public boolean guardarPreferencias(JCheckBox[] listaPreferencias, Usuario u) {
 
@@ -47,7 +53,7 @@ public class GestionPreferencias {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
 			if (bw != null) {
@@ -61,82 +67,39 @@ public class GestionPreferencias {
 
 	}
 
-	public boolean leerPreferencias(String linea, String u) {
-
-		String[] partes = linea.split("::");
-
-		String usuarioTxt = partes[0];
-
-		Usuario user = gu.buscarUsuario(usuarioTxt.trim());
-
-		if (user != null) {
-
-			for (int i = 1; i < 19; i++) {
-				if (partes[i].equals("1")) {
-					categoriasElegidas.add(gn.getListaNoticias().get(i - 1));
-				}
-			}
-
-			return true;
-		}
-
-		return false;
-	}
 
 	public List<Fuentes> obtenerPreferencias(String nombreUsuario) {
 
-		List<Fuentes> preferencias = new ArrayList<>();
-
 		List<Fuentes> todasLasFuentes = gn.getListaNoticias();
 
-		BufferedReader bf = null;
-
+		Usuario u = gu.buscarUsuario(nombreUsuario);
+		
+		List<Fuentes> preferencias = new ArrayList<>();
+		
 		try {
-			bf = new BufferedReader(new FileReader("data/preferencias.txt"));
-			String linea = bf.readLine();
-
-			while (linea != null) {
-
-				String[] partes = linea.split("::");
-
-				if (partes.length >= 19) {
-
-					if (partes[0].contains(nombreUsuario)) {
-
-						for (int i = 1; i < partes.length; i++) {
-
-							String valor = partes[i];
-
-							if (valor.equals("1")) {
-
-								if ((i - 1) < todasLasFuentes.size()) {
-									Fuentes fuenteElegida = todasLasFuentes.get(i - 1);
-									preferencias.add(fuenteElegida);
-								}
-							}
-
-						}
-
-					}
+			
+			u.getPreferencias();
+			
+			for (int i = 0; i < todasLasFuentes.size(); i++) {
+				if (u.getPreferencias().charAt(i) == '1') {
+					preferencias.add(todasLasFuentes.get(i));
 				}
-
-				linea = bf.readLine();
-			}
+			}	
+			
 
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (bf != null)
-					bf.close();
-			} catch (Exception ex) {
-				ex.getMessage();
-			}
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
 		}
 
 		return preferencias;
 	}
 
 
-
+	public void generarCadenaBinaria() {
+		String cadenaBinaria = "";
+		for (JCheckBox check : getListaPreferencias()) {
+			cadenaBinaria += check.isSelected() ? "1" : "0";
+		}
+	}
+	
 }
