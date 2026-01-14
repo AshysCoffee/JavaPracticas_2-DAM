@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
@@ -32,7 +33,9 @@ public class Main {
 					frame.setVisible(true);
 
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

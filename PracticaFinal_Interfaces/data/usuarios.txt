@@ -1,4 +1,4 @@
-@@admin;admin123;albaelena1970.ale@gmail.com;1@@
-//pepe;pepe123;ashleyleonidk@gmail.com;0//
-//maria;maria123;lusitaniaespinozaaguilar2@gmail.com;2//
-//luis;luis123;fp.aleonespinoza@gmail.com;1//
+@@admin;admin123;albaelena1970.ale@gmail.com;1;111111111111111111@@
+//pepe;pepe123;ashleyleonidk@gmail.com;0;//
+//maria;maria123;lusitaniaespinozaaguilar2@gmail.com;2;101001101110011101//
+//luis;luis123;fp.aleonespinoza@gmail.com;1;000000110010110111//

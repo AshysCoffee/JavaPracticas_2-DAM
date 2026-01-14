@@ -18,8 +18,6 @@ public class GestionEmail {
 
 	private Usuario usuario;
 	private GestionNoticias gn = new GestionNoticias();
-	///EN TODO CASO, SI ES AL USUARIO SUSTITUIR EL ARRAY DE NOTICIAS POR
-	///EL ARRAY DE PREFERENCIAS
 
 	public GestionEmail(Usuario usuario) {
 		super();
@@ -55,12 +53,9 @@ public class GestionEmail {
 			msg.setSubject(subject, "UTF-8");
 			msg.setText(body, "UTF-8");
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-			System.out.println("MENSAJE CREADO");
 			Transport.send(msg);
-			System.out.println("¡EMAIL ENVIADO!");// SI NO DA ERROR
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 
@@ -89,7 +84,6 @@ public class GestionEmail {
 			}
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
-		System.out.println("Sesión Creada");
 
 		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
 
@@ -118,20 +112,10 @@ public class GestionEmail {
 			}
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
-		System.out.println("Sesión Creada");
 
-		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
+		return sendEmail(session, usuarioMail, "NOTICIAS MAPACHE", texto);
 
 	}
 	
-////////////////
-
-	public static void main(String[] args) {
-		
-		GestionEmail ge = new GestionEmail();
-		
-		ge.testCorreoAdmin();
-		
-	}
 	
 }

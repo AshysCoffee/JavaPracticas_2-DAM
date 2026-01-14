@@ -1,14 +1,18 @@
 package noticiero;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
 import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -75,6 +79,26 @@ public class PanelMenuUsuario  extends JPanel{
 		noticiasFauna.setBounds(35, 413, 542, 50);
 		add(noticiasFauna);
 		
+		setLayout(null);
+
+		// 1. Título
+		JLabel lblTitulo = new JLabel("Mis Noticias");
+		lblTitulo.setBounds(30, 20, 200, 30);
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+		add(lblTitulo);
+
+		JTextArea txtNoticias = new JTextArea();
+		txtNoticias.setEditable(false);
+		txtNoticias.setLineWrap(true);
+		txtNoticias.setWrapStyleWord(true);
+		JScrollPane scroll = new JScrollPane(txtNoticias);
+		scroll.setBounds(30, 60, 500, 300); // Ajusta tamaño a tu ventana
+		add(scroll);
+
+		JButton btnCargar = new JButton("Actualizar Noticias");
+		btnCargar.setBounds(30, 380, 150, 30);
+		add(btnCargar);
+
 		
 		JButton salir = new JButton("Salir");
 		salir.setBounds(536, 473, 113, 23);

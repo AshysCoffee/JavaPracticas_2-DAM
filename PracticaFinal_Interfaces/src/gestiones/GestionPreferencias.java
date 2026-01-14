@@ -47,7 +47,7 @@ public class GestionPreferencias {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			return false;
 		} finally {
 			if (bw != null) {
@@ -124,7 +124,7 @@ public class GestionPreferencias {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if (bf != null)

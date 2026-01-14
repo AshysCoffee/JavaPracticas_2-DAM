@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import modelos.Usuario;
 
 public class GestionUsuarios {
@@ -47,7 +49,7 @@ public class GestionUsuarios {
 
 		String[] partes = linea.split(";");
 
-		if (partes.length < 4) {
+		if (partes.length < 5) {
 			return null;
 		}
 
@@ -55,8 +57,9 @@ public class GestionUsuarios {
 		String password = partes[1];
 		String correo = partes[2];
 		int contadorEntradas = Integer.parseInt(partes[3]);
+		String preferencias = partes[4];
 
-		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
+		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas, preferencias);
 	}
 
 	public List<Usuario> cargarUsuarios() {
@@ -92,7 +95,9 @@ public class GestionUsuarios {
 			return listaUsuario;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, 
+		            "Hubo problemas con los usuarios", 
+		            "Error", JOptionPane.WARNING_MESSAGE);
 
 		} finally {
 			if (bf != null) {

@@ -1,11 +1,15 @@
 package gestiones;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -95,14 +99,13 @@ public class GestionNoticias {
 			return listaNoticias;
 
 		} catch (Exception e) {
-			e.printStackTrace();
 
 		} finally {
 			if (bf != null) {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+
 				}
 			}
 		}
@@ -129,14 +132,39 @@ public class GestionNoticias {
 				titulares.add(resultado);
 
 			}
-
+			guardarHistorico(titulares);
 			return titulares;
 
 		} catch (IOException e) {
-			e.getMessage();
+			JOptionPane.showMessageDialog(null, "Sin conexión a Internet. Cargando últimas noticias guardadas.",
+					"Modo Offline", JOptionPane.WARNING_MESSAGE);
+			return leerHistorico();
 		}
 
-		return null;
+	}
+
+	// Añade estos dos métodos pequeños para que funcione:
+	private void guardarHistorico(List<String> noticias) {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
+			for (String n : noticias) {
+				bw.write(n);
+				bw.newLine();
+			}
+		} catch (Exception ex) {
+			/* Ignorar error de guardado */ }
+	}
+
+	private List<String> leerHistorico() {
+		List<String> recuperadas = new ArrayList<>();
+		try (BufferedReader bf = new BufferedReader(new FileReader("data/historico.txt"))) {
+			String linea;
+			while ((linea = bf.readLine()) != null) {
+				recuperadas.add(linea);
+			}
+		} catch (Exception ex) {
+			return new ArrayList<>();
+		}
+		return recuperadas;
 	}
 
 ///////////////////
