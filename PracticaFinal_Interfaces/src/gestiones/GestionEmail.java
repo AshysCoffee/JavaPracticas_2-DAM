@@ -18,9 +18,7 @@ public class GestionEmail {
 	final static String password = "owlh yyir waqd kphp";
 
 	private Usuario usuario;
-	private GestionNoticias gn = new GestionNoticias();
-	///EN TODO CASO, SI ES AL USUARIO SUSTITUIR EL ARRAY DE NOTICIAS POR
-	///EL ARRAY DE PREFERENCIAS
+	private GestionNoticias gn = new GestionNoticias(null);
 
 	public GestionEmail(Usuario usuario) {
 		super();
@@ -117,18 +115,9 @@ public class GestionEmail {
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
 
-		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
+		return sendEmail(session, usuarioMail, "NOTICIAS MAPACHE", texto);
 
 	}
 	
-////////////////
-
-	public static void main(String[] args) {
-		
-		GestionEmail ge = new GestionEmail();
-		
-		ge.testCorreoAdmin();
-		
-	}
 	
 }

@@ -54,13 +54,16 @@ public class GestionPreferencias {
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+
 			return false;
 		} finally {
 			if (bw != null) {
 				try {
 					bw.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -90,6 +93,7 @@ public class GestionPreferencias {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
 		}
+		
 
 		return preferencias;
 	}

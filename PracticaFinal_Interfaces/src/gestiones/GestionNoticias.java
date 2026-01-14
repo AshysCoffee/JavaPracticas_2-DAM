@@ -1,8 +1,10 @@
 package gestiones;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,10 @@ public class GestionNoticias {
 
 	private List<Fuentes> listaNoticias;
 	private List<String> titulares;
+	
+	private GestionUsuarios gu;
 
-	public GestionNoticias() {
+	public GestionNoticias(GestionUsuarios gu) {
 		super();
 		this.listaNoticias = new ArrayList<>();
 		this.titulares = new ArrayList<>();
@@ -104,7 +108,9 @@ public class GestionNoticias {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -131,20 +137,49 @@ public class GestionNoticias {
 				titulares.add(resultado);
 
 			}
-
+			guardarHistorico(titulares);
 			return titulares;
 
 		} catch (IOException e) {
-			e.getMessage();
+			JOptionPane.showMessageDialog(null, "Sin conexión a Internet. Cargando últimas noticias guardadas.",
+					"Modo Offline", JOptionPane.WARNING_MESSAGE);
+			return leerHistorico();
 		}
 
-		return null;
 	}
 
-<<<<<<< HEAD
-	
-=======
-///////////////////
+	public void guardarHistorico(List<String> noticias) {
 
->>>>>>> 7bedb698e54676fbb0c777d9334acadb3827ef51
+		if (noticias == null || noticias.isEmpty()) {
+			return;
+		}
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
+			//bw.write("////" + u + "////");
+			for (String n : noticias) {
+				bw.write(n);
+				bw.newLine();
+			}
+			//bw.write("////" + u + "////");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	public List<String> leerHistorico() {
+		List<String> recuperadas = new ArrayList<>();
+		try (BufferedReader bf = new BufferedReader(new FileReader("data/historico.txt"))) {
+			String linea;
+			while ((linea = bf.readLine()) != null) {
+				recuperadas.add(linea);
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
+			return new ArrayList<>();
+		}
+		return recuperadas;
+	}
+
+
 }

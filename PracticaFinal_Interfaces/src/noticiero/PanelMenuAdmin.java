@@ -28,21 +28,21 @@ public class PanelMenuAdmin extends JPanel{
 		
 		setLayout(null);
 
-		JButton btnTestNoticias = new JButton("Test de noticias");
+		JButton btnTestNoticias = new JButton("Gestión de usuarios");
 		btnTestNoticias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ge.testCorreoAdmin();
+
 			}
 		});
 		btnTestNoticias.setFont(new Font("Franklin Gothic Book", Font.BOLD, 14));
 		btnTestNoticias.setBounds(121, 141, 191, 36);
 		add(btnTestNoticias);
 
-		JButton btnGestionUsuarios = new JButton("Gestión de usuarios");
+		JButton btnGestionUsuarios = new JButton("Test de noticias");
 		btnGestionUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				ge.testCorreoAdmin();
 				
 			}
 		});

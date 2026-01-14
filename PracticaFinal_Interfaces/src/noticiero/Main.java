@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
@@ -22,22 +23,25 @@ public class Main {
 			public void run() {
 				try {
 					GestionUsuarios gu = new GestionUsuarios();
-					GestionNoticias gn = new GestionNoticias();
+					GestionNoticias gn = new GestionNoticias(gu);
 					GestionEmail ge = new GestionEmail();
 					GestionPreferencias gp = new GestionPreferencias();
-					
-					gu.cargarUsuarios();
 
-					VentanaPrincipal frame = new VentanaPrincipal(gu,gn, ge, gp);
+					gu.cargarUsuarios();
+					gn.iniciarNoticias();
+
+					VentanaPrincipal frame = new VentanaPrincipal(gu, gn, ge, gp);
 					frame.setVisible(true);
 
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
+
 			}
 		});
 	}
-
 
 	/**
 	 * Create the application.

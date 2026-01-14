@@ -46,7 +46,7 @@ public class GestionUsuarios {
 
 		String[] partes = linea.split(";");
 
-		if (partes.length < 5) {
+		if (partes.length < 4) {
 			return null;
 		}
 
@@ -54,9 +54,8 @@ public class GestionUsuarios {
 		String password = partes[1];
 		String correo = partes[2];
 		int contadorEntradas = Integer.parseInt(partes[3]);
-		String preferencias = partes[4];
 
-		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas, preferencias);
+		return new Usuario(nombre, password, correo, esAdmin, contadorEntradas);
 	}
 
 	public List<Usuario> cargarUsuarios() {
@@ -100,7 +99,9 @@ public class GestionUsuarios {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -188,7 +189,9 @@ public class GestionUsuarios {
 				try {
 					bw.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -257,7 +260,9 @@ public class GestionUsuarios {
 				if (bw != null)
 					bw.close();
 			} catch (IOException ex) {
-
+				JOptionPane.showMessageDialog(null, 
+			            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+			            "Error en la app", JOptionPane.WARNING_MESSAGE);
 			}
 
 		}
