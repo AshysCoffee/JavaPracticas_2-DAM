@@ -17,16 +17,20 @@ import org.jsoup.nodes.Element;
 
 import modelos.Categorias;
 import modelos.Fuentes;
+import modelos.Usuario;
 
 public class GestionNoticias {
 
 	private List<Fuentes> listaNoticias;
 	private List<String> titulares;
+	
+	private GestionUsuarios gu;
 
-	public GestionNoticias() {
+	public GestionNoticias(GestionUsuarios gu) {
 		super();
 		this.listaNoticias = new ArrayList<>();
 		this.titulares = new ArrayList<>();
+		this.gu = gu;
 	}
 
 	public List<Fuentes> getListaNoticias() {
@@ -99,13 +103,16 @@ public class GestionNoticias {
 			return listaNoticias;
 
 		} catch (Exception e) {
-
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
 		} finally {
 			if (bf != null) {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -114,7 +121,7 @@ public class GestionNoticias {
 
 	}
 
-	public List<String> cargarTitulares(List<Fuentes> pref) {
+	public List<String> cargarTitulares(List<Fuentes> pref, Usuario usuario) {
 
 		if (pref == null || pref.isEmpty()) {
 			return null;
@@ -132,7 +139,7 @@ public class GestionNoticias {
 				titulares.add(resultado);
 
 			}
-			guardarHistorico(titulares);
+			guardarHistorico(titulares, gu.buscarUsuario(usuario));
 			return titulares;
 
 		} catch (IOException e) {
@@ -143,18 +150,41 @@ public class GestionNoticias {
 
 	}
 
-	// Añade estos dos métodos pequeños para que funcione:
-	private void guardarHistorico(List<String> noticias) {
+	public void guardarHistorico(List<String> noticias, String u) {
+
+		if (noticias == null || noticias.isEmpty()) {
+			return;
+		}
+		
+		if (u==null|| u.isBlank()) {
+			return;
+		}
+
+		try(BufferedReader br = new BufferedReader(new FileReader("data/historial.txt")){
+			
+			String s = br.readLine();
+			
+			while (s!= null) {
+				s
+			}
+			
+		}
+		
+		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
+			bw.write("////" + u + "////");
 			for (String n : noticias) {
 				bw.write(n);
 				bw.newLine();
 			}
+			bw.write("////" + u + "////");
 		} catch (Exception ex) {
-			/* Ignorar error de guardado */ }
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
-	private List<String> leerHistorico() {
+	public List<String> leerHistorico() {
 		List<String> recuperadas = new ArrayList<>();
 		try (BufferedReader bf = new BufferedReader(new FileReader("data/historico.txt"))) {
 			String linea;
@@ -162,6 +192,8 @@ public class GestionNoticias {
 				recuperadas.add(linea);
 			}
 		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
 			return new ArrayList<>();
 		}
 		return recuperadas;

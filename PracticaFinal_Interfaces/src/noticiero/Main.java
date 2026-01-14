@@ -26,21 +26,22 @@ public class Main {
 					GestionNoticias gn = new GestionNoticias();
 					GestionEmail ge = new GestionEmail();
 					GestionPreferencias gp = new GestionPreferencias();
-					
-					gu.cargarUsuarios();
 
-					VentanaPrincipal frame = new VentanaPrincipal(gu,gn, ge, gp);
+					gu.cargarUsuarios();
+					gn.iniciarNoticias();
+
+					VentanaPrincipal frame = new VentanaPrincipal(gu, gn, ge, gp);
 					frame.setVisible(true);
 
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, 
-				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
-				            "Error en la app", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
+
 			}
 		});
 	}
-
 
 	/**
 	 * Create the application.

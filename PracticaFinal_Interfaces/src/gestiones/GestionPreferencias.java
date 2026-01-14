@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import modelos.Fuentes;
 import modelos.Usuario;
@@ -54,7 +55,9 @@ public class GestionPreferencias {
 				try {
 					bw.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -124,17 +127,29 @@ public class GestionPreferencias {
 			}
 
 		} catch (Exception e) {
-			
+			JOptionPane.showMessageDialog(null, 
+		            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+		            "Error en la app", JOptionPane.WARNING_MESSAGE);
 		} finally {
 			try {
 				if (bf != null)
 					bf.close();
 			} catch (Exception ex) {
-				ex.getMessage();
+				JOptionPane.showMessageDialog(null, 
+			            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+			            "Error en la app", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
 		return preferencias;
+	}
+
+	public JCheckBox[] getListaPreferencias() {
+		return listaPreferencias;
+	}
+
+	public void setListaPreferencias(JCheckBox[] listaPreferencias) {
+		this.listaPreferencias = listaPreferencias;
 	}
 
 

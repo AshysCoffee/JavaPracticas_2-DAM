@@ -104,7 +104,9 @@ public class GestionUsuarios {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -184,14 +186,18 @@ public class GestionUsuarios {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, 
+		            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+		            "Error en la app", JOptionPane.WARNING_MESSAGE);		
 			return false;
 		} finally {
 			if (bw != null) {
 				try {
 					bw.close();
 				} catch (IOException ex) {
-					System.out.println(ex);
+					JOptionPane.showMessageDialog(null, 
+				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+				            "Error en la app", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -261,7 +267,9 @@ public class GestionUsuarios {
 				if (bw != null)
 					bw.close();
 			} catch (IOException ex) {
-
+				JOptionPane.showMessageDialog(null, 
+			            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
+			            "Error en la app", JOptionPane.WARNING_MESSAGE);
 			}
 
 		}
