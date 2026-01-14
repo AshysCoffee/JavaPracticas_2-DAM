@@ -17,7 +17,7 @@ public class GestionEmail {
 	final static String password = "owlh yyir waqd kphp";
 
 	private Usuario usuario;
-	private GestionNoticias gn = new GestionNoticias();
+	private GestionNoticias gn = new GestionNoticias(null);
 
 	public GestionEmail(Usuario usuario) {
 		super();

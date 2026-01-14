@@ -17,7 +17,6 @@ import org.jsoup.nodes.Element;
 
 import modelos.Categorias;
 import modelos.Fuentes;
-import modelos.Usuario;
 
 public class GestionNoticias {
 
@@ -30,7 +29,6 @@ public class GestionNoticias {
 		super();
 		this.listaNoticias = new ArrayList<>();
 		this.titulares = new ArrayList<>();
-		this.gu = gu;
 	}
 
 	public List<Fuentes> getListaNoticias() {
@@ -121,7 +119,7 @@ public class GestionNoticias {
 
 	}
 
-	public List<String> cargarTitulares(List<Fuentes> pref, Usuario usuario) {
+	public List<String> cargarTitulares(List<Fuentes> pref) {
 
 		if (pref == null || pref.isEmpty()) {
 			return null;
@@ -139,7 +137,7 @@ public class GestionNoticias {
 				titulares.add(resultado);
 
 			}
-			guardarHistorico(titulares, gu.buscarUsuario(usuario));
+			guardarHistorico(titulares);
 			return titulares;
 
 		} catch (IOException e) {
@@ -150,34 +148,18 @@ public class GestionNoticias {
 
 	}
 
-	public void guardarHistorico(List<String> noticias, String u) {
+	public void guardarHistorico(List<String> noticias) {
 
 		if (noticias == null || noticias.isEmpty()) {
 			return;
 		}
-		
-		if (u==null|| u.isBlank()) {
-			return;
-		}
-
-		try(BufferedReader br = new BufferedReader(new FileReader("data/historial.txt")){
-			
-			String s = br.readLine();
-			
-			while (s!= null) {
-				s
-			}
-			
-		}
-		
-		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
-			bw.write("////" + u + "////");
+			//bw.write("////" + u + "////");
 			for (String n : noticias) {
 				bw.write(n);
 				bw.newLine();
 			}
-			bw.write("////" + u + "////");
+			//bw.write("////" + u + "////");
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
 					"Error en la app", JOptionPane.WARNING_MESSAGE);

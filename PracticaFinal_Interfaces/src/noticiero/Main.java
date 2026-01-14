@@ -23,7 +23,7 @@ public class Main {
 			public void run() {
 				try {
 					GestionUsuarios gu = new GestionUsuarios();
-					GestionNoticias gn = new GestionNoticias();
+					GestionNoticias gn = new GestionNoticias(gu);
 					GestionEmail ge = new GestionEmail();
 					GestionPreferencias gp = new GestionPreferencias();
 
