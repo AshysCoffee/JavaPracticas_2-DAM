@@ -16,9 +16,10 @@ import modelos.Usuario;
 public class GestionUsuarios {
 
 	private List<Usuario> listaUsuario = new ArrayList<>();
-	private GestionPreferencias gp = new GestionPreferencias();
 
 	public GestionUsuarios() {
+		this.listaUsuario = new ArrayList<>();
+		cargarUsuarios();
 	}
 
 	///////////////
@@ -91,7 +92,7 @@ public class GestionUsuarios {
 			return listaUsuario;
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema",
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de los usuarios.", "Error de Sistema",
 					JOptionPane.ERROR_MESSAGE);
 
 		} finally {
@@ -99,9 +100,9 @@ public class GestionUsuarios {
 				try {
 					bf.close();
 				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null, 
-				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
-				            "Error en la app", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar el archivo de usuarios, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -133,27 +134,39 @@ public class GestionUsuarios {
 	public Usuario validarLogin(String nick, String contraseña) {
 
 		if (nick == null || nick.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "El nombre de usuario no puede estar vacío.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 
 		if (contraseña == null || contraseña.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "La contraseña no puede estar vacía.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 
 		if (listaUsuario == null || listaUsuario.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay usuarios registrados en el sistema.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 
 		Usuario u = buscarUsuario(nick.trim());
 
 		if (u == null) {
+			JOptionPane.showMessageDialog(null, "El usuario no existe.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 
 		if (!u.getPwd().equals(contraseña)) {
+			JOptionPane.showMessageDialog(null, "La contraseña es incorrecta.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 
+		
+		
 		u.setVisitas(u.getVisitas() + 1);
 		return u;
 	}
@@ -189,9 +202,9 @@ public class GestionUsuarios {
 				try {
 					bw.close();
 				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null, 
-				            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
-				            "Error en la app", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -201,6 +214,8 @@ public class GestionUsuarios {
 	public boolean eliminarUsuario(String nick) {
 
 		if (nick == null || nick.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "El nombre de usuario no puede estar vacío.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -219,22 +234,32 @@ public class GestionUsuarios {
 	public boolean crearUsuario(String nick, String pwd, String email) {
 
 		if (nick == null || nick.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "El nombre de usuario no puede estar vacío.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
 		if (pwd == null || pwd.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "La contraseña no puede estar vacía.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
 		if (email == null || email.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "El correo no puede estar vacío.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
 		if (!ControlErrores.esCorreoValido(email)) {
+			JOptionPane.showMessageDialog(null, "El correo electrónico no es válido.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
 		if (buscarUsuario(nick) != null) {
+			JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe. Elija otro.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -254,15 +279,17 @@ public class GestionUsuarios {
 			return true;
 
 		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de cración del usuario.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
 			try {
 				if (bw != null)
 					bw.close();
 			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(null, 
-			            "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", 
-			            "Error en la app", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"No se pudo ejecutar el proyecto dado a problemas por el usuario, por favor contacte soporte.", "Error en la app",
+						JOptionPane.WARNING_MESSAGE);
 			}
 
 		}

@@ -11,6 +11,7 @@ import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
 import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
+import modelos.Usuario;
 
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
@@ -21,6 +22,18 @@ public class VentanaPrincipal extends JFrame {
 	private GestionNoticias gn;
 	private GestionEmail ge;
 	private GestionPreferencias gp;
+	private Usuario usuarioLogueado;
+	
+	
+	
+
+	public Usuario getUsuarioLogueado() {
+		return usuarioLogueado;
+	}
+
+	public void setUsuarioLogueado(Usuario usuarioLogueado) {
+		this.usuarioLogueado = usuarioLogueado;
+	}
 
 	public VentanaPrincipal(GestionUsuarios gu, GestionNoticias gn, GestionEmail ge, GestionPreferencias gp) {
 		
@@ -66,5 +79,6 @@ public class VentanaPrincipal extends JFrame {
 	public void cambiarPantalla(String nombrePantalla) {
 		cardLayout.show(panelContenedor, nombrePantalla);
 	}
+
 
 }

@@ -1,171 +1,119 @@
 package noticiero;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import gestiones.GestionNoticias;
 import gestiones.GestionPreferencias;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import modelos.Fuentes;
+import modelos.Usuario;
 
 public class PanelMenuUsuario extends JPanel {
 
 	private VentanaPrincipal v;
 	private GestionNoticias gn;
 	private GestionPreferencias gp;
-	private JTextArea areaNoticias;
+	private JPanel panelContenidos; // Panel interior para el scroll
 
 	public PanelMenuUsuario(VentanaPrincipal ventanaPrincipal, GestionNoticias gn, GestionPreferencias gp) {
-
 		this.gp = gp;
 		this.gn = gn;
 		this.v = ventanaPrincipal;
 
-		JLabel lblNewLabel = new JLabel("Economia");
-		lblNewLabel.setBounds(25, 26, 54, 13);
-		add(lblNewLabel);
-
-		JLabel lblDeporte = new JLabel("Deportes");
-		lblDeporte.setBounds(25, 100, 54, 13);
-		add(lblDeporte);
-
-		JLabel lblNacional = new JLabel("Nacional");
-		lblNacional.setBounds(25, 174, 54, 13);
-		add(lblNacional);
-
-		JLabel lblInternacional = new JLabel("Internacional");
-		lblInternacional.setBounds(25, 248, 79, 13);
-		add(lblInternacional);
-
-		JLabel lblCiencia = new JLabel("Ciencia");
-		lblCiencia.setBounds(25, 322, 54, 13);
-		add(lblCiencia);
-
-		JLabel lblFauna = new JLabel("Fauna");
-		lblFauna.setBounds(25, 396, 54, 13);
-		add(lblFauna);
-
-		JLabel noticiasEcon = new JLabel("New label");
-		noticiasEcon.setBounds(35, 40, 542, 50);
-		add(noticiasEcon);
-
-		JLabel noticiasDeportes = new JLabel("New label");
-		noticiasDeportes.setBounds(35, 114, 542, 50);
-		add(noticiasDeportes);
-
-		JLabel noticiasNacio = new JLabel("New label");
-		noticiasNacio.setBounds(35, 188, 542, 50);
-		add(noticiasNacio);
-
-		JLabel noticiasInter = new JLabel("New label");
-		noticiasInter.setBounds(35, 262, 542, 50);
-		add(noticiasInter);
-
-		JLabel noticiasCiencias = new JLabel("New label");
-		noticiasCiencias.setBounds(35, 336, 542, 50);
-		add(noticiasCiencias);
-
-		JLabel noticiasFauna = new JLabel("New label");
-		noticiasFauna.setBounds(35, 413, 542, 50);
-		add(noticiasFauna);
 		setLayout(null);
+		setSize(650, 500);
 
-		// 1. Título
+		// 1. TÍTULO
 		JLabel lblTitulo = new JLabel("Mis Noticias");
-		lblTitulo.setBounds(30, 20, 200, 30);
-		lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+		lblTitulo.setFont(new Font("Yu Gothic UI", Font.BOLD, 24));
+		lblTitulo.setBounds(25, 20, 200, 30);
 		add(lblTitulo);
 
-		JTextArea txtNoticias = new JTextArea();
-		txtNoticias.setEditable(false);
-		txtNoticias.setLineWrap(true);
-		txtNoticias.setWrapStyleWord(true);
-		txtNoticias.setFont(new Font("Arial", Font.PLAIN, 14));
+		// 2. ÁREA DE NOTICIAS (CON SCROLL - EL "BUCLE MÁGICO")
+		panelContenidos = new JPanel();
+		panelContenidos.setLayout(new BoxLayout(panelContenidos, BoxLayout.Y_AXIS));
+		panelContenidos.setBackground(Color.WHITE);
 
-		JButton btnRefrescar = new JButton("Ver mis Noticias");
-		btnRefrescar.setBounds(50, 50, 200, 30);
-		add(btnRefrescar);
-
-		// 2. Área de texto para mostrar los titulares
-		areaNoticias = new JTextArea();
-		areaNoticias.setBounds(50, 100, 500, 300);
-		areaNoticias.setEditable(false);
-		areaNoticias.setLineWrap(true);
-		areaNoticias.setWrapStyleWord(true);
-
-		// Ponemos Scroll por si hay muchas noticias
-		JScrollPane scroll = new JScrollPane(areaNoticias);
-		scroll.setBounds(50, 100, 500, 300);
+		JScrollPane scroll = new JScrollPane(panelContenidos);
+		scroll.setBounds(25, 60, 600, 350); // Espacio central grande
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scroll);
 
-		// 3. El Evento del Botón
-		btnRefrescar.addActionListener(e -> {
-			cargarNoticiasEnPantalla();
+		// 3. BOTÓN ATRÁS
+		JButton atras = new JButton("Cerrar Sesión");
+		atras.addActionListener(e -> v.cambiarPantalla("LOGIN"));
+		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		atras.setBounds(25, 430, 150, 30);
+		add(atras);
+
+		// 4. BOTÓN RECARGAR (Por si falla internet)
+		JButton recargar = new JButton("Recargar");
+		recargar.addActionListener(e -> cargarNoticias());
+		recargar.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		recargar.setBounds(475, 430, 150, 30);
+		add(recargar);
+
+		// --- LA SOLUCIÓN AL "PETE" ---
+		// Este "listener" detecta cuando la pantalla se hace visible.
+		// Solo ENTONCES cargamos las noticias.
+		this.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				cargarNoticias(); // <--- AQUÍ ES SEGURO LLAMARLO
+			}
 		});
 	}
 
-	private void cargarNoticiasEnPantalla() {
-		areaNoticias.setText("Cargando titulares... espere un momento.");
+	// Método para cargar noticias sin bloquear la ventana
+	private void cargarNoticias() {
+		panelContenidos.removeAll();
+		panelContenidos.add(new JLabel("Cargando noticias, por favor espere..."));
+		panelContenidos.revalidate();
+		panelContenidos.repaint();
 
-		List<String> titulares = gn.getTitulares(); // O el método que uses
+		// Usamos un Hilo para no congelar la ventana
+		new Thread(() -> {
+			try {
+				Usuario miUsuario = v.getUsuarioLogueado();
+				if (miUsuario == null)
+					return; // Seguridad
 
-		areaNoticias.setText(""); // Limpiar
-		if (titulares.isEmpty()) {
-			areaNoticias.setText("No hay noticias o no hay internet.");
-		} else {
-			for (String t : titulares) {
-				areaNoticias.append("• " + t + "\n\n");
-			}
-		}
-		JScrollPane scroll = new JScrollPane(areaNoticias);
-		scroll.setBounds(30, 60, 500, 300); // Ajusta tamaño a tu ventana
-		add(scroll);
+				List<Fuentes> misFuentes = gp.obtenerPreferencias(miUsuario.getUsuario());
+				List<String> titulares = gn.cargarTitulares(misFuentes, miUsuario.getUsuario());
+				if (misFuentes == null)
+					misFuentes = new ArrayList<>();
 
-		JButton btnCargar = new JButton("Actualizar Noticias");
-		btnCargar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(() -> {
+					panelContenidos.removeAll();
 
-				// 1. Intentamos poner un mensaje de espera
-				areaNoticias.setText("Cargando noticias... (La pantalla se congelará un momento)");
-
-				// Forzamos a que el "Cargando" se pinte antes de bloquear (truco rápido)
-				areaNoticias.paintImmediately(areaNoticias.getVisibleRect());
-
-				// 2. LLAMADA DIRECTA (Sin hilos)
-				// Esto bloqueará la ventana hasta que termine de descargar o leer el fichero
-				List<String> listaTitulares = gn.cargarTitulares(gn.cargarFuentes());
-
-				// 3. Mostramos los resultados
-				areaNoticias.setText(""); // Borramos el mensaje de carga
-
-				if (listaTitulares != null && !listaTitulares.isEmpty()) {
-					for (String titular : listaTitulares) {
-						areaNoticias.append("• " + titular + "\n\n");
+					if (titulares == null || titulares.isEmpty()) {
+						JTextArea txt = new JTextArea(
+								"No hay noticias.\nPosibles causas:\n1. No tienes periódicos asignados.\n2. Fallo de conexión.\n3. Revisa config.txt");
+						txt.setEditable(false);
+						panelContenidos.add(txt);
+					} else {
+						for (String t : titulares) {
+							JTextArea txt = new JTextArea("• " + t);
+							txt.setLineWrap(true);
+							txt.setWrapStyleWord(true);
+							txt.setEditable(false);
+							txt.setOpaque(false);
+							txt.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 5));
+							panelContenidos.add(txt);
+							panelContenidos.add(new JSeparator());
+						}
 					}
-				} else {
-					areaNoticias.setText("No hay noticias disponibles o no hay conexión.");
-				}
+					panelContenidos.revalidate();
+					panelContenidos.repaint();
+				});
 
+			} catch (Exception ex) {
+				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage()));
 			}
-		});
-		btnCargar.setBounds(30, 380, 150, 30);
-		add(btnCargar);
-
-		JButton salir = new JButton("Salir");
-		salir.setBounds(536, 473, 113, 23);
-		salir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		add(salir);
+		}).start();
 	}
-
 }

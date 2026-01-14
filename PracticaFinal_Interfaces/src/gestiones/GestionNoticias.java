@@ -17,16 +17,17 @@ import org.jsoup.nodes.Element;
 
 import modelos.Categorias;
 import modelos.Fuentes;
+import modelos.Usuario;
 
 public class GestionNoticias {
 
 	private List<Fuentes> listaNoticias;
 	private List<String> titulares;
-	
 	private GestionUsuarios gu;
 
 	public GestionNoticias(GestionUsuarios gu) {
 		super();
+		this.gu = gu;
 		this.listaNoticias = new ArrayList<>();
 		this.titulares = new ArrayList<>();
 	}
@@ -55,39 +56,50 @@ public class GestionNoticias {
 
 	public Fuentes leerFuente(String linea) {
 
+		linea = linea.replace("$$", "");
+
 		String[] partes = linea.trim().split(";");
 
 		if (partes.length < 4) {
 			return null;
 		}
 
-		String categoria = partes[0];
-		String periodico = partes[1];
-		String url = partes[2];
-		String css = partes[3];
+		try {
 
-		return new Fuentes(Categorias.valueOf(categoria), periodico, url, css);
+			String categoria = partes[0];
+			String periodico = partes[1];
+			String url = partes[2];
+			String css = partes[3];
+
+			return new Fuentes(Categorias.valueOf(categoria), periodico, url, css);
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de los titulares.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
 
 	}
 
 	public List<Fuentes> cargarFuentes() {
 
 		BufferedReader bf = null;
+		listaNoticias.clear();
 
 		try {
 
-			File f = new File("data/fuentes.txt");
+			File f = new File("data/config.txt");
 
 			if (!f.exists()) {
 				return listaNoticias;
 			}
 
-			bf = new BufferedReader(new FileReader("data/fuentes.txt"));
+			bf = new BufferedReader(new FileReader(f));
 
 			String linea = bf.readLine();
 
 			while (linea != null) {
-				if (!linea.trim().isEmpty()) {
+				if (!linea.trim().isEmpty() && linea.startsWith("$$")) {
 					Fuentes u = leerFuente(linea);
 					if (u != null) {
 						listaNoticias.add(u);
@@ -97,33 +109,30 @@ public class GestionNoticias {
 				linea = bf.readLine();
 
 			}
-
 			return listaNoticias;
-
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
-
+			JOptionPane.showMessageDialog(null, "Error al cargar fuentes de noticias desde el archivo.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} finally {
-			if (bf != null) {
-				try {
+			try {
+				if (bf != null)
 					bf.close();
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,
-							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
-							JOptionPane.WARNING_MESSAGE);
-				}
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(null, "Error al cargar fuentes de noticias, no se pudo leer.", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
-		return null;
-
+		return listaNoticias;
 	}
+	
 
-	public List<String> cargarTitulares(List<Fuentes> pref) {
+	public List<String> cargarTitulares(List<Fuentes> pref, String usuario) {
 
+		titulares.clear();
+		
 		if (pref == null || pref.isEmpty()) {
-			return null;
-		}
+            return titulares;
+        }
 
 		try {
 
@@ -137,7 +146,13 @@ public class GestionNoticias {
 				titulares.add(resultado);
 
 			}
-			guardarHistorico(titulares);
+			
+			Usuario u = gu.buscarUsuario(usuario);
+			
+            if (u != null) {
+                guardarHistorico(titulares, u.getUsuario());
+            }
+			
 			return titulares;
 
 		} catch (IOException e) {
@@ -148,20 +163,20 @@ public class GestionNoticias {
 
 	}
 
-	public void guardarHistorico(List<String> noticias) {
+	public void guardarHistorico(List<String> noticias, String u) {
 
 		if (noticias == null || noticias.isEmpty()) {
 			return;
 		}
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
-			//bw.write("////" + u + "////");
+			bw.write("////" + u + "////");
 			for (String n : noticias) {
 				bw.write(n);
 				bw.newLine();
 			}
-			//bw.write("////" + u + "////");
+			bw.write("////" + u + "////");
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+			JOptionPane.showMessageDialog(null, "No se pudo guardar en el historial, por favor contacte soporte.",
 					"Error en la app", JOptionPane.WARNING_MESSAGE);
 		}
 	}
@@ -174,12 +189,11 @@ public class GestionNoticias {
 				recuperadas.add(linea);
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+			JOptionPane.showMessageDialog(null, "No se pudo leer el historial, por favor contacte soporte.",
 					"Error en la app", JOptionPane.WARNING_MESSAGE);
 			return new ArrayList<>();
 		}
 		return recuperadas;
 	}
-
 
 }

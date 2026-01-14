@@ -27,7 +27,6 @@ public class GestionEmail {
 
 
 	public GestionEmail() {
-		// TODO Auto-generated constructor stub
 	}
 
 
@@ -70,7 +69,7 @@ public class GestionEmail {
 		gn.iniciarNoticias(); 
 		String texto = "";
 		
-		for (String s : gn.cargarTitulares(gn.cargarFuentes())) {
+		for (String s : gn.cargarTitulares(gn.cargarFuentes(), usuario.getUsuario())) {
 			texto += s + "\n";
 		}
 

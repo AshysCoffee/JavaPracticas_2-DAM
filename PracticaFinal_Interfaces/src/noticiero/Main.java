@@ -25,7 +25,7 @@ public class Main {
 					GestionUsuarios gu = new GestionUsuarios();
 					GestionNoticias gn = new GestionNoticias(gu);
 					GestionEmail ge = new GestionEmail();
-					GestionPreferencias gp = new GestionPreferencias();
+					GestionPreferencias gp = new GestionPreferencias(gn, gu);
 
 					gu.cargarUsuarios();
 					gn.iniciarNoticias();
@@ -35,7 +35,7 @@ public class Main {
 
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null,
-							"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",
+							"No se pudo ejecutar el proyecto, por favor contacte soporte.", "Error en la app",
 							JOptionPane.WARNING_MESSAGE);
 				}
 
