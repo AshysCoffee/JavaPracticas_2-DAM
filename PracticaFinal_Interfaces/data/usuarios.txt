@@ -1,8 +1,4 @@
-@@admin;admin123;albaelena1970.ale@gmail.com;1;111111111111111111@@
-//pepe;pepe123;ashleyleonidk@gmail.com;0;------------------//
+@@admin;admin123;albaelena1970.ale@gmail.com;1@@
+//pepe;pepe123;ashleyleonidk@gmail.com;0;//
 //maria;maria123;lusitaniaespinozaaguilar2@gmail.com;2//
 //luis;luis123;fp.aleonespinoza@gmail.com//
-
-///crear un fichero de config con las fuentes, config del email (correo y pwd del admin) y preferencia del usuario
-///deja este fichero bien xd
-
