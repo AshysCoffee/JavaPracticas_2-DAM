@@ -57,7 +57,7 @@ public class PanelMenuAdmin extends JPanel{
 		add(lblNewLabel);
 		
 		JButton salir = new JButton("Salir");
-		salir.setBounds(510, 438, 113, 23);
+		salir.setBounds(327, 266, 113, 23);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);

@@ -79,6 +79,7 @@ public class GestionNoticias {
 			}
 
 			bf = new BufferedReader(new FileReader("data/fuentes.txt"));
+
 			String linea = bf.readLine();
 
 			while (linea != null) {
@@ -112,7 +113,7 @@ public class GestionNoticias {
 
 	}
 
-	public List<String> cargarTitulares(List <Fuentes> pref) {
+	public List<String> cargarTitulares(List<Fuentes> pref) {
 
 		if (pref == null || pref.isEmpty()) {
 			return null;
@@ -121,7 +122,7 @@ public class GestionNoticias {
 		try {
 
 			for (Fuentes f : pref) {
-				
+
 				String web = (f.getUrl());
 				Document doc = Jsoup.connect(web).get();
 				Element palabra = doc.select(f.getCss()).get(0);
@@ -140,5 +141,10 @@ public class GestionNoticias {
 		return null;
 	}
 
+<<<<<<< HEAD
 	
+=======
+///////////////////
+
+>>>>>>> 7bedb698e54676fbb0c777d9334acadb3827ef51
 }
