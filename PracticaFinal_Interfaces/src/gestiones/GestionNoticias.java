@@ -74,8 +74,8 @@ public class GestionNoticias {
 			return new Fuentes(Categorias.valueOf(categoria), periodico, url, css);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de los titulares.", "Error de Sistema",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de los titulares.",
+					"Error de Sistema", JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
 
@@ -124,35 +124,36 @@ public class GestionNoticias {
 		}
 		return listaNoticias;
 	}
-	
 
 	public List<String> cargarTitulares(List<Fuentes> pref, String usuario) {
 
 		titulares.clear();
-		
+
 		if (pref == null || pref.isEmpty()) {
-            return titulares;
-        }
+			return titulares;
+		}
 
 		try {
 
 			for (Fuentes f : pref) {
 
+				String tipo = f.getCategoria().toString();
+				String periodico = f.getPeriodico();
 				String web = (f.getUrl());
 				Document doc = Jsoup.connect(web).get();
 				Element palabra = doc.select(f.getCss()).get(0);
-				String resultado = palabra.text();
+				String resultado =  tipo +"\n"+periodico +" - "+ palabra.text();
 
 				titulares.add(resultado);
 
 			}
-			
+
 			Usuario u = gu.buscarUsuario(usuario);
-			
-            if (u != null) {
-                guardarHistorico(titulares, u.getUsuario());
-            }
-			
+
+			if (u != null) {
+				guardarHistorico(titulares, u.getUsuario());
+			}
+
 			return titulares;
 
 		} catch (IOException e) {
@@ -170,6 +171,7 @@ public class GestionNoticias {
 		}
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
 			bw.write("////" + u + "////");
+			bw.newLine();
 			for (String n : noticias) {
 				bw.write(n);
 				bw.newLine();

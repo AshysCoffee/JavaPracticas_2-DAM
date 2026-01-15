@@ -34,6 +34,10 @@ public class PanelLogin extends JPanel {
 	private VentanaPrincipal v;
 
 	public PanelLogin(VentanaPrincipal v, GestionUsuarios gu) {
+		
+		this.v = v;
+		this.gu = gu;
+		
 		setBackground(SystemColor.menu);
 		setFont(new Font("Tahoma", Font.PLAIN, 18));
 
@@ -44,7 +48,7 @@ public class PanelLogin extends JPanel {
 		setSize(650, 500);
 
 		titulo = new JLabel("Bienvenido a Noticias Mapaches");
-		titulo.setBounds(-43, 60, 768, 54);
+		titulo.setBounds(-59, 60, 768, 54);
 		titulo.setHorizontalTextPosition(SwingConstants.CENTER);
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Ubuntu Mono", Font.BOLD, 30));
@@ -53,7 +57,7 @@ public class PanelLogin extends JPanel {
 
 		enun1 = new JLabel("Usuario");
 		enun1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		enun1.setBounds(297, 148, 89, 17);
+		enun1.setBounds(280, 148, 89, 17);
 		enun1.setHorizontalTextPosition(SwingConstants.CENTER);
 		enun1.setHorizontalAlignment(SwingConstants.CENTER);
 		enun1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
@@ -61,7 +65,7 @@ public class PanelLogin extends JPanel {
 
 		enun2 = new JLabel("Contraseña");
 		enun2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		enun2.setBounds(281, 236, 121, 17);
+		enun2.setBounds(264, 236, 121, 17);
 		enun2.setHorizontalTextPosition(SwingConstants.CENTER);
 		enun2.setHorizontalAlignment(SwingConstants.CENTER);
 		enun2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
@@ -90,9 +94,6 @@ public class PanelLogin extends JPanel {
 						}
 					}
 				
-					 
-					
-					
 				} else {
 					JOptionPane.showMessageDialog(null, "Error de acceso");
 				}
@@ -100,21 +101,21 @@ public class PanelLogin extends JPanel {
 			}
 		});
 
-	login.setBounds(255,343,173,32);
+	login.setBounds(238,343,173,32);
 
 	add(login);
 
 		entradaUsuario = new JTextField();
 		entradaUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		entradaUsuario.setToolTipText("Introduzca el usuario");
-		entradaUsuario.setBounds(207, 175, 269, 32);
+		entradaUsuario.setBounds(190, 175, 269, 32);
 		entradaUsuario.setColumns(10);
 		add(entradaUsuario);
 
 		passwordField = new JPasswordField();
 		passwordField.setToolTipText("Introduzco su contraseña");
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		passwordField.setBounds(207, 263, 269, 32);
+		passwordField.setBounds(190, 263, 269, 32);
 		add(passwordField);
 
 		salir = new JButton("Salir");

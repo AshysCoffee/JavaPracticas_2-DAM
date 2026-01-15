@@ -47,40 +47,36 @@ public class PanelMenuUsuario extends JPanel {
 		JButton atras = new JButton("Cerrar Sesión");
 		atras.addActionListener(e -> v.cambiarPantalla("LOGIN"));
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
-		atras.setBounds(25, 430, 150, 30);
+		atras.setBounds(25, 421, 150, 30);
 		add(atras);
 
 		// 4. BOTÓN RECARGAR (Por si falla internet)
 		JButton recargar = new JButton("Recargar");
 		recargar.addActionListener(e -> cargarNoticias());
 		recargar.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
-		recargar.setBounds(475, 430, 150, 30);
+		recargar.setBounds(475, 421, 150, 30);
 		add(recargar);
 
-		// --- LA SOLUCIÓN AL "PETE" ---
-		// Este "listener" detecta cuando la pantalla se hace visible.
-		// Solo ENTONCES cargamos las noticias.
+
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				cargarNoticias(); // <--- AQUÍ ES SEGURO LLAMARLO
+				cargarNoticias();
 			}
 		});
 	}
 
-	// Método para cargar noticias sin bloquear la ventana
 	private void cargarNoticias() {
 		panelContenidos.removeAll();
 		panelContenidos.add(new JLabel("Cargando noticias, por favor espere..."));
 		panelContenidos.revalidate();
 		panelContenidos.repaint();
 
-		// Usamos un Hilo para no congelar la ventana
 		new Thread(() -> {
 			try {
 				Usuario miUsuario = v.getUsuarioLogueado();
 				if (miUsuario == null)
-					return; // Seguridad
+					return;
 
 				List<Fuentes> misFuentes = gp.obtenerPreferencias(miUsuario.getUsuario());
 				List<String> titulares = gn.cargarTitulares(misFuentes, miUsuario.getUsuario());

@@ -24,11 +24,12 @@ public class Main {
 				try {
 					GestionUsuarios gu = new GestionUsuarios();
 					GestionNoticias gn = new GestionNoticias(gu);
-					GestionEmail ge = new GestionEmail();
+					GestionEmail ge = new GestionEmail(null, gn, gu);
 					GestionPreferencias gp = new GestionPreferencias(gn, gu);
 
 					gu.cargarUsuarios();
 					gn.iniciarNoticias();
+					ge.cargarCredenciales();
 
 					VentanaPrincipal frame = new VentanaPrincipal(gu, gn, ge, gp);
 					frame.setVisible(true);

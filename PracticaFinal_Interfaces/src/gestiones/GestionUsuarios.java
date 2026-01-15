@@ -165,9 +165,10 @@ public class GestionUsuarios {
 			return null;
 		}
 
+	
+		int visitas = u.getVisitas() + 1;
+		u.setVisitas(visitas);
 		
-		
-		u.setVisitas(u.getVisitas() + 1);
 		return u;
 	}
 

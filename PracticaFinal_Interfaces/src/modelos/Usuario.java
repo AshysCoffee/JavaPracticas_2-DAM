@@ -2,7 +2,7 @@ package modelos;
 
 public class Usuario {
 
-	private String usuario, pwd, correo, preferencias;
+	private String usuario, pwd, correo;
 	private boolean esAdmin;
 	private int visitas;
 
@@ -55,18 +55,7 @@ public class Usuario {
 	public void setVisitas(int visitas) {
 		this.visitas = visitas;
 	}
-	
 
-	public String getPreferencias() {
-		return preferencias;
-	}
-
-	public void setPreferencias(String preferencias) {
-		this.preferencias = preferencias;
-	}
-
-	
-	
 	public String toStringUsuario() {
 		return "//" + usuario + ";" + pwd + ";" + correo +";" +visitas+"//";
 	}
