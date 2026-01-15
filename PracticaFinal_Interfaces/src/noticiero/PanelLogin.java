@@ -1,6 +1,8 @@
 package noticiero;
 
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,6 +21,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.SystemColor;
+import javax.swing.JPopupMenu;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JComboBox;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class PanelLogin extends JPanel {
 
@@ -32,8 +41,11 @@ public class PanelLogin extends JPanel {
 	JButton salir;
 	private GestionUsuarios gu;
 	private VentanaPrincipal v;
+	private JPopupMenu popupMenu;
+	private JPopupMenu popupMenu_1;
 
 	public PanelLogin(VentanaPrincipal v, GestionUsuarios gu) {
+		setName("Acerca de");
 		
 		this.v = v;
 		this.gu = gu;
@@ -46,6 +58,17 @@ public class PanelLogin extends JPanel {
 
 		setLayout(null);
 		setSize(650, 500);
+	
+		
+		JMenu mnNewMenu_1 = new JMenu("Acerca de");
+		mnNewMenu_1.setBounds(0, 0, 117, 26);
+		add(mnNewMenu_1);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Creadora");
+		mnNewMenu_1.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Versión");
+		mnNewMenu_1.add(mntmNewMenuItem_1);
 
 		titulo = new JLabel("Bienvenido a Noticias Mapaches");
 		titulo.setBounds(-59, 60, 768, 54);
@@ -107,7 +130,7 @@ public class PanelLogin extends JPanel {
 			}
 		});
 
-	login.setBounds(238,343,173,32);
+	login.setBounds(238,365,173,32);
 
 	add(login);
 
@@ -133,6 +156,27 @@ public class PanelLogin extends JPanel {
 			}
 		});
 		add(salir);
+		
+
+		char puntito = passwordField.getEchoChar();
+		
+		JToggleButton mostrarPwd = new JToggleButton("Ver contraseña");
+		mostrarPwd.setFont(new Font("Yu Gothic UI", Font.PLAIN, 13));
+		mostrarPwd.setBounds(238, 306, 173, 27);
+		mostrarPwd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (mostrarPwd.isSelected()) {
+					passwordField.setEchoChar((char) 0); //Se pone 0 para que me de las letras correspondientes
+					mostrarPwd.setText("Ocultar Contraseña");
+				} else {
+					passwordField.setEchoChar(puntito); //Ponemos de nuevo el puntito
+					mostrarPwd.setText("Mostrar Contraseña");
+				}
+			}
+		});
+		add(mostrarPwd);
+	
+		
 
 	}
 }

@@ -12,6 +12,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.JLayeredPane;
 
 public class PanelGestionAdmin extends JPanel {
 
@@ -34,7 +35,7 @@ public class PanelGestionAdmin extends JPanel {
 
 		JButton salir = new JButton("Salir");
 		salir.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		salir.setBounds(482, 430, 141, 31);
+		salir.setBounds(481, 419, 141, 31);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -77,14 +78,14 @@ public class PanelGestionAdmin extends JPanel {
 			}
 		});
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		atras.setBounds(26, 430, 141, 31);
+		atras.setBounds(26, 419, 141, 31);
 		add(atras);
 
 		panelCreacion = new JPanel();
+		panelCreacion.setVisible(false);
 		panelCreacion.setBounds(26, 20, 306, 392);
 		add(panelCreacion);
 		panelCreacion.setLayout(null);
-		panelCreacion.setVisible(false);
 
 		newNombre = new JTextField();
 		newNombre.setToolTipText("Usuario");
@@ -127,8 +128,8 @@ public class PanelGestionAdmin extends JPanel {
 				if (gu.crearUsuario(newNombre.getText(), newPwd.getText(), newEmail.getText())) {
 					resultadoCreacion.setText("¡Se ha registrado con exito!");
 					resultadoCreacion.setVisible(true);
-					
-				}else {
+
+				} else {
 					resultadoCreacion.setText("Hubo problemas con la creación");
 					resultadoCreacion.setVisible(true);
 				}

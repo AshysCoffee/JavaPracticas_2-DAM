@@ -6,7 +6,7 @@ public class ControlErrores {
 
 	public static boolean verificarArchivosObligatorios() {
 		
-		String[] archivosObligatorios = { "data/config.txt", "data/historial.txt", "data/usuarios.txt" };
+		String[] archivosObligatorios = { "data/config.txt", "data/historial.txt", "data/usuarios.txt", "ui/mapache_carga.jpg", "ui/raccoon_icons.jpg" };
 
 		for (String ruta : archivosObligatorios) {
 			File archivo = new File(ruta);
