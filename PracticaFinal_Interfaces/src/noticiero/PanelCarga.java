@@ -1,5 +1,6 @@
 package noticiero;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -30,9 +31,12 @@ public class PanelCarga extends JPanel{
 		try {
 			fondo = ImageIO.read(new File("ui/mapache_carga.jpg"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al cargar la imagen de fondo", "ERROR", 1);
+			setVisible(false);
 		}
 
+
+		
 		Image foto = fondo;
 		JPanel panelconFondo = new JPanel () {
 			

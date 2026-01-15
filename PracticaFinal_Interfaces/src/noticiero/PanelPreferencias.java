@@ -4,12 +4,14 @@ import javax.swing.JPanel;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import gestiones.GestionEmail;
 import gestiones.GestionNoticias;
 import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
+import modelos.Usuario;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -188,10 +190,24 @@ public class PanelPreferencias extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				v.cambiarPantalla("MENU_USUARIO");
+				if (validarSeleccion()) {
 
+					Usuario u = v.getUsuarioLogueado();
+
+					if (u != null) {
+						boolean guardado = gp.guardarPreferencias(listaPreferencias, u);
+
+						if (guardado) {
+							JOptionPane.showMessageDialog(null, "¡Preferencias guardadas con éxito!");
+							v.cambiarPantalla("MENU_USUARIO");
+						} else {
+							JOptionPane.showMessageDialog(null, "Error al guardar en el fichero.");
+						}
+					}
+				}
 			}
 		});
+	
 		btnNewButton.setBounds(229, 432, 226, 27);
 		add(btnNewButton);
 
@@ -215,5 +231,39 @@ public class PanelPreferencias extends JPanel {
 		});
 		add(salir);
 
+	}
+
+	public boolean validarSeleccion() {
+		for (int i = 0; i < listaPreferencias.length; i += 3) {
+			
+			boolean hayAlgunoMarcadoEnEstaSeccion = false;
+
+			if (listaPreferencias[i].isSelected() || listaPreferencias[i + 1].isSelected()
+					|| listaPreferencias[i + 2].isSelected()) {
+				hayAlgunoMarcadoEnEstaSeccion = true;
+			}
+
+			if (!hayAlgunoMarcadoEnEstaSeccion) {
+				String nombreSeccion = "";
+				if (i == 0)
+					nombreSeccion = "Economía";
+				else if (i == 3)
+					nombreSeccion = "Deportes";
+				else if (i == 6)
+					nombreSeccion = "Nacional";
+				else if (i == 9)
+					nombreSeccion = "Internacional";
+				else if (i == 12)
+					nombreSeccion = "Ciencias";
+				else if (i == 15)
+					nombreSeccion = "Fauna";
+
+				JOptionPane.showMessageDialog(this,
+						"Debes seleccionar al menos un periódico de " + nombreSeccion, "Faltan preferencias",
+						JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}
+		return true;
 	}
 }

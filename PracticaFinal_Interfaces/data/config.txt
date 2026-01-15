@@ -20,6 +20,6 @@ $$FAUNA;El Diario;https://www.eldiario.es/temas/fauna/;h2.ni-title$$
 $$FAUNA;AnimaNaturalis;https://www.larazon.es/tags/fauna/;h2.article__title$$
 
 ==admin==111111111111111111
-==pepe==000000000000000000
 ==maria==101001101110011101
 ==luis==000000110010110111
+==pepe==011010001110100010

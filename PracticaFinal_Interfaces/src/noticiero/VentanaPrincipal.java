@@ -3,8 +3,10 @@ package noticiero;
 import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import gestiones.GestionEmail;
@@ -51,7 +53,18 @@ public class VentanaPrincipal extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(cardLayout);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("ui/raccoon_icons.jpg"));
+		
+		
+		try {
+			File fIcono = new File("ui/raccoon_icons.jpg");
+		    if (fIcono.exists()) {
+		        setIconImage(Toolkit.getDefaultToolkit().getImage(fIcono.getAbsolutePath()));
+		    } else {
+		        JOptionPane.showMessageDialog(null, "No se encontró el archivo de ícono.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+		    }
+		} catch (Exception e) {
+		   	JOptionPane.showMessageDialog(null, "Se ha producido un error al cargar el ícono.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+		}
 		
 		cardLayout = new CardLayout();
 		panelContenedor = new JPanel(cardLayout);

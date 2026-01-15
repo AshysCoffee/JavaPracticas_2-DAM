@@ -169,6 +169,8 @@ public class GestionUsuarios {
 		int visitas = u.getVisitas() + 1;
 		u.setVisitas(visitas);
 		
+		guardarUsuarios();
+		
 		return u;
 	}
 
@@ -220,9 +222,23 @@ public class GestionUsuarios {
 			return false;
 		}
 
+		int usuariosNormales = 0;
+        for (Usuario user : listaUsuario) {
+            if (!user.isEsAdmin()) {
+                usuariosNormales++;
+            }
+        }
+
+        if (usuariosNormales <= 3) {
+            JOptionPane.showMessageDialog(null, "No se puede eliminar. Debe haber un mínimo de 3 usuarios activos.", "Restricción del Sistema", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+		
 		Usuario u = buscarUsuario(nick);
 
 		if (u == null) {
+			JOptionPane.showMessageDialog(null, "El usuario no existe.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else {
 			listaUsuario.remove(u);
@@ -232,8 +248,55 @@ public class GestionUsuarios {
 
 	}
 
+	
+	public boolean guardarPreferenciasUsuario(Usuario u, String preferencias) {
+
+		if (u == null) {
+			JOptionPane.showMessageDialog(null, "El usuario no puede ser nulo.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		Usuario existente = buscarUsuario(u.getUsuario());
+
+		if (existente == null) {
+			JOptionPane.showMessageDialog(null, "El usuario no existe.", "Error de Registro",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		BufferedWriter bw = null;
+
+		try {
+			bw = new BufferedWriter(new FileWriter("data/config.txt", true));
+			bw.write("=="+u.getUsuario()+"==" + preferencias);
+			bw.newLine();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos de cración del usuario.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(null,
+						"No se pudo ejecutar el proyecto dado a problemas por el usuario, por favor contacte soporte.", "Error en la app",
+						JOptionPane.WARNING_MESSAGE);
+			}
+
+		}
+
+		return guardarUsuarios();
+	}
+	
 	public boolean crearUsuario(String nick, String pwd, String email) {
 
+		if (listaUsuario.size() >= 10) {
+            JOptionPane.showMessageDialog(null, "Límite alcanzado: El sistema no admite más de 10 usuarios.", "Error de Capacidad", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+		
 		if (nick == null || nick.isBlank()) {
 			JOptionPane.showMessageDialog(null, "El nombre de usuario no puede estar vacío.", "Error de Registro",
 					JOptionPane.ERROR_MESSAGE);

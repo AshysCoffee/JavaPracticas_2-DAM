@@ -40,14 +40,6 @@ public class Fuentes {
 	public void setCategoria(Categorias categoria) {
 		this.categoria = categoria;
 	}
-
-
-	@Override
-	public String toString() {
-		return "FuentesCategorias [periodico=" + periodico + ", url=" + url + ", css=" + css + ", categoria="
-				+ categoria + "]";
-	}
-	
 	
 	
 }

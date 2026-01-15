@@ -58,17 +58,6 @@ public class PanelLogin extends JPanel {
 
 		setLayout(null);
 		setSize(650, 500);
-	
-		
-		JMenu mnNewMenu_1 = new JMenu("Acerca de");
-		mnNewMenu_1.setBounds(0, 0, 117, 26);
-		add(mnNewMenu_1);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Creadora");
-		mnNewMenu_1.add(mntmNewMenuItem);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Versión");
-		mnNewMenu_1.add(mntmNewMenuItem_1);
 
 		titulo = new JLabel("Bienvenido a Noticias Mapaches");
 		titulo.setBounds(-59, 60, 768, 54);
@@ -112,7 +101,7 @@ public class PanelLogin extends JPanel {
 						passwordField.setText("");
 						v.cambiarPantalla("MENU_ADMIN");
 					} else {
-						if (!usuarioValidado.isEsAdmin() && usuarioValidado.getVisitas() == 0) {
+						if (!usuarioValidado.isEsAdmin() && usuarioValidado.getVisitas() == 1) {
 							entradaUsuario.setText("");
 							passwordField.setText("");
 							v.cambiarPantalla("CONFIG_USUARIO");
@@ -175,6 +164,17 @@ public class PanelLogin extends JPanel {
 			}
 		});
 		add(mostrarPwd);
+		
+		JButton moreInfo = new JButton("Acerca de");
+		moreInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"Noticias Mapaches v1.0\nDesarrollado por el equipo Mapache\n2025\nTodos los derechos reservados.\nVersion 1.5\n¡Gracias por usar nuestra aplicación de noticias!",
+						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		moreInfo.setBounds(10, 10, 84, 20);
+		add(moreInfo);
 	
 		
 

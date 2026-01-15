@@ -2,6 +2,8 @@ package noticiero;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -64,6 +66,17 @@ public class PanelMenuUsuario extends JPanel {
 				cargarNoticias();
 			}
 		});
+		
+		JButton moreInfo = new JButton("Acerca de");
+		moreInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"Noticias Mapaches v1.0\nDesarrollado por el equipo Mapache\n2025\nTodos los derechos reservados.\nVersion 1.5\n¡Gracias por usar nuestra aplicación de noticias!",
+						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		moreInfo.setBounds(10, 10, 84, 20);
+		add(moreInfo);
 	}
 
 	private void cargarNoticias() {
@@ -88,7 +101,7 @@ public class PanelMenuUsuario extends JPanel {
 
 					if (titulares == null || titulares.isEmpty()) {
 						JTextArea txt = new JTextArea(
-								"No hay noticias.\nPosibles causas:\n1. No tienes periódicos asignados.\n2. Fallo de conexión.\n3. Revisa config.txt");
+								"No hay noticias. Por favor, configure sus preferencias para recibir noticias.");
 						txt.setEditable(false);
 						panelContenidos.add(txt);
 					} else {

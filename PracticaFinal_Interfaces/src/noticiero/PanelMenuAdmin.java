@@ -130,6 +130,17 @@ public class PanelMenuAdmin extends JPanel{
 		add(scroll);
 
 		
+		JButton moreInfo = new JButton("Acerca de");
+		moreInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"Noticias Mapaches v1.0\nDesarrollado por el equipo Mapache\n2025\nTodos los derechos reservados.\nVersion 1.5\n¡Gracias por usar nuestra aplicación de noticias!",
+						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		moreInfo.setBounds(10, 10, 84, 20);
+		add(moreInfo);
+		
 	}
 		public void cargarNoticias() {
 			panelNoticias.removeAll();
@@ -174,5 +185,7 @@ public class PanelMenuAdmin extends JPanel{
 				}
 			}).start();
 		}
+		
+		
 		
 }
