@@ -234,13 +234,13 @@ public class GestionUsuarios {
 
 	public boolean crearUsuario(String nick, String pwd, String email) {
 
-		if (nick == null || nick.isEmpty()) {
+		if (nick == null || nick.isBlank()) {
 			JOptionPane.showMessageDialog(null, "El nombre de usuario no puede estar vacío.", "Error de Registro",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
-		if (pwd == null || pwd.isEmpty()) {
+		if (pwd == null || pwd.isBlank()) {
 			JOptionPane.showMessageDialog(null, "La contraseña no puede estar vacía.", "Error de Registro",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -264,7 +264,7 @@ public class GestionUsuarios {
 			return false;
 		}
 
-		Usuario u = new Usuario(nick, pwd, email, false, 0);
+		Usuario u = new Usuario(nick.trim(), pwd.trim(), email.trim(), false, 0);
 
 		BufferedWriter bw = null;
 

@@ -1,18 +1,38 @@
-////luis////
+////admin////
+ECONOMIA
+El País - España duplica las compras de gas a EE UU en el primer año del regreso de Trump a la Casa Blanca
+ECONOMIA
+El Mundo - Andarse con pies de Podoks: la empresa alicantina que seduce con sus calcetines antilesiones a la NBA
+ECONOMIA
+El Español - La nueva financiación obligará al Gobierno a subir impuestos para pagar pensiones y Defensa y cumplir con el déficit
+DEPORTES
+El País - Hundimiento del Real Madrid en Albacete para volver a empezar
+DEPORTES
+El Mundo - Nadie baila en el ridículo del Madrid, eliminado en la Copa en el debut de Arbeloa
+DEPORTES
+El Español - Arbeloa debuta con mal pie en el Real Madrid: pierde ante el Albacete en el último minuto y cae eliminado en Copa
 NACIONAL
-El País - Delcy Rodríguez y María Corina Machado se disputan el favor de Trump
+El País - Robles no descarta la participación de España en la misión europea en Groenlandia
 NACIONAL
-El Mundo - Dinamarca ve "constructiva y franca" su reunión con EEUU pero advierte: "Es evidente que el presidente Trump desea conquistar Groenlandia"
+El Mundo - La UCO pide investigar las cuentas de la cooperativa de Santos Cerdán y de ejecutivos de Acciona en busca de nuevos sobornos
+NACIONAL
+RTVE España - El Gobierno recomienda a los españoles que se encuentren en Irán que abandonen el país
+INTERNACIONAL
+BBC Mundo - La mujer rusa que recluta "con engaños" a hombres extranjeros para luchar en el frente en Ucrania
 INTERNACIONAL
 EuropaPress - El Senado de EEUU rechaza una resolución contra el uso de la fuerza militar en Venezuela por parte de Trump
+INTERNACIONAL
+El País - Francia y Alemania se unen a Dinamarca en el envío de soldados a Groenlandia ante las amenazas de Trump
 CIENCIAS
 Xataka Ciencia - Dos científicos intentaron publicar un "paper" sobre por qué nos salen pelusas en el ombligo. Y ahí empezaron sus problemas
 CIENCIAS
 El Mundo - La adherencia en VIH, la constancia que mejora vidas
+CIENCIAS
+La Razón - Aparece una franja marrón entre el océano Atlántico y África: los científicos dicen que no es buena señal
 FAUNA
 El País - El sueño de una Málaga que no sabe qué hacer con su río: remodelar por 300 millones o renaturalizar por cinco
 FAUNA
 El Diario - Tres décadas después de darse por perdido, el gato de cabeza plana ha sido registrado de nuevo por una cámara
 FAUNA
 AnimaNaturalis - La Junta consolidará este año la reintroducción del lince ibérico en el Cerrato Palentino
-////luis////
+////admin////

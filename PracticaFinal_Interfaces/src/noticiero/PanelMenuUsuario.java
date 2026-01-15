@@ -33,7 +33,7 @@ public class PanelMenuUsuario extends JPanel {
 		lblTitulo.setBounds(25, 20, 200, 30);
 		add(lblTitulo);
 
-		// 2. ÁREA DE NOTICIAS (CON SCROLL - EL "BUCLE MÁGICO")
+		// 2. ÁREA DE NOTICIAS
 		panelContenidos = new JPanel();
 		panelContenidos.setLayout(new BoxLayout(panelContenidos, BoxLayout.Y_AXIS));
 		panelContenidos.setBackground(Color.WHITE);

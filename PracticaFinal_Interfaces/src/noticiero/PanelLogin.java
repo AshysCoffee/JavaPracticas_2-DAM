@@ -85,11 +85,17 @@ public class PanelLogin extends JPanel {
 					VentanaPrincipal ventana = (VentanaPrincipal) SwingUtilities.getWindowAncestor(PanelLogin.this);
 					    ventana.setUsuarioLogueado(usuarioValidado);
 					if (usuarioValidado.isEsAdmin()) {
+						entradaUsuario.setText("");
+						passwordField.setText("");
 						v.cambiarPantalla("MENU_ADMIN");
 					} else {
 						if (!usuarioValidado.isEsAdmin() && usuarioValidado.getVisitas() == 0) {
+							entradaUsuario.setText("");
+							passwordField.setText("");
 							v.cambiarPantalla("CONFIG_USUARIO");
 						} else {
+							entradaUsuario.setText("");
+							passwordField.setText("");
 							v.cambiarPantalla("MENU_USUARIO");
 						}
 					}
