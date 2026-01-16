@@ -359,5 +359,16 @@ public class GestionUsuarios {
 		}
 
 	}
+	
+	public String listarUsuarios() {
+		
+		String s = "";
+		
+		for (Usuario u : listaUsuario) {
+			s+="·"+u.getUsuario()+"-"+u.getCorreo()+"\n";
+		}
+		
+		return s;
+	}
 
 }

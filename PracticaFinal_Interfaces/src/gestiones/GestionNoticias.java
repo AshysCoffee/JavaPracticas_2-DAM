@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class GestionNoticias {
 	private List<Fuentes> listaNoticias;
 	private List<String> titulares;
 	private GestionUsuarios gu;
+	private LocalDate fecha;
 
 	public GestionNoticias(GestionUsuarios gu) {
 		super();
@@ -169,14 +171,13 @@ public class GestionNoticias {
 		if (noticias == null || noticias.isEmpty()) {
 			return;
 		}
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt"))) {
-			bw.write("////" + u + "////");
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/historial.txt", true))) {
+			bw.write("-----" +u+ "-----");
 			bw.newLine();
 			for (String n : noticias) {
 				bw.write(n);
 				bw.newLine();
 			}
-			bw.write("////" + u + "////");
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "No se pudo guardar en el historial, por favor contacte soporte.",
 					"Error en la app", JOptionPane.WARNING_MESSAGE);

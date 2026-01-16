@@ -29,6 +29,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.CardLayout;
 import javax.swing.JTextArea;
 import java.awt.Color;
+import javax.swing.JTextPane;
 
 public class PanelGestionAdmin extends JPanel {
 
@@ -56,7 +57,7 @@ public class PanelGestionAdmin extends JPanel {
 
 		JButton salir = new JButton("Salir");
 		salir.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		salir.setBounds(483, 425, 141, 31);
+		salir.setBounds(484, 452, 141, 31);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -75,27 +76,21 @@ public class PanelGestionAdmin extends JPanel {
 				resultadoCreacion.setVisible(false);
 			}
 		});
-		btnCrearUsuarios.setBounds(355, 148, 215, 31);
+		btnCrearUsuarios.setBounds(373, 206, 215, 31);
 		add(btnCrearUsuarios);
-
-		JButton infoApp = new JButton("Información adicional");
-		infoApp.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		infoApp.setBounds(355, 260, 215, 31);
-		add(infoApp);
 
 		JButton btnBorrarUsuario = new JButton("Borrar usuario");
 		btnBorrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelCreacion.setVisible(false);
 				panelBorrado.setVisible(true);
-				cargarUsuarios();
 				usuarioBorrar.setText("");
 				resultado.setVisible(false);
 				
 			}
 		});
 		btnBorrarUsuario.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		btnBorrarUsuario.setBounds(355, 204, 215, 31);
+		btnBorrarUsuario.setBounds(373, 262, 215, 31);
 		add(btnBorrarUsuario);
 
 		JButton atras = new JButton("Atrás");
@@ -105,13 +100,13 @@ public class PanelGestionAdmin extends JPanel {
 			}
 		});
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		atras.setBounds(28, 425, 141, 31);
+		atras.setBounds(12, 450, 141, 31);
 		add(atras);
 
 		JPanel panelTotal = new JPanel();
 		panelTotal
 				.setBorder(new TitledBorder(null, "Gestión de usuarios", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelTotal.setBounds(22, 11, 318, 413);
+		panelTotal.setBounds(46, 23, 318, 413);
 		add(panelTotal);
 		panelTotal.setLayout(new CardLayout(0, 0));
 
@@ -194,17 +189,18 @@ public class PanelGestionAdmin extends JPanel {
 		lblNewLabel_2.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
 		panelBorrado.add(lblNewLabel_2);
 		
-		this.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				cargarUsuarios();
-			}
-		});
 		
 		JPanel panelUsuarios = new JPanel();
 		panelUsuarios.setBackground(new Color(255, 255, 255));
 		panelUsuarios.setBounds(14, 84, 277, 118);
 		panelBorrado.add(panelUsuarios);
+		panelUsuarios.setLayout(null);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setBounds(-1, 0, 277, 118);
+		panelUsuarios.add(textPane);
+		
+		textPane.setText(gu.listarUsuarios());
 		
 		
 		usuarioBorrar = new JTextField();
@@ -268,55 +264,5 @@ public class PanelGestionAdmin extends JPanel {
 		add(moreInfo);
 		
 
-	}
-	
-	public void cargarUsuarios() {
-
-		panelUsuarios.removeAll();
-		panelUsuarios.add(new JLabel("Cargando usuarios, por favor espere..."));
-		panelUsuarios.revalidate();
-		panelUsuarios.repaint();
-		
-		new Thread(() -> {
-			
-			try {
-				
-			List<Usuario> todosUsuarios = gu.getListaUsuario();
-			List<String> usuarios = new ArrayList<>();
-			
-			for (Usuario u : todosUsuarios) {
-				usuarios.add("Usuario: " + u.getUsuario() + " | Email: " + u.getCorreo() + " | Visitas: " + u.getVisitas());
-			}
-			
-				SwingUtilities.invokeLater(() -> {
-					panelUsuarios.removeAll();
-					
-					if (usuarios == null || usuarios.isEmpty()) {
-						JTextArea txt = new JTextArea(
-								"No existen usuarios registrados.");
-						txt.setEditable(false);
-						panelUsuarios.add(txt);
-					} else {
-						for (String t : usuarios) {
-							JTextArea txt = new JTextArea(t);
-							txt.setLineWrap(true);
-							txt.setWrapStyleWord(true);
-							txt.setEditable(false);
-							txt.setOpaque(false);
-							txt.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 5));
-							panelUsuarios.add(txt);
-							panelUsuarios.add(new JSeparator());
-						}
-					}
-				
-					panelUsuarios.revalidate();
-					panelUsuarios.repaint();
-					
-				});
-
-			} catch (Exception ex) {
-				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage()));
-			}
-		}).start();
 	}
 }
