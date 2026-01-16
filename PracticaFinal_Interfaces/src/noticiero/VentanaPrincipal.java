@@ -53,6 +53,7 @@ public class VentanaPrincipal extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(cardLayout);
+		setUndecorated(true);
 		
 		
 		try {

@@ -1,6 +1,5 @@
 package noticiero;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -36,7 +35,6 @@ public class PanelCarga extends JPanel{
 		}
 
 
-		
 		Image foto = fondo;
 		JPanel panelconFondo = new JPanel () {
 			
@@ -57,8 +55,7 @@ public class PanelCarga extends JPanel{
 	public PanelCarga(VentanaPrincipal v) {
 		setLayout(null);
 		add(buscarImagen());
-		
-		
+		setBorder(null);
 		
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);

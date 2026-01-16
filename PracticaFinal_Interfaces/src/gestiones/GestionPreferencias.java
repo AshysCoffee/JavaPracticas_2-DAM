@@ -88,15 +88,13 @@ public class GestionPreferencias {
 
 		Preferencias preferencias = new Preferencias(listaPreferencias, u);
 
-
 		try (BufferedWriter bw_pref = new BufferedWriter(new FileWriter(f, true))) {
-				bw_pref.write(preferencias.toString());
-				bw_pref.newLine();
+			bw_pref.write(preferencias.toString()+"\n");
 			return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error guardando preferencias.");
 			return false;
-		} 
+		}
 
 	}
 
@@ -115,46 +113,46 @@ public class GestionPreferencias {
 				}
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"No se pudo ejecutar algo en el proyecto, por favor contacte soporte.", "Error en la app",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
+					"Error en la app", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return preferencias;
 	}
 
-	
-	
 	public boolean eliminarPreferencias(String nombreUsuario) {
-	    File f = new File("data/config.txt");
-	    if (!f.exists()) return false;
+		File f = new File("data/config.txt");
+		if (!f.exists()) {
+			return false;
+		}
+		
+		List<String> lineasConservadas = new ArrayList<>();
+		boolean encontrado = false;
 
-	    List<String> lineasConservadas = new ArrayList<>();
-	    boolean encontrado = false;
+		// 1. LEEMOS Y FILTRAMOS
+		try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
+			String linea;
+			while ((linea = bf.readLine()) != null) {
+				if (linea.trim().startsWith("==" + nombreUsuario + "==")) {
+					encontrado = true;
+				} else {
+					lineasConservadas.add(linea);
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
 
-	    // 1. LEEMOS Y FILTRAMOS
-	    try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
-	        String linea;
-	        while ((linea = bf.readLine()) != null) {
-	            if (linea.trim().startsWith("==" + nombreUsuario + "==")) {
-	                encontrado = true;
-	            } else {
-	                lineasConservadas.add(linea);
-	            }
-	        }
-	    } catch (Exception e) {
-	        return false;
-	    }
-
-	    try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-	        for (String l : lineasConservadas) {
-	            bw.write(l);
-	            bw.newLine();
-	        }
-	        return true;
-	    } catch (Exception e) {
-	    	JOptionPane.showMessageDialog(null, "Error eliminando preferencias.");
-	        return false;
-	    }
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+			for (String l : lineasConservadas) {
+				bw.write(l);
+				bw.newLine();
+			}
+			return true;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error eliminando preferencias.");
+			return false;
+		}
 	}
-	
+
 }

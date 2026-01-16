@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 
+import gestiones.GestionPreferencias;
 import gestiones.GestionUsuarios;
 import modelos.Fuentes;
 import modelos.Usuario;
@@ -30,16 +31,18 @@ public class PanelGestionAdmin extends JPanel {
 
 	private VentanaPrincipal v;
 	private GestionUsuarios gu;
+	private GestionPreferencias gp;
 	private JTextField newNombre;
 	private JTextField newPwd;
 	private JTextField newEmail;
-	JPanel panelCreacion;
-	JLabel resultadoCreacion;
-	JButton aceptarCreate;
-	JPanel panelBorrado;
-	private JTextField textField;
+	private JPanel panelCreacion;
+	private JLabel resultadoCreacion;
+	private JButton aceptarCreate;
+	private JPanel panelBorrado;
+	private JTextField usuarioBorrar;
+	private JLabel resultado;
 
-	public PanelGestionAdmin(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu) {
+	public PanelGestionAdmin(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionPreferencias gp) {
 
 		this.gu = gu;
 		this.v = ventanaPrincipal;
@@ -180,24 +183,60 @@ public class PanelGestionAdmin extends JPanel {
 		
 		JLabel lblNewLabel_2 = new JLabel("Borrar un usuario");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(14, 71, 277, 27);
+		lblNewLabel_2.setBounds(14, 46, 277, 27);
 		lblNewLabel_2.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
 		panelBorrado.add(lblNewLabel_2);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(14, 108, 277, 118);
+		textArea.setBounds(14, 83, 277, 118);
 		panelBorrado.add(textArea);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
-		textField.setBounds(26, 289, 253, 27);
-		panelBorrado.add(textField);
-		textField.setColumns(10);
+		usuarioBorrar = new JTextField();
+		usuarioBorrar.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		usuarioBorrar.setBounds(26, 264, 253, 27);
+		panelBorrado.add(usuarioBorrar);
+		usuarioBorrar.setColumns(10);
 		
 		JLabel lblNombreDelUsuario = new JLabel("Nombre del usuario a eliminar");
 		lblNombreDelUsuario.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		lblNombreDelUsuario.setBounds(46, 257, 214, 26);
+		lblNombreDelUsuario.setBounds(46, 232, 214, 26);
 		panelBorrado.add(lblNombreDelUsuario);
+		
+		JButton botonBorrar = new JButton("Borrar");
+		botonBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Usuario u = gu.buscarUsuario(usuarioBorrar.getText());
+				
+				if (u!=null) {
+					if (gu.eliminarUsuario(u.getUsuario())) {
+						if (gp.eliminarPreferencias(u.getUsuario())) {
+							resultado.setVisible(true);
+							resultado.setText("Se ha borrado con exito!");
+						}else {
+							resultado.setVisible(true);
+							resultado.setText("No se han encontrado preferencias de este usuarios");
+						}
+						
+					}else{
+						resultado.setVisible(true);
+						resultado.setText("No se ha podido eliminar el usuario.");
+					}
+					
+				}else {
+					resultado.setVisible(true);
+					resultado.setText("No se encontro el usuario deseado.");
+				}
+				
+			}
+		});
+		botonBorrar.setBounds(108, 302, 89, 23);
+		panelBorrado.add(botonBorrar);
+		
+		resultado = new JLabel("En espera");
+		resultado.setBounds(130, 336, 46, 14);
+		resultado.setVisible(false);
+		panelBorrado.add(resultado);
 		
 		
 		JButton moreInfo = new JButton("Acerca de");

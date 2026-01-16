@@ -138,7 +138,7 @@ public class PanelMenuAdmin extends JPanel{
 						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		moreInfo.setBounds(10, 10, 84, 20);
+		moreInfo.setBounds(24, 11, 84, 20);
 		add(moreInfo);
 		
 	}
