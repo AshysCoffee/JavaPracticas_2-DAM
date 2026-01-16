@@ -72,7 +72,7 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(panelContenedor);
 
 		PanelCarga carga = new PanelCarga(this);
-		PanelGestionAdmin gestionAdmin = new PanelGestionAdmin(this, gu);
+		PanelGestionAdmin gestionAdmin = new PanelGestionAdmin(this, gu, gp);
 		PanelLogin login = new PanelLogin(this, gu);
 		PanelMenuAdmin menuAdmin = new PanelMenuAdmin(this, gu, gn, ge);
 		PanelMenuUsuario menuUser = new PanelMenuUsuario(this, gn, gp);

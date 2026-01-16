@@ -1,14 +1,38 @@
-////hola////
+////admin////
 ECONOMIA
 El País - La mitad de los nuevos fondos que introduce la reforma de la financiación irán a Cataluña
+ECONOMIA
+El Mundo - Las eléctricas elevan la presión sobre la CNMC para regular el coste del escudo antiapagón y dudan del cálculo de Red Eléctrica
+ECONOMIA
+El Español - Sánchez se inventa un "fondo soberano" con los Next Gen para no perder 10.500 millones que tendría que haber invertido
+DEPORTES
+El País - El Racing exige a un Barça serio
 DEPORTES
 El Mundo - La sombra de la primera galaxia acecha al Madrid: "Los jugadores saben que tienen mucho poder"
+DEPORTES
+El Español - El Bernabéu dictará sentencia: los señalados del Real Madrid que ponen en el foco a los jugadores
+NACIONAL
+El País - El día que Machado regaló su medalla del Nobel de la Paz a Trump
+NACIONAL
+El Mundo - María Corina Machado pide ante Trump "libertad y Estado de Derecho"
 NACIONAL
 RTVE España - Robles no descarta que España participe en la misión militar europea en Groenlandia
 INTERNACIONAL
+BBC Mundo - La "atípica" visita de María Corina Machado a la Casa Blanca en la que le entregó su premio Nobel de la Paz a Donald Trump
+INTERNACIONAL
 EuropaPress - Trump afirma haber recibido el Nobel de la Paz de María Corina Machado
+INTERNACIONAL
+El País - Rusia castiga a millones de ucranios a vivir sin luz ni agua en el invierno más gélido de la guerra
 CIENCIAS
 Xataka Ciencia - Dos científicos intentaron publicar un "paper" sobre por qué nos salen pelusas en el ombligo. Y ahí empezaron sus problemas
+CIENCIAS
+El Mundo - La adherencia en VIH, la constancia que mejora vidas
+CIENCIAS
+La Razón - La bóveda de los climas pasados: la “caja fuerte del cambio climático”
 FAUNA
 El País - El sueño de una Málaga que no sabe qué hacer con su río: remodelar por 300 millones o renaturalizar por cinco
-////hola////
+FAUNA
+El Diario - El polémico parque científico de Cuenca recibe luz verde ambiental con decenas de “correcciones” para proteger agua y fauna
+FAUNA
+AnimaNaturalis - La Junta consolidará este año la reintroducción del lince ibérico en el Cerrato Palentino
+////admin////

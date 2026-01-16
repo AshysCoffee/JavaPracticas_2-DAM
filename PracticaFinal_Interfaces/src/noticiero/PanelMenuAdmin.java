@@ -151,6 +151,11 @@ public class PanelMenuAdmin extends JPanel{
 			new Thread(() -> {
 				try {
 					
+					panelNoticias.removeAll();
+					panelNoticias.add(new JLabel("Cargando noticias, por favor espere..."));
+					panelNoticias.revalidate();
+					panelNoticias.repaint();
+					
 					List<Fuentes> misFuentes = gn.getListaNoticias();
 					List<String> titulares = gn.cargarTitulares(misFuentes, "admin");
 					if (misFuentes == null)

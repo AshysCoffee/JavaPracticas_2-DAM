@@ -12,6 +12,8 @@ import modelos.Usuario;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 import java.awt.CardLayout;
 import javax.swing.JTextArea;
+import java.awt.Color;
 
 public class PanelGestionAdmin extends JPanel {
 
@@ -41,6 +44,7 @@ public class PanelGestionAdmin extends JPanel {
 	private JPanel panelBorrado;
 	private JTextField usuarioBorrar;
 	private JLabel resultado;
+	private JPanel panelUsuarios;
 
 	public PanelGestionAdmin(VentanaPrincipal ventanaPrincipal, GestionUsuarios gu, GestionPreferencias gp) {
 
@@ -52,7 +56,7 @@ public class PanelGestionAdmin extends JPanel {
 
 		JButton salir = new JButton("Salir");
 		salir.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		salir.setBounds(481, 419, 141, 31);
+		salir.setBounds(483, 425, 141, 31);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -71,24 +75,27 @@ public class PanelGestionAdmin extends JPanel {
 				resultadoCreacion.setVisible(false);
 			}
 		});
-		btnCrearUsuarios.setBounds(353, 142, 215, 31);
+		btnCrearUsuarios.setBounds(355, 148, 215, 31);
 		add(btnCrearUsuarios);
 
 		JButton infoApp = new JButton("Información adicional");
 		infoApp.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		infoApp.setBounds(353, 254, 215, 31);
+		infoApp.setBounds(355, 260, 215, 31);
 		add(infoApp);
 
 		JButton btnBorrarUsuario = new JButton("Borrar usuario");
 		btnBorrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				panelCreacion.setVisible(false);
 				panelBorrado.setVisible(true);
 				cargarUsuarios();
+				usuarioBorrar.setText("");
+				resultado.setVisible(false);
 				
 			}
 		});
 		btnBorrarUsuario.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		btnBorrarUsuario.setBounds(353, 198, 215, 31);
+		btnBorrarUsuario.setBounds(355, 204, 215, 31);
 		add(btnBorrarUsuario);
 
 		JButton atras = new JButton("Atrás");
@@ -98,13 +105,13 @@ public class PanelGestionAdmin extends JPanel {
 			}
 		});
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		atras.setBounds(26, 419, 141, 31);
+		atras.setBounds(28, 425, 141, 31);
 		add(atras);
 
 		JPanel panelTotal = new JPanel();
 		panelTotal
 				.setBorder(new TitledBorder(null, "Gestión de usuarios", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelTotal.setBounds(20, 5, 318, 413);
+		panelTotal.setBounds(22, 11, 318, 413);
 		add(panelTotal);
 		panelTotal.setLayout(new CardLayout(0, 0));
 
@@ -187,9 +194,18 @@ public class PanelGestionAdmin extends JPanel {
 		lblNewLabel_2.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
 		panelBorrado.add(lblNewLabel_2);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(14, 83, 277, 118);
-		panelBorrado.add(textArea);
+		this.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				cargarUsuarios();
+			}
+		});
+		
+		JPanel panelUsuarios = new JPanel();
+		panelUsuarios.setBackground(new Color(255, 255, 255));
+		panelUsuarios.setBounds(14, 84, 277, 118);
+		panelBorrado.add(panelUsuarios);
+		
 		
 		usuarioBorrar = new JTextField();
 		usuarioBorrar.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
@@ -234,7 +250,8 @@ public class PanelGestionAdmin extends JPanel {
 		panelBorrado.add(botonBorrar);
 		
 		resultado = new JLabel("En espera");
-		resultado.setBounds(130, 336, 46, 14);
+		resultado.setHorizontalAlignment(SwingConstants.CENTER);
+		resultado.setBounds(46, 342, 214, 14);
 		resultado.setVisible(false);
 		panelBorrado.add(resultado);
 		
@@ -247,7 +264,7 @@ public class PanelGestionAdmin extends JPanel {
 						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		moreInfo.setBounds(538, 10, 84, 20);
+		moreInfo.setBounds(540, 16, 84, 20);
 		add(moreInfo);
 		
 
@@ -255,7 +272,13 @@ public class PanelGestionAdmin extends JPanel {
 	
 	public void cargarUsuarios() {
 
+		panelUsuarios.removeAll();
+		panelUsuarios.add(new JLabel("Cargando usuarios, por favor espere..."));
+		panelUsuarios.revalidate();
+		panelUsuarios.repaint();
+		
 		new Thread(() -> {
+			
 			try {
 				
 			List<Usuario> todosUsuarios = gu.getListaUsuario();
@@ -266,12 +289,13 @@ public class PanelGestionAdmin extends JPanel {
 			}
 			
 				SwingUtilities.invokeLater(() -> {
-
-					if (todosUsuarios == null || todosUsuarios.isEmpty()) {
+					panelUsuarios.removeAll();
+					
+					if (usuarios == null || usuarios.isEmpty()) {
 						JTextArea txt = new JTextArea(
 								"No existen usuarios registrados.");
 						txt.setEditable(false);
-						panelBorrado.add(txt);
+						panelUsuarios.add(txt);
 					} else {
 						for (String t : usuarios) {
 							JTextArea txt = new JTextArea(t);
@@ -280,12 +304,14 @@ public class PanelGestionAdmin extends JPanel {
 							txt.setEditable(false);
 							txt.setOpaque(false);
 							txt.setBorder(BorderFactory.createEmptyBorder(5, 5, 15, 5));
-							panelBorrado.add(txt);
-							panelBorrado.add(new JSeparator());
+							panelUsuarios.add(txt);
+							panelUsuarios.add(new JSeparator());
 						}
 					}
-					panelBorrado.revalidate();
-					panelBorrado.repaint();
+				
+					panelUsuarios.revalidate();
+					panelUsuarios.repaint();
+					
 				});
 
 			} catch (Exception ex) {
