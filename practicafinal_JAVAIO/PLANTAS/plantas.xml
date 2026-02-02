@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <plantas>
     <planta>
         <codigo>1</codigo>
@@ -61,6 +61,12 @@
         <descripcion>Planta de flores grandes y coloridas.</descripcion>
     </planta>
     <planta>
+        <codigo>11</codigo>
+        <nombre>Palmera</nombre>
+        <foto>palmera.jpg</foto>
+        <descripcion>Árbol tropical con hojas largas en forma de abanico.</descripcion>
+    </planta>
+    <planta>
         <codigo>12</codigo>
         <nombre>Clavel</nombre>
         <foto>clavel.jpg</foto>
@@ -113,11 +119,5 @@
         <nombre>Jazmín</nombre>
         <foto>jazmin.jpg</foto>
         <descripcion>Planta trepadora de flores fragantes.</descripcion>
-    </planta>
-    <planta>
-        <codigo>11</codigo>
-        <nombre>Palmera</nombre>
-        <foto>palmera.jpg</foto>
-        <descripcion>Árbol tropical con hojas largas en forma de abanico.</descripcion>
     </planta>
 </plantas>

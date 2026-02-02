@@ -158,13 +158,13 @@ public class GestorEmpleados implements Serializable {
 		Scanner sc = new Scanner(System.in);
 
 		int intentos = 0;
+		
 		while (intentos < intentosMaximos) {
+			
 			intentos++;
 
 			System.out.print("ID: ");
-
 			String input = sc.nextLine().trim();
-
 			int id = ControlErrores.leerEntero(input);
 
 			System.out.print("Contraseña: ");
