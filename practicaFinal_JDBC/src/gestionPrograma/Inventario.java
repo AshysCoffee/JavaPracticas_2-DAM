@@ -235,19 +235,12 @@ public class Inventario {
 			Stock s = new Stock(zDestino, stDestino, idJuguete, cant);
 
 			gs.insertarStock(s);
+			
+			destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
 
 			int nuevaCant = destino.getCantidad_disponible() + cant;
 			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
 
-			if (exitoDestino) {
-				int resta = origen.getCantidad_disponible() - cant;
-				gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
-				System.out.println("¡Transferencia realizada con éxito!");
-				return true;
-			} else {
-				System.out.println("Error al actualizar el stand de destino.");
-				return false;
-			}
 		}else{
 		
 			int nuevaCant = destino.getCantidad_disponible() + cant;
