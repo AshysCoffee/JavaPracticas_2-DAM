@@ -18,12 +18,10 @@ import modelos.Usuario;
 public class GestionPreferencias {
 
 	private JCheckBox[] listaPreferencias;
-	private GestionNoticias gn;
 	private GestionUsuarios gu;
 
-	public GestionPreferencias(GestionNoticias gn, GestionUsuarios gu) {
+	public GestionPreferencias(GestionUsuarios gu) {
 		this.gu = gu;
-		this.gn = gn;
 		this.listaPreferencias = new JCheckBox[18];
 	}
 
@@ -98,28 +96,7 @@ public class GestionPreferencias {
 
 	}
 
-	public List<Fuentes> obtenerPreferencias(String nombreUsuario) {
-		List<Fuentes> todasLasFuentes = gn.getListaNoticias();
-		List<Fuentes> preferencias = new ArrayList<>();
-
-		String cadenaBinar = obtenerCadenaPreferencias(nombreUsuario);
-
-		try {
-			for (int i = 0; i < todasLasFuentes.size(); i++) {
-				if (i < cadenaBinar.length() && cadenaBinar.charAt(i) == '1') {
-					if (i < todasLasFuentes.size()) {
-						preferencias.add(todasLasFuentes.get(i));
-					}
-				}
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "No se pudo ejecutar algo en el proyecto, por favor contacte soporte.",
-					"Error en la app", JOptionPane.WARNING_MESSAGE);
-		}
-
-		return preferencias;
-	}
-
+	
 	public boolean eliminarPreferencias(String nombreUsuario) {
 		File f = new File("data/config.txt");
 		if (!f.exists()) {

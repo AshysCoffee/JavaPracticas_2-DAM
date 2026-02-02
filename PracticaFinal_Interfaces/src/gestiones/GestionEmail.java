@@ -3,6 +3,8 @@ package gestiones;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -13,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 
+import modelos.Fuentes;
 import modelos.Usuario;
 
 public class GestionEmail {
@@ -20,51 +23,48 @@ public class GestionEmail {
 	private Usuario usuario;
 	private GestionNoticias gn;
 	private GestionUsuarios gu;
-	private String fromEmail, password;
+	private GestionPreferencias gp;
+	private String fromEmail, password, horaEnvioAutomatico;
 
-	public GestionEmail(Usuario usuario, GestionNoticias gn, GestionUsuarios gu) {
+	public GestionEmail(GestionNoticias gn, GestionUsuarios gu, GestionPreferencias gp) {
 		super();
 		this.gu = gu;
 		this.gn = gn;
-		this.usuario = usuario;
+		this.gp = gp;
 	}
 
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-    public void cargarCredenciales() {
-        File f = new File("data/config.txt");
-        if (!f.exists()) return;
-
-        try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
-            String linea = bf.readLine();
-            while (linea != null) {
-                linea = linea.trim();
-                if (linea.startsWith("--")) {
-                    String datos = linea.substring(2);
-                    String[] partes = datos.split(";;;");
-                    
-                    if (partes.length >= 2) {
-                        fromEmail = partes[0].trim();
-                        password = partes[1].trim();
-                        return; 
-                    }
-                }
-                linea = bf.readLine();
-            }
-        } catch (Exception e) {
-        	JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
+	///////////////////////
 	
-/////////////////////// -- TEST DE NOTICIAS HECHO, AHORA FALTA INTERFAZ
+
+	public void cargarCredenciales() {
+		File f = new File("data/config.txt");
+		if (!f.exists())
+			return;
+
+		try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
+			String linea = bf.readLine();
+			while (linea != null) {
+				linea = linea.trim();
+				if (linea.startsWith("--")) {
+					String datos = linea.substring(2);
+					String[] partes = datos.split(";;;");
+
+					if (partes.length >= 3) {
+						fromEmail = partes[0].trim();
+						password = partes[1].trim();
+						horaEnvioAutomatico = partes[2].trim();
+						return;
+					}
+				}
+				linea = bf.readLine();
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+/////////////////////// 
 
 	public boolean sendEmail(Session session, String toEmail, String subject, String body) {
 
@@ -82,7 +82,8 @@ public class GestionEmail {
 			Transport.send(msg);
 			return true;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Se ha producido un error al procesar los datos.", "Error de Sistema",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -93,9 +94,9 @@ public class GestionEmail {
 		String usuarioMail = fromEmail;
 
 		String texto = "";
-		
-		for (String s : gn.cargarTitulares(gn.getListaNoticias(),"admin")) {
-			  texto += "• " + s + "\n";
+
+		for (String s : gn.cargarTitulares(gn.getListaNoticias(), "admin")) {
+			texto += "• " + s + "\n";
 		}
 
 		Properties props = new Properties();
@@ -114,24 +115,32 @@ public class GestionEmail {
 		return sendEmail(session, usuarioMail, "TEST NOTICIAS", texto);
 
 	}
-	
-    public boolean enviarNoticiasUsuario(Usuario u) {
-        if (u == null || gn == null) return false;
 
-        String usuarioMail = u.getCorreo();
-        String texto = "Hola " + u.getUsuario() + ",\n\nAquí tienes tus noticias de hoy:\n\n";
+	public boolean enviarNoticiasUsuario(Usuario u) {
 
-        if (gn.getTitulares() != null && !gn.getTitulares().isEmpty()) {
-            for (String s : gn.getTitulares()) {
-                texto += "• " + s + "\n";
-            }
-        } else {
-            texto += "No hay noticias cargadas actualmente.";
-        }
-        
-        texto += "\n\nSaludos,\nEl Equipo Mapache";
+		if (u == null || gn == null) {
+			return false;
+		}
 
-        Properties props = new Properties();
+		String usuarioMail = u.getCorreo();
+		String texto = "Hola " + u.getUsuario() + ",\n\nAquí tienes tus noticias de hoy:\n\n";
+
+		if (gn.getTitulares() != null && !gn.getTitulares().isEmpty()) {
+
+			List<Fuentes> misFuentes = gn.obtenerPreferencias(u.getUsuario());
+			List<String> titularesUsuario = gn.cargarTitulares(misFuentes, u.getUsuario());
+
+			for (String s : titularesUsuario) {
+				texto += "• " + s + "\n";
+			}
+			
+		} else {
+			texto += "No hay noticias cargadas actualmente.";
+		}
+
+		texto += "\n\nSaludos,\nEl Equipo Mapache";
+
+		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP de GMAIL en este caso
 		props.put("mail.smtp.socketFactory.port", "465"); // PUERTO SSL
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // SSL Factory Class
@@ -143,9 +152,72 @@ public class GestionEmail {
 			}
 		};
 		Session session = Session.getDefaultInstance(props, auth);// CREA UNA SESIÓN CON TODAS LAS PROPIEDADES Y EL
-        
-        return sendEmail (session, usuarioMail, "Tus Noticias - Noticiero Mapache", texto);
+
+		return sendEmail(session, usuarioMail, "Tus Noticias - Noticiero Mapache", texto);
 
 	}
-	
+
+	public void iniciarRelojAutomatico() {
+
+		String[] partes = horaEnvioAutomatico.split(":");
+		int hora = Integer.parseInt(partes[0]);
+		int minuto = Integer.parseInt(partes[1]);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						LocalTime ahora = LocalTime.now();
+
+						if (ahora.getHour() == hora && ahora.getMinute() == minuto) {
+
+							enviarBoletinMasivo();
+
+							Thread.sleep(61000);
+						}
+
+						Thread.sleep(30000);
+
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Error en el reloj automático", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}).start();
+	}
+
+	private boolean enviarBoletinMasivo() {
+		
+		List<Usuario> todos = gu.getListaUsuario();
+
+		if (todos == null || todos.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay usuarios registrados para enviar el boletín.", "Aviso",
+					JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		for (Usuario u : todos) {
+
+			try {
+
+				List<Fuentes> misFuentes = gn.obtenerPreferencias(u.getUsuario());
+	            
+				gn.cargarTitulares(misFuentes, u.getUsuario());
+				
+				enviarNoticiasUsuario(u);
+
+				Thread.sleep(1000);
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error al enviar el correo a " + u.getUsuario(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
+	}
+
+
 }

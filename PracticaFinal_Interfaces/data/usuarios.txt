@@ -1,7 +1,4 @@
-@@admin;admin123;albaelena1970.ale@gmail.com;11@@
-//pepe;pepe123;ashleyleonidk@gmail.com;1//
-//maria;maria123;fp.aleonespinoza@salesianosdosa.com;2//
-//luis;luis123;luis@gmail.com;3//
-//hola;hola666;hola@gmail.com;2//
-//lol;lol;lolol@gmail.com;0//
-//owo;owo123;owo@yahoo.com;0//
+@@admin;admin123;albaelena1970.ale@gmail.com;21@@
+//pepe;pepe123;ashleyleonidk@gmail.com;4//
+//maria;maria123;fp.aleonespinoza@salesianosdosa.com;7//
+//luis;luis123;lusitaniaespinozaaguilar2@gmail.com;10//

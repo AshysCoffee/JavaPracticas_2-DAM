@@ -49,4 +49,17 @@ public class ControlErrores {
 		return numero;
 	}
 
+	public static String leerPago(String mensaje) throws DatosInvalidosException {
+		String pago;
+		String patronPago = "^(EFECTIVO|TARJETA|PAYPAL)$"; // Opciones válidas
+
+		pago = mensaje.trim().toUpperCase();
+
+		if (!pago.matches(patronPago)) {
+			throw new DatosInvalidosException("Por favor, introduzca un método de pago válido (efectivo, tarjeta, transferencia).");
+		}
+
+		return pago;
+	}
+	
 }

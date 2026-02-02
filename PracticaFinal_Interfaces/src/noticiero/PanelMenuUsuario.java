@@ -11,6 +11,7 @@ import java.util.List;
 
 import gestiones.GestionNoticias;
 import gestiones.GestionPreferencias;
+import modelos.Categorias;
 import modelos.Fuentes;
 import modelos.Usuario;
 
@@ -19,7 +20,7 @@ public class PanelMenuUsuario extends JPanel {
 	private VentanaPrincipal v;
 	private GestionNoticias gn;
 	private GestionPreferencias gp;
-	private JPanel panelContenidos; // Panel interior para el scroll
+	private JPanel panelContenidos;
 
 	public PanelMenuUsuario(VentanaPrincipal ventanaPrincipal, GestionNoticias gn, GestionPreferencias gp) {
 		this.gp = gp;
@@ -29,30 +30,40 @@ public class PanelMenuUsuario extends JPanel {
 		setLayout(null);
 		setSize(650, 500);
 
-		// 1. TÍTULO
 		JLabel lblTitulo = new JLabel("Mis Noticias");
 		lblTitulo.setFont(new Font("Yu Gothic UI", Font.BOLD, 24));
 		lblTitulo.setBounds(25, 20, 200, 30);
 		add(lblTitulo);
 
-		// 2. ÁREA DE NOTICIAS
 		panelContenidos = new JPanel();
 		panelContenidos.setLayout(new BoxLayout(panelContenidos, BoxLayout.Y_AXIS));
 		panelContenidos.setBackground(Color.WHITE);
 
 		JScrollPane scroll = new JScrollPane(panelContenidos);
-		scroll.setBounds(25, 60, 600, 350); // Espacio central grande
+		scroll.setBounds(25, 60, 600, 350);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scroll);
 
-		// 3. BOTÓN ATRÁS
 		JButton atras = new JButton("Cerrar Sesión");
-		atras.addActionListener(e -> v.cambiarPantalla("LOGIN"));
+		atras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int respuesta = JOptionPane.showConfirmDialog(null, 
+					    "¿Quieres cerrar tu sesión y volver al inicio?", 
+					    "Cerrar Sesión", 
+					    JOptionPane.YES_NO_OPTION, 
+					    JOptionPane.QUESTION_MESSAGE);
+
+					if (respuesta == JOptionPane.YES_OPTION) {
+					    v.cambiarPantalla("LOGIN");
+
+					}
+			}
+		});
+		
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
 		atras.setBounds(25, 421, 150, 30);
 		add(atras);
 
-		// 4. BOTÓN RECARGAR (Por si falla internet)
 		JButton recargar = new JButton("Recargar");
 		recargar.addActionListener(e -> cargarNoticias());
 		recargar.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
@@ -75,23 +86,67 @@ public class PanelMenuUsuario extends JPanel {
 						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		moreInfo.setBounds(10, 10, 84, 20);
+		moreInfo.setBounds(510, 20, 115, 20);
 		add(moreInfo);
+		
+		JButton btnGuardar = new JButton("Guardar Noticias");
+		btnGuardar.setBounds(250, 421, 161, 30);
+		btnGuardar.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		add(btnGuardar);
+
+		btnGuardar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        
+		        String[] opciones = {"Guardar Todo", "Por Categoría"};
+		        int eleccion = JOptionPane.showOptionDialog(null, 
+		                "¿Qué noticias quieres guardar?", 
+		                "Exportar Noticias", 
+		                JOptionPane.DEFAULT_OPTION, 
+		                JOptionPane.QUESTION_MESSAGE, 
+		                null, 
+		                opciones, 
+		                opciones[0]);
+
+		        if (eleccion == 0) {
+		            gn.guardarNoticiasFiltradas(v.getUsuarioLogueado().getUsuario(), "TODAS", "");
+		        } 
+		        else if (eleccion == 1) {
+		            Categorias[] cats = Categorias.values();
+		            
+		            Categorias seleccion = (Categorias) JOptionPane.showInputDialog(null, 
+		                    "Elige la categoría:", 
+		                    "Filtrar por Categoría", 
+		                    JOptionPane.QUESTION_MESSAGE, 
+		                    null, 
+		                    cats, 
+		                    cats[0]);
+		            
+		            if (seleccion != null) {
+		                gn.guardarNoticiasFiltradas(v.getUsuarioLogueado().getUsuario(),"CATEGORIA", seleccion.toString());
+		            }
+		        } 
+		       
+		    }
+		});
+		
 	}
 
 	private void cargarNoticias() {
-		panelContenidos.removeAll();
-		panelContenidos.add(new JLabel("Cargando noticias, por favor espere..."));
-		panelContenidos.revalidate();
-		panelContenidos.repaint();
+		
 
 		new Thread(() -> {
 			try {
+				
+				panelContenidos.removeAll();
+				panelContenidos.add(new JLabel("Cargando noticias, por favor espere..."));
+				panelContenidos.revalidate();
+				panelContenidos.repaint();
+				
 				Usuario miUsuario = v.getUsuarioLogueado();
 				if (miUsuario == null)
 					return;
 
-				List<Fuentes> misFuentes = gp.obtenerPreferencias(miUsuario.getUsuario());
+				List<Fuentes> misFuentes = gn.obtenerPreferencias(miUsuario.getUsuario());
 				List<String> titulares = gn.cargarTitulares(misFuentes, miUsuario.getUsuario());
 				if (misFuentes == null)
 					misFuentes = new ArrayList<>();

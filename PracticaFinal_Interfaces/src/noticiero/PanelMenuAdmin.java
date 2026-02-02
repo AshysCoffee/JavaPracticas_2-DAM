@@ -76,25 +76,23 @@ public class PanelMenuAdmin extends JPanel{
 		lblNewLabel.setBounds(166, 27, 316, 42);
 		add(lblNewLabel);
 		
-		JButton atras = new JButton("Atrás");
+		JButton atras = new JButton("Cerrar sesión");
 		atras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				v.cambiarPantalla("LOGIN");
+				int respuesta = JOptionPane.showConfirmDialog(null, 
+					    "¿Quieres cerrar tu sesión y volver al inicio?", 
+					    "Cerrar Sesión", 
+					    JOptionPane.YES_NO_OPTION, 
+					    JOptionPane.QUESTION_MESSAGE);
+
+					if (respuesta == JOptionPane.YES_OPTION) {
+					    v.cambiarPantalla("LOGIN");
+					}
 			}
 		});
 		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		atras.setBounds(24, 231, 141, 31);
+		atras.setBounds(220, 427, 209, 31);
 		add(atras);
-		
-		JButton salir = new JButton("Salir");
-		salir.setBounds(475, 231, 151, 30);
-		salir.setFont(new Font("Yu Gothic UI", Font.BOLD, 18));
-		salir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		add(salir);
 		
 		JButton btnNoticiasPantalla = new JButton("Test de noticias - Pantalla");
 		btnNoticiasPantalla.addActionListener(new ActionListener() {
@@ -125,7 +123,7 @@ public class PanelMenuAdmin extends JPanel{
 
 		scroll = new JScrollPane(panelNoticias);
 		scroll.setVisible(false);
-		scroll.setBounds(25, 273, 600, 173); // Espacio central grande
+		scroll.setBounds(25, 231, 600, 173);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scroll);
 
@@ -138,15 +136,11 @@ public class PanelMenuAdmin extends JPanel{
 						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		moreInfo.setBounds(24, 11, 84, 20);
+		moreInfo.setBounds(24, 11, 141, 20);
 		add(moreInfo);
 		
 	}
 		public void cargarNoticias() {
-			panelNoticias.removeAll();
-			panelNoticias.add(new JLabel("Cargando noticias, por favor espere..."));
-			panelNoticias.revalidate();
-			panelNoticias.repaint();
 
 			new Thread(() -> {
 				try {
@@ -166,7 +160,7 @@ public class PanelMenuAdmin extends JPanel{
 
 						if (titulares == null || titulares.isEmpty()) {
 							JTextArea txt = new JTextArea(
-									"No hay noticias.\nPosibles causas:\n1. No tienes periódicos asignados.\n2. Fallo de conexión.\n3. Revisa config.txt");
+									"No hay noticias.\nPosibles causas:\n1. No tienes periódicos asignados.\n2. Fallo de conexión.\n Por favor, contacte con soporte.");
 							txt.setEditable(false);
 							panelNoticias.add(txt);
 						} else {

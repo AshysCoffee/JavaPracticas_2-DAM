@@ -35,7 +35,6 @@ public class Inventario {
 
 	//////////// MENU DE JUGUETES
 
-	// Crear Juguete - Opcion 1
 	public boolean crearJuguete(String nombre, String descripcion, double precio, int cantidad, String categoria,
 			int zona_id, int stand_id) {
 
@@ -212,51 +211,72 @@ public class Inventario {
 
 	public boolean moverMercancia(int idJuguete, int cant, int stOrigen, int zOrigen, int stDestino, int zDestino) {
 
-		Stock origen = gs.obtenerStockdelStand(stOrigen, zOrigen, idJuguete);
-
-		if (origen == null) {
-			System.out.println("Error: Ese juguete no existe en el Stand de origen.");
-			return false;
-		}
-
-		if (origen.getCantidad_disponible() < cant) {
-			System.out.println(
-					"Error: No hay suficiente cantidad en el origen (Hay: " + origen.getCantidad_disponible() + ")");
-			return false;
-		}
-
-		Stock destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
-
-		boolean exitoDestino;
-
-		if (destino == null) {
-			
-			System.out.println("No existe el stand al que se quiere transferir, se procedera a crear");
-			Stock s = new Stock(zDestino, stDestino, idJuguete, cant);
-
-			gs.insertarStock(s);
-			
-			destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
-
-			int nuevaCant = destino.getCantidad_disponible() + cant;
-			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
-
-		}else{
+		if (cant <= 0) {
+	        System.out.println("Error: La cantidad a transferir debe ser mayor que cero.");
+	        return false;
+	    }
 		
-			int nuevaCant = destino.getCantidad_disponible() + cant;
-			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
+		if (stOrigen <= 0 || zOrigen <= 0 || stDestino <= 0 || zDestino <= 0) {
+	        System.out.println("Error: IDs de Stand o Zona inválidos.");
+	        return false;
+	    }
+		
+		if (stOrigen == stDestino && zOrigen == zDestino) {
+	        System.out.println("Error: El Stand y Zona de origen y destino no pueden ser los mismos.");
+	        return false;
+	    }
+		
+		if (gj.obtenerJuguetePorId(idJuguete) == null) {
+	        System.out.println("Error: El juguete con ID " + idJuguete + " no existe.");
+	        return false;
+	    }
+		
+		if (idJuguete <= 0) {
+	        System.out.println("Error: El ID del juguete no es válido.");
+	        return false;
+	    }
+		
+		
+	    Stock origen = gs.obtenerStockdelStand(stOrigen, zOrigen, idJuguete);
 
-			if (exitoDestino) {
-				int resta = origen.getCantidad_disponible() - cant;
-				gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
-				System.out.println("¡Transferencia realizada con éxito!");
-				return true;
-			} else {
-				System.out.println("Error al actualizar el stand de destino.");
-				return false;
-			}
-			
-		}
+	    if (origen == null) {
+	        System.out.println("Error: Ese juguete no existe en el Stand de origen.");
+	        return false;
+	    }
+
+	    if (origen.getCantidad_disponible() < cant) {
+	        System.out.println("Error: No hay suficiente cantidad en el origen (Hay: " + origen.getCantidad_disponible() + ")");
+	        return false;
+	    }
+
+	    Stock destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
+	    boolean exitoDestino;
+
+	    if (destino == null) {
+	        System.out.println("El stand de destino no tenía este juguete. Creando registro...");
+	        
+	        Stock s = new Stock(stDestino, zDestino, idJuguete, cant);
+	        exitoDestino = gs.insertarStock(s);
+	        
+	    } else {
+	    	
+	        int nuevaCant = destino.getCantidad_disponible() + cant;
+	        exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
+	    }
+
+	    if (exitoDestino) {
+	    	
+	        int resta = origen.getCantidad_disponible() - cant;
+	        
+	        gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
+	        
+	        
+	        System.out.println("¡Transferencia realizada con éxito!");
+	        return true;
+	    } else {
+	        System.out.println("Error al actualizar el stand de destino.");
+	        return false;
+	    }
 	}
 
 	public void listaStands() {

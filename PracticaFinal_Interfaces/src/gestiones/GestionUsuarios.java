@@ -70,7 +70,8 @@ public class GestionUsuarios {
 		try {
 
 			if (!f.exists()) {
-				System.err.println("No existe el archivo.");
+				JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de usuarios.", "Error de Sistema",
+						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
 

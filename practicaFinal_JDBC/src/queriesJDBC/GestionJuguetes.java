@@ -253,4 +253,19 @@ public class GestionJuguetes {
 		return inventario;
 	}
 
+	public List<String> obtenerCategorias() {
+		List<String> categorias = new ArrayList<>();
+
+		String sql = "SELECT DISTINCT categoria FROM juguete";
+
+		try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				categorias.add(rs.getString("categoria"));
+			}
+		} catch (SQLException e) {
+			System.err.println("Hubo un error :" + e.getMessage());
+		}
+		return categorias;
+	}
+
 }

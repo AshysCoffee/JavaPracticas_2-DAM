@@ -6,7 +6,7 @@ public class ConexionBD {
 
 	String url = "jdbc:mysql://localhost:3306/jugueteria";
 	String usuario = "root";
-	String password = "cfgs";
+	String password = "Soyunestegosaurio27.";
 
 	
 	

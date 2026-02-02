@@ -41,19 +41,19 @@ public class PanelPreferencias extends JPanel {
 
 		JCheckBox economia1 = new JCheckBox("El País");
 		economia1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		economia1.setBounds(57, 109, 97, 23);
+		economia1.setBounds(57, 140, 97, 23);
 		add(economia1);
 		listaPreferencias[0] = economia1;
 
 		JCheckBox economia2 = new JCheckBox("El Mundo");
 		economia2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		economia2.setBounds(57, 134, 97, 23);
+		economia2.setBounds(57, 165, 97, 23);
 		add(economia2);
 		listaPreferencias[1] = economia2;
 
 		JCheckBox economia3 = new JCheckBox("El Español");
 		economia3.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		economia3.setBounds(57, 159, 97, 23);
+		economia3.setBounds(57, 190, 97, 23);
 		add(economia3);
 		listaPreferencias[2] = economia3;
 
@@ -77,19 +77,19 @@ public class PanelPreferencias extends JPanel {
 
 		JCheckBox nacional1 = new JCheckBox("El País");
 		nacional1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		nacional1.setBounds(258, 109, 97, 23);
+		nacional1.setBounds(258, 140, 97, 23);
 		add(nacional1);
 		listaPreferencias[6] = nacional1;
 
 		JCheckBox nacional2 = new JCheckBox("El Mundo");
 		nacional2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		nacional2.setBounds(258, 134, 97, 23);
+		nacional2.setBounds(258, 165, 97, 23);
 		add(nacional2);
 		listaPreferencias[7] = nacional2;
 
 		JCheckBox nacional3 = new JCheckBox("RTVE España");
 		nacional3.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		nacional3.setBounds(258, 159, 117, 23);
+		nacional3.setBounds(258, 190, 117, 23);
 		add(nacional3);
 		listaPreferencias[8] = nacional3;
 
@@ -131,19 +131,19 @@ public class PanelPreferencias extends JPanel {
 
 		JCheckBox fauna1 = new JCheckBox("El País");
 		fauna1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		fauna1.setBounds(455, 109, 97, 23);
+		fauna1.setBounds(455, 140, 97, 23);
 		add(fauna1);
 		listaPreferencias[15] = fauna1;
 
 		JCheckBox fauna2 = new JCheckBox("El Diario");
 		fauna2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		fauna2.setBounds(455, 134, 97, 23);
+		fauna2.setBounds(455, 165, 97, 23);
 		add(fauna2);
 		listaPreferencias[16] = fauna2;
 
 		JCheckBox fauna3 = new JCheckBox("AnimaNaturalis");
 		fauna3.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		fauna3.setBounds(455, 159, 145, 23);
+		fauna3.setBounds(455, 190, 145, 23);
 		add(fauna3);
 		listaPreferencias[17] = fauna3;
 
@@ -151,7 +151,7 @@ public class PanelPreferencias extends JPanel {
 
 		JLabel lblEconomia = new JLabel("Economia");
 		lblEconomia.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		lblEconomia.setBounds(71, 78, 68, 22);
+		lblEconomia.setBounds(71, 109, 68, 22);
 		add(lblEconomia);
 
 		JLabel lblDeportes = new JLabel("Deportes");
@@ -161,12 +161,12 @@ public class PanelPreferencias extends JPanel {
 
 		JLabel lblNacional = new JLabel("Nacional");
 		lblNacional.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		lblNacional.setBounds(258, 78, 68, 22);
+		lblNacional.setBounds(258, 109, 68, 22);
 		add(lblNacional);
 
 		JLabel lblInteracional = new JLabel("Internacional");
 		lblInteracional.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		lblInteracional.setBounds(258, 285, 117, 22);
+		lblInteracional.setBounds(259, 285, 117, 22);
 		add(lblInteracional);
 
 		JLabel lblCiencias = new JLabel("Ciencias");
@@ -176,13 +176,13 @@ public class PanelPreferencias extends JPanel {
 
 		JLabel lblFauna = new JLabel("Fauna");
 		lblFauna.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		lblFauna.setBounds(455, 79, 68, 22);
+		lblFauna.setBounds(455, 110, 68, 22);
 		add(lblFauna);
 
 		JLabel titulo = new JLabel("Configura tus preferencias");
 		titulo.setFont(new Font("Tahoma", Font.BOLD, 30));
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
-		titulo.setBounds(113, 28, 420, 43);
+		titulo.setBounds(115, 37, 420, 43);
 		add(titulo);
 
 		JButton btnNewButton = new JButton("Guardar preferencias");
@@ -208,25 +208,23 @@ public class PanelPreferencias extends JPanel {
 			}
 		});
 	
-		btnNewButton.setBounds(229, 432, 226, 27);
+		btnNewButton.setBounds(395, 432, 226, 27);
 		add(btnNewButton);
-
-		JButton atras = new JButton("Atrás");
-		atras.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				v.cambiarPantalla("LOGIN");
-			}
-		});
-		atras.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
-		atras.setBounds(23, 430, 131, 31);
-		add(atras);
 
 		JButton salir = new JButton("Salir");
 		salir.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
-		salir.setBounds(508, 433, 116, 25);
+		salir.setBounds(23, 433, 116, 25);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				int respuesta = JOptionPane.showConfirmDialog(null, 
+					    "¿Seguro que quieres cerrar la aplicación?", 
+					    "Confirmar Salida", 
+					    JOptionPane.YES_NO_OPTION, 
+					    JOptionPane.WARNING_MESSAGE);
+
+					if (respuesta == JOptionPane.YES_OPTION) {
+					    System.exit(0);
+					}
 			}
 		});
 		add(salir);

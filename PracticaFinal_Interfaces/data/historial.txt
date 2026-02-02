@@ -1,38 +1,92 @@
-////admin////
-ECONOMIA
-El País - La mitad de los nuevos fondos que introduce la reforma de la financiación irán a Cataluña
-ECONOMIA
-El Mundo - Las eléctricas elevan la presión sobre la CNMC para regular el coste del escudo antiapagón y dudan del cálculo de Red Eléctrica
-ECONOMIA
-El Español - Sánchez se inventa un "fondo soberano" con los Next Gen para no perder 10.500 millones que tendría que haber invertido
-DEPORTES
-El País - El Racing exige a un Barça serio
-DEPORTES
-El Mundo - La sombra de la primera galaxia acecha al Madrid: "Los jugadores saben que tienen mucho poder"
-DEPORTES
-El Español - El Bernabéu dictará sentencia: los señalados del Real Madrid que ponen en el foco a los jugadores
-NACIONAL
-El País - El día que Machado regaló su medalla del Nobel de la Paz a Trump
-NACIONAL
-El Mundo - María Corina Machado pide ante Trump "libertad y Estado de Derecho"
-NACIONAL
-RTVE España - Robles no descarta que España participe en la misión militar europea en Groenlandia
-INTERNACIONAL
-BBC Mundo - La "atípica" visita de María Corina Machado a la Casa Blanca en la que le entregó su premio Nobel de la Paz a Donald Trump
-INTERNACIONAL
-EuropaPress - Trump afirma haber recibido el Nobel de la Paz de María Corina Machado
-INTERNACIONAL
-El País - Rusia castiga a millones de ucranios a vivir sin luz ni agua en el invierno más gélido de la guerra
-CIENCIAS
-Xataka Ciencia - Dos científicos intentaron publicar un "paper" sobre por qué nos salen pelusas en el ombligo. Y ahí empezaron sus problemas
-CIENCIAS
+=== NOTICIAS EXPORTADAS ===
+Filtro aplicado: TODAS -> 
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: ECONOMIA
+MEDIO:     El País
+TITULAR:   ECONOMIA
+El País - Hacienda recalculará la capacidad tributaria de las comunidades, clave en el reparto de la nueva financiación
+ENLACE:    https://elpais.com/economia/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: ECONOMIA
+MEDIO:     El Español
+TITULAR:   ECONOMIA
+El Español - El fondo soberano de Pedro Sánchez choca con la realidad: el ICO no tiene manos para asumirlo
+ENLACE:    https://www.elespanol.com/economia/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: DEPORTES
+MEDIO:     El Español
+TITULAR:   DEPORTES
+El Español - La Kings League de Piqué se hace global con un Mundial de 250 jugadores y estrellas como Kaká: "No nos comparamos al fútbol"
+ENLACE:    https://www.elespanol.com/deportes/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: NACIONAL
+MEDIO:     El País
+TITULAR:   NACIONAL
+El País - La izquierda toma posiciones para armar una alternativa al PSOE en las generales
+ENLACE:    https://elpais.com/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: NACIONAL
+MEDIO:     RTVE España
+TITULAR:   NACIONAL
+RTVE España - 30 años del secuestro de Ortega Lara: 532 días encerrado en un zulo, el cautiverio más largo de ETA
+ENLACE:    https://www.rtve.es/noticias/espana/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: INTERNACIONAL
+MEDIO:     BBC Mundo
+TITULAR:   INTERNACIONAL
+BBC Mundo - Cuáles son los principales grupos de oposición en Irán y qué cambios quieren para el país
+ENLACE:    https://www.bbc.com/mundo
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: INTERNACIONAL
+MEDIO:     EuropaPress
+TITULAR:   INTERNACIONAL
+EuropaPress - Machado defiende "desmantelar la estructura de terror" en Venezuela antes de celebrar elecciones
+ENLACE:    https://www.europapress.es/internacional/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: CIENCIAS
+MEDIO:     El Mundo
+TITULAR:   CIENCIAS
 El Mundo - La adherencia en VIH, la constancia que mejora vidas
-CIENCIAS
-La Razón - La bóveda de los climas pasados: la “caja fuerte del cambio climático”
-FAUNA
+ENLACE:    https://www.elmundo.es/ciencia-y-salud/ciencia.html
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: CIENCIAS
+MEDIO:     La Razón
+TITULAR:   CIENCIAS
+La Razón - Einstein lo predijo y ahora se confirma: el tiempo en Marte no transcurre como en la Tierra
+ENLACE:    https://www.larazon.es/ciencia/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: FAUNA
+MEDIO:     El País
+TITULAR:   FAUNA
 El País - El sueño de una Málaga que no sabe qué hacer con su río: remodelar por 300 millones o renaturalizar por cinco
-FAUNA
-El Diario - El polémico parque científico de Cuenca recibe luz verde ambiental con decenas de “correcciones” para proteger agua y fauna
-FAUNA
-AnimaNaturalis - La Junta consolidará este año la reintroducción del lince ibérico en el Cerrato Palentino
-////admin////
+ENLACE:    https://elpais.com/noticias/fauna/
+
+---maria-2026-01-17------------------------
+--------------------------------------------------
+CATEGORÍA: FAUNA
+MEDIO:     AnimaNaturalis
+TITULAR:   FAUNA
+AnimaNaturalis - Cataluña cierra 2025 con 276 rescates de fauna marina en su litoral
+ENLACE:    https://www.larazon.es/tags/fauna/
+
+

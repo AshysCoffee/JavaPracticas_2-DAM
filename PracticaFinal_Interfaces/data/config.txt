@@ -1,4 +1,4 @@
---albaelena1970.ALE@gmail.com;;;owlh yyir waqd kphp
+--albaelena1970.ALE@gmail.com;;;owlh yyir waqd kphp;;;12:00
 
 $$ECONOMIA;El País;https://elpais.com/economia/;h2 a$$
 $$ECONOMIA;El Mundo;https://www.elmundo.es/economia/;h2.ue-c-cover-content__headline$$
@@ -23,4 +23,4 @@ $$FAUNA;AnimaNaturalis;https://www.larazon.es/tags/fauna/;h2.article__title$$
 ==maria==101001101110011101
 ==luis==000000110010110111
 ==pepe==011010001110100010
-==hola==100010001010100100
+==lol==010010010100010100

@@ -1,7 +1,6 @@
 package noticiero;
 
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,15 +21,18 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					GestionUsuarios gu = new GestionUsuarios();
-					GestionNoticias gn = new GestionNoticias(gu);
-					GestionEmail ge = new GestionEmail(null, gn, gu);
-					GestionPreferencias gp = new GestionPreferencias(gn, gu);
-
+					GestionPreferencias gp = new GestionPreferencias(gu);
+					GestionNoticias gn = new GestionNoticias(gu,gp);
+					GestionEmail ge = new GestionEmail(gn, gu, gp);
+		
 					gu.cargarUsuarios();
 					gn.iniciarNoticias();
 					ge.cargarCredenciales();
-
+					
+					ge.iniciarRelojAutomatico();
+					
 					VentanaPrincipal frame = new VentanaPrincipal(gu, gn, ge, gp);
 					frame.setVisible(true);
 

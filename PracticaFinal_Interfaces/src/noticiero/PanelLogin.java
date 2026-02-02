@@ -41,17 +41,8 @@ public class PanelLogin extends JPanel {
 	JButton salir;
 	private GestionUsuarios gu;
 	private VentanaPrincipal v;
-	private JPopupMenu popupMenu;
-	private JPopupMenu popupMenu_1;
 
 	public PanelLogin(VentanaPrincipal v, GestionUsuarios gu) {
-		setName("Acerca de");
-		
-		this.v = v;
-		this.gu = gu;
-		
-		setBackground(SystemColor.menu);
-		setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		this.gu = gu;
 		this.v = v;
@@ -113,7 +104,8 @@ public class PanelLogin extends JPanel {
 					}
 				
 				} else {
-					JOptionPane.showMessageDialog(null, "Error de acceso");
+					JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos. Inténtelo de nuevo.",
+							"Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -138,10 +130,18 @@ public class PanelLogin extends JPanel {
 
 		salir = new JButton("Salir");
 		salir.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		salir.setBounds(489, 417, 135, 32);
+		salir.setBounds(478, 424, 135, 32);
 		salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				int respuesta = JOptionPane.showConfirmDialog(null, 
+					    "¿Seguro que quieres cerrar la aplicación?", 
+					    "Confirmar Salida", 
+					    JOptionPane.YES_NO_OPTION, 
+					    JOptionPane.WARNING_MESSAGE);
+
+					if (respuesta == JOptionPane.YES_OPTION) {
+					    System.exit(0); // Solo cerramos si dice SÍ
+					}
 			}
 		});
 		add(salir);
@@ -173,7 +173,7 @@ public class PanelLogin extends JPanel {
 						"Acerca de Noticias Mapaches", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		moreInfo.setBounds(10, 10, 84, 20);
+		moreInfo.setBounds(10, 10, 121, 20);
 		add(moreInfo);
 	
 		

@@ -12,6 +12,7 @@ public class Hilo extends Contador implements Runnable {
 		this.vueltas= vueltas;
 		this.contCompartido = c;
 	}
+	
 	public int getMiCuenta() {
 		return miCuenta;
 	}
@@ -19,7 +20,7 @@ public class Hilo extends Contador implements Runnable {
 
 	public void run () {
 		for(int i = 0; i<vueltas ;i++) {
-			this.contCompartido.incrementar1();//incrementa el contador compartido
+			this.contCompartido.incrementar1();
 			this.contCompartido.incrementar2();
 			miCuenta++;
 		}

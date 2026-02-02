@@ -101,4 +101,20 @@ public class Consultas {
 
 	}
 
+	public void listarCategorias() {
+		
+		List<String> categorias = gj.obtenerCategorias();
+
+		if (categorias==null||categorias.isEmpty()) {
+			System.out.println("No hay categorías disponibles.");
+		} else {
+
+			for (String categoria : categorias) {
+				System.out.println(categoria);
+			}
+
+		}
+		
+	}
+
 }

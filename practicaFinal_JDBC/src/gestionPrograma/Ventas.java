@@ -229,4 +229,19 @@ public class Ventas {
 
 	}
 
+	public void listarVentas() {
+		
+		List<Venta> listado = gv.todasVentas();
+
+		if (listado == null || listado.isEmpty()) {
+			System.out.println("No hay ventas en el inventario.");
+			return;
+		}
+
+		for (Venta venta : listado) {
+			System.out.println(venta);
+		}
+		
+	}
+
 }

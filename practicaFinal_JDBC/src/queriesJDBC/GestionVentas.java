@@ -373,7 +373,7 @@ public class GestionVentas {
 				lista.add(v);
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	System.out.println("Hubo un error :"+e.getMessage());
 	    }
 	    return lista;
 	}
