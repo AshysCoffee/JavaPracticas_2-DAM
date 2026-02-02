@@ -199,7 +199,7 @@ public class Ventas {
 
 		List<Venta> ventaEmpleadoMes = gv.ventasEmpleadoEnMes(idEmpleado, m);
 		if (ventaEmpleadoMes == null || ventaEmpleadoMes.isEmpty()) {
-			System.out.println("No hay juguetes en ese rango.");
+			System.out.println("No hay ventas asignadas a este empleados en este rango.");
 		} else {
 
 			for (Venta v : ventaEmpleadoMes) {
