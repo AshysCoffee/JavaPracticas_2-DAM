@@ -14,6 +14,11 @@ public class Stock {
 		this.cantidad_disponible = cantidad_disponible;
 	}
 
+	public Stock(int id_stand, int id_zona) {
+		this.id_stand = id_stand;
+		this.id_zona = id_zona;
+	}
+
 	public int getId_stand() {
 		return id_stand;
 	}

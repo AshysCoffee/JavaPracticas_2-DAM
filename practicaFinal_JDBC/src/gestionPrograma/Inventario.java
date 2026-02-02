@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.util.List;
 
 import modelosBases.Juguete;
+import modelosBases.Stand;
 import modelosBases.Stock;
 import queriesJDBC.GestionJuguetes;
+import queriesJDBC.GestionStands;
 import queriesJDBC.GestionStocks;
 
 public class Inventario {
@@ -13,11 +15,13 @@ public class Inventario {
 	private Connection conexion;
 	private GestionJuguetes gj;
 	private GestionStocks gs;
+	private GestionStands gstands;
 
 	public Inventario(Connection conexion) {
 		this.conexion = conexion;
 		this.gj = new GestionJuguetes(conexion);
 		this.gs = new GestionStocks(conexion);
+		this.gstands = new GestionStands(conexion);
 		System.out.println("Conexión recibida en Inventario.");
 	}
 
@@ -80,7 +84,8 @@ public class Inventario {
 				boolean stockCreado = gs.insertarStock(nuevoStock);
 
 				if (stockCreado) {
-					System.out.println("Juguete creado con éxito (ID: " + idGenerado + ") y ubicado en Stand " + stand_id + ".");
+					System.out.println(
+							"Juguete creado con éxito (ID: " + idGenerado + ") y ubicado en Stand " + stand_id + ".");
 					return true;
 				} else {
 					System.err.println("El juguete se creó, pero hubo un error al asignarlo al Stand (Stock).");
@@ -94,7 +99,6 @@ public class Inventario {
 			System.err.println("Error al insertar el juguete en la base de datos.");
 			return false;
 		}
-
 
 	}
 
@@ -224,24 +228,52 @@ public class Inventario {
 		Stock destino = gs.obtenerStockdelStand(stDestino, zDestino, idJuguete);
 
 		boolean exitoDestino;
+
 		if (destino == null) {
-			exitoDestino = false;
-			System.out.println("No existe el stand al que se quiere transferir");
-			return false;
-		} else {
+			
+			System.out.println("No existe el stand al que se quiere transferir, se procedera a crear");
+			Stock s = new Stock(zDestino, stDestino, idJuguete, cant);
+
+			gs.insertarStock(s);
+
 			int nuevaCant = destino.getCantidad_disponible() + cant;
 			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
+
+			if (exitoDestino) {
+				int resta = origen.getCantidad_disponible() - cant;
+				gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
+				System.out.println("¡Transferencia realizada con éxito!");
+				return true;
+			} else {
+				System.out.println("Error al actualizar el stand de destino.");
+				return false;
+			}
+		}else{
+		
+			int nuevaCant = destino.getCantidad_disponible() + cant;
+			exitoDestino = gs.actualizarStock(stDestino, zDestino, idJuguete, nuevaCant);
+
+			if (exitoDestino) {
+				int resta = origen.getCantidad_disponible() - cant;
+				gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
+				System.out.println("¡Transferencia realizada con éxito!");
+				return true;
+			} else {
+				System.out.println("Error al actualizar el stand de destino.");
+				return false;
+			}
+			
+		}
+	}
+
+	public void listaStands() {
+
+		List<Stand> lista = gstands.listarStands();
+
+		for (Stand s : lista) {
+			System.out.println(s);
 		}
 
-		if (exitoDestino) {
-			int resta = origen.getCantidad_disponible() - cant;
-			gs.actualizarStock(stOrigen, zOrigen, idJuguete, resta);
-			System.out.println("¡Transferencia realizada con éxito!");
-			return true;
-		} else {
-			System.out.println("Error al actualizar el stand de destino.");
-			return false;
-		}
 	}
 
 }

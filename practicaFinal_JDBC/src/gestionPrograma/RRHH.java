@@ -90,7 +90,7 @@ public class RRHH {
 	// Opcion 4 - Buscar empleado por ID
 	public Empleado buscarEmpleado(int id) {
 
-		if (id <= 0) {
+		if (id <= 1) {
 			System.err.println("El ID del juguete no es válido.");
 			return null;
 		}

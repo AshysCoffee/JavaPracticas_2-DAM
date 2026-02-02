@@ -1,0 +1,16 @@
+===== TICKET DE VENTA Nº 2 =====
+Fecha: 2026-02-02
+
+Empleado que ha atendido: 0057
+Nombre del empleado: Gabriela
+
+CódigoProducto	Producto	Cantidad	PrecioUnitario
+20		1		10.0		10.0
+
+
+------------------------------------
+TOTAL: 10.0 €
+====================================
+
+=== DEVOLUCIONES ===
+Jazmín x1 -> -10.0€

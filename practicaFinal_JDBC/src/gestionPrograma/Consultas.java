@@ -78,12 +78,11 @@ public class Consultas {
 
 	}
 	
-	
-	public void posicionJuguete(int id) {
+	public List<String> posicionJuguete(int id) {
 
 		if (id < 0) {
 			System.out.println("ID inválido.");
-			return;
+			return null;
 		}
 		
 		List<String> infoJuguete = gj.obtenerInfoJuguete(id);
@@ -97,7 +96,9 @@ public class Consultas {
 			}
 
 		}
+		
+		return infoJuguete;
 
 	}
-    
+
 }

@@ -2,6 +2,7 @@ package usuario;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import gestionPrograma.Cambios;
@@ -168,6 +169,7 @@ public class Menu {
 					System.out.println("Hubo un error en la creación, revise los valores introducidos en el sistema.");
 				}
 
+				
 				break;
 
 			case 2:
@@ -183,6 +185,8 @@ public class Menu {
 
 			case 4:
 
+				inv.listarJuguetes();
+				
 				System.out.print("ID del juguete que desee modificar su precio: ");
 				input = sc.next();
 				int id = ControlErrores.leerEntero(input);
@@ -203,6 +207,8 @@ public class Menu {
 
 			case 5:
 
+				inv.listarJuguetes();
+				
 				System.out.print("ID del juguete que desee modificar su stock: ");
 				input = sc.next();
 				id = ControlErrores.leerEntero(input);
@@ -223,6 +229,8 @@ public class Menu {
 
 			case 6:
 
+				inv.listarJuguetes();
+				
 				System.out.print("Por favor, introduzca el ID del juguete que desee modificar su precio: ");
 				input = sc.next();
 				id = ControlErrores.leerEntero(input);
@@ -239,18 +247,24 @@ public class Menu {
 
 			case 7:
 
+				inv.listarJuguetes();
+				
 				System.out.print("ID del Juguete a mover: ");
 				int idMove = ControlErrores.leerEntero(sc.next());
 
 				System.out.print("Cantidad a mover: ");
 				int cantMove = ControlErrores.leerEntero(sc.next());
 
+				consultas.posicionJuguete(idMove);
+				
 				System.out.println("--- DESDE (ORIGEN) ---");
 				System.out.print("ID Stand Origen: ");
 				int stOrig = ControlErrores.leerEntero(sc.next());
 				System.out.print("ID Zona Origen: ");
 				int zOrig = ControlErrores.leerEntero(sc.next());
 
+				inv.listaStands();
+				
 				System.out.println("--- HACIA (DESTINO) ---");
 				System.out.print("ID Stand Destino: ");
 				int stDest = ControlErrores.leerEntero(sc.next());
@@ -327,6 +341,9 @@ public class Menu {
 				break;
 
 			case 3:
+				
+				recursosHumanos.listarEmpleados();
+				
 				System.out.println("Introduzca el ID del empleado a eliminar: ");
 				input = sc.next();
 				int id_empleado = ControlErrores.leerEntero(input);
@@ -343,6 +360,8 @@ public class Menu {
 
 			case 4:
 
+				recursosHumanos.listarEmpleados();
+				
 				System.out.println("Introduzca el ID del empleado a modificar:");
 				input = sc.next();
 				id_empleado = ControlErrores.leerEntero(input);
@@ -367,6 +386,8 @@ public class Menu {
 
 			case 5:
 
+				recursosHumanos.listarEmpleados();
+				
 				System.out.println("Introduzca el ID del empleado a buscar ventas: ");
 
 				System.out.print("ID Empleado: ");
@@ -433,6 +454,7 @@ public class Menu {
 
 				System.out.print("Tipo Pago (EFECTIVO/TARJETA/PAYPAL): ");
 				String pago = ControlErrores.leerTexto(sc.next());
+
 
 				boolean seguirComprando = true;
 				double totalCompra = 0;

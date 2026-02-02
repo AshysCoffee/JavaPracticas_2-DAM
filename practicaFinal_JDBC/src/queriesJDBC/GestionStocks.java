@@ -44,28 +44,6 @@ public class GestionStocks {
 		}
 	}
 	
-	public Stock obtenerStockdelStand(int stand, int zona, int juguete) {
-		String sql = "SELECT * FROM stock WHERE stand_id=? AND zona_id=? AND juguete_id=?";
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
-			ps.setInt(1, stand);
-			ps.setInt(2, zona);
-			ps.setInt(3, juguete);
-
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					return new Stock(rs.getInt("stand_id"), rs.getInt("zona_id"), rs.getInt("juguete_id"),
-							rs.getInt("cantidad"));
-				}
-			}
-
-		} catch (SQLException e) {
-			System.out.println("Hubo un error :"+e.getMessage());
-		}
-		return null;
-	}
-
-	
 	public List<Stock> stockJuguete(int id) {
 
 		List<Stock> lista = new ArrayList<>();
@@ -86,7 +64,6 @@ public class GestionStocks {
 		}
 		return lista;
 	}
-	
 	
 	public boolean actualizarStock(int standId, int zonaId, int jugueteId, int nuevaCantidad) {
 		String sql = "UPDATE stock SET cantidad = ? WHERE stand_id = ? AND zona_id = ? AND juguete_id = ?";
@@ -132,6 +109,27 @@ public class GestionStocks {
 	        System.out.println("Error al buscar en stand: " + e.getMessage());
 	    }
 	    return inventario;
+	}
+
+	public Stock obtenerStockdelStand(int stand, int zona, int juguete) {
+		String sql = "SELECT * FROM stock WHERE stand_id=? AND zona_id=? AND juguete_id =?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, stand);
+			ps.setInt(2, zona);
+			ps.setInt(3, juguete);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					return new Stock(rs.getInt("stand_id"), rs.getInt("zona_id"), rs.getInt("juguete_id"), rs.getInt("cantidad"));
+				}
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Hubo un error :"+e.getMessage());
+		}
+		return null;
+
 	}
 	
 	
