@@ -2,7 +2,6 @@ package usuario;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
 import gestionPrograma.Cambios;
@@ -531,6 +530,9 @@ public class Menu {
 					break;
 
 				case 3:
+					
+					recursosHumanos.listarEmpleados();
+					
 					System.out.println("Por favor, introduzca el ID del empleado: ");
 
 					input = sc.next();
@@ -639,6 +641,8 @@ public class Menu {
 
 				case 3:
 
+					cambios.listasTodosCambios();
+					
 					System.out.print("Por favor, introduzca el ID del cambio: ");
 					input = sc.next();
 					int id_cambio = ControlErrores.leerEntero(input);
@@ -648,7 +652,9 @@ public class Menu {
 					break;
 				case 4:
 
-					System.out.print("Por favor, introduzca el ID del empleado: ");
+					recursosHumanos.listarEmpleados();
+					
+					System.out.print("\nPor favor, introduzca el ID del empleado: ");
 					input = sc.next();
 					int id = ControlErrores.leerEntero(input);
 

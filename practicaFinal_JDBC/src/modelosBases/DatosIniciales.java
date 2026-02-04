@@ -95,9 +95,8 @@ public class DatosIniciales {
 			gj.insertarJuguete(new Juguete("Camión", "Camión de juguete metálico", 18.0, 12, "Vehículos")); // ID 4
 			gj.insertarJuguete(new Juguete("Robot", "Robot interactivo con luces", 35.0, 8, "Electrónicos")); // ID 5
 			gj.insertarJuguete(new Juguete("Bloques", "Caja de bloques de construcción", 22.0, 6, "Construcción")); // ID
-																													// 6
-			gj.insertarJuguete(new Juguete("Coche RC", "Coche teledirigido", 45.0, 4, "Vehículos")); // ID 7
-			gj.insertarJuguete(new Juguete("Peluche Oso", "Oso de peluche grande", 25.0, 7, "Peluches")); // ID 8
+			gj.insertarJuguete(new Juguete("Coche RC", "Coche teledirigido", 45.0, 4, "Vehículos")); // ID 6
+			gj.insertarJuguete(new Juguete("Peluche Oso", "Oso de peluche grande", 25.0, 7, "Peluches")); // ID 7
 
 			// ------------------ Stock ------------------
 			gstock.insertarStock(new Stock(1, 1, 1, 5)); // Muñeca en Stand 1
@@ -112,15 +111,15 @@ public class DatosIniciales {
 			// ------------------ Ventas ------------------
 			// Ahora los Stands y Zonas coinciden con donde pusimos el Stock arriba
 
-			gv.registrarVenta(new Venta(TipoPago.PAYPAL, 15.5, 1, 1, 1, 1, 1, "Cliente Casual"));
-			gv.registrarVenta(new Venta(TipoPago.TARJETA, 12.0, 2, 2, 2, 2, 1, null));
-			gv.registrarVenta(new Venta(TipoPago.EFECTIVO, 18.0, 3, 4, 3, 3, 2, "Juan Perez"));
-			gv.registrarVenta(new Venta(TipoPago.TARJETA, 35.0, 4, 5, 4, 4, 1, "Maria Lopez"));
-			gv.registrarVenta(new Venta(TipoPago.PAYPAL, 22.0, 5, 6, 5, 5, 3, "Construcciones SA"));
-			gv.registrarVenta(new Venta(TipoPago.EFECTIVO, 45.0, 6, 7, 1, 1, 1, null));
-			gv.registrarVenta(new Venta(TipoPago.PAYPAL, 25.0, 1, 8, 2, 2, 2, "Lucia Garcia"));
-			gv.registrarVenta(new Venta(TipoPago.EFECTIVO, 15.5, 2, 1, 1, 1, 1, "Cliente Casual"));
-			gv.registrarVenta(new Venta(TipoPago.TARJETA, 12.0, 3, 2, 2, 2, 4, "Pedro Rodriguez"));
+			gv.registrarVenta(new Venta(LocalDate.of(2023, 1, 10),TipoPago.PAYPAL, 15.5, 1, 1, 1, 1, 1, "Cliente Casual"));
+			gv.registrarVenta(new Venta(LocalDate.of(2023, 4, 3),TipoPago.TARJETA, 12.0, 2, 2, 2, 2, 1, null));
+			gv.registrarVenta(new Venta(LocalDate.of(2024, 6, 17),TipoPago.EFECTIVO, 18.0, 3, 4, 3, 3, 2, "Juan Perez"));
+			gv.registrarVenta(new Venta(LocalDate.of(2026, 11, 6),TipoPago.TARJETA, 35.0, 4, 5, 4, 4, 1, "Maria Lopez"));
+			gv.registrarVenta(new Venta(LocalDate.of(2021, 6, 27),TipoPago.PAYPAL, 22.0, 5, 6, 5, 5, 3, "Construcciones SA"));
+			gv.registrarVenta(new Venta(LocalDate.of(2022, 7, 19),TipoPago.EFECTIVO, 45.0, 6, 7, 1, 1, 1, null));
+			gv.registrarVenta(new Venta(LocalDate.of(2024, 5, 2),TipoPago.PAYPAL, 25.0, 1, 8, 2, 2, 2, "Lucia Garcia"));
+			gv.registrarVenta(new Venta(LocalDate.of(2025, 5, 9),TipoPago.EFECTIVO, 15.5, 2, 1, 1, 1, 1, "Cliente Casual"));
+			gv.registrarVenta(new Venta(LocalDate.of(2023, 3, 30),TipoPago.TARJETA, 12.0, 3, 2, 2, 2, 4, "Pedro Rodriguez"));
 
 			actualizarStockDespuesDeVentas();
 

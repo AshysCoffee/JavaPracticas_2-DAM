@@ -181,7 +181,7 @@ public class GestionJuguetes {
 
 	public List<Juguete> JuguetesRangoPrecio(double precioMin, double precioMax) {
 		List<Juguete> lista = new ArrayList<>();
-		String sql = "SELECT * FROM juguete WHERE precio BETWEEN ? AND ?";
+		String sql = "SELECT * FROM juguete WHERE precio BETWEEN ? AND ? ORDER BY precio DESC";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setDouble(1, precioMin);
 			ps.setDouble(2, precioMax);

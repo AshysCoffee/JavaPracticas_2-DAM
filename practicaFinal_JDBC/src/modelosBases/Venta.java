@@ -43,6 +43,18 @@ public class Venta {
 		this.cantidad = cantidad;
 	}
 	
+	public Venta(LocalDate fecha, TipoPago tipoPago,double importe, int id_empleado, int id_juguete, int id_stand, int id_zona,
+			 int cantidad, String cliente) {
+		super();
+		this.id_empleado = id_empleado;
+		this.id_juguete = id_juguete;
+		this.id_stand = id_stand;
+		this.id_zona = id_zona;
+		this.tipoPago = tipoPago;
+		this.fecha = fecha;
+		this.importe = importe;
+		this.cantidad = cantidad;
+	}
 	
 	public Venta() {
 
